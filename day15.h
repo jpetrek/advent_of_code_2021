@@ -10,10 +10,10 @@ class day15 : public day_base<15>
             for (size_t x = 0; x < maze[0].size(); x++)
             {
                 size_t ei = y * maze[0].size() + x;
-                if (y > 0)  g.add_two_directional_edge(ei, (y - 1) * maze[0].size() + x, maze[y - 1][x], maze[y][x]);
-                if (y < maze.size() - 1)  g.add_two_directional_edge(ei, (y + 1) * maze[0].size() + x, maze[y + 1][x], maze[y][x]);
-                if (x > 0)  g.add_two_directional_edge(ei, (y)*maze[0].size() + (x - 1), maze[y][x - 1], maze[y][x]);
-                if (x < maze[0].size() - 1)  g.add_two_directional_edge(ei, (y)*maze[0].size() + (x + 1), maze[y][x + 1], maze[y][x]);
+                if (y > 0)  g.add_twodirectional_edge(ei, (y - 1) * maze[0].size() + x, maze[y - 1][x], maze[y][x]);
+                if (y < maze.size() - 1)  g.add_twodirectional_edge(ei, (y + 1) * maze[0].size() + x, maze[y + 1][x], maze[y][x]);
+                if (x > 0)  g.add_twodirectional_edge(ei, (y)*maze[0].size() + (x - 1), maze[y][x - 1], maze[y][x]);
+                if (x < maze[0].size() - 1)  g.add_twodirectional_edge(ei, (y)*maze[0].size() + (x + 1), maze[y][x + 1], maze[y][x]);
             }
         return g;
     }
@@ -23,13 +23,7 @@ class day15 : public day_base<15>
         std::vector<std::vector<size_t>> maze;
         while (!input_reader().is_end_of_file())
         {
-            std::vector<size_t> row;
-            auto line = input_reader().get_line();
-            for (auto c : line)
-            {
-                row.push_back(static_cast<size_t>(c) - static_cast<size_t>('0'));
-            }
-            maze.push_back(row);
+            maze.push_back(helper::get_numbers_per_line<size_t>(input_reader().get_line()));
         }
 
         std::vector<std::vector<size_t>> maze_huge;

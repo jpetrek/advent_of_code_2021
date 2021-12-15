@@ -149,13 +149,13 @@ struct graph_weighted
         return vertex_count;
     }
 
-    void add_two_directional_edge(size_t v1, size_t v2, int64_t w1, int64_t w2)
+    void add_twodirectional_edge(size_t v1, size_t v2, int64_t w1, int64_t w2)
     {
-        add_one_directional_edge(v1, v2, w1);
-        add_one_directional_edge(v2, v1, w2);
+        add_onedirectional_edge(v1, v2, w1);
+        add_onedirectional_edge(v2, v1, w2);
     }
 
-    void add_one_directional_edge(size_t v1, size_t v2, int64_t w1)
+    void add_onedirectional_edge(size_t v1, size_t v2, int64_t w1)
     {
         auto i = std::find_if(std::begin(adjacents[v1]), std::end(adjacents[v1]), [v2](const auto& p) {return p.first == v2; });
         if (i == std::end(adjacents[v1]))
@@ -294,7 +294,17 @@ struct helper
         return result;
     }
     
-    
+    template <typename T>
+    static std::vector<T> get_numbers_per_line(const std::string& line)
+    {
+        std::vector<T> ret;
+        for (auto c : line)
+        {
+            ret.push_back(static_cast<size_t>(c) - static_cast<size_t>('0'));
+        }
+        return ret;
+    }
+
     template<typename T>
     static std::vector<T> get_numbers_per_line(const std::string& line, char delim)
     {
