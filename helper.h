@@ -12,6 +12,7 @@
 #include <map>
 #include <set>
 #include <stack>
+#include <queue>
 
 struct file_reader
 {
@@ -137,10 +138,68 @@ struct min_max_counter
     T value_maximum;
 };
 
+struct graph_weighted
+{
+    graph_weighted(size_t v_count) : vertex_count(v_count), adjacents(v_count, std::vector<std::pair<int64_t, int64_t>>())
+    {
+    }
 
+    size_t count() const
+    {
+        return vertex_count;
+    }
+
+    void add_two_directional_edge(size_t v1, size_t v2, int64_t w1, int64_t w2)
+    {
+        add_one_directional_edge(v1, v2, w1);
+        add_one_directional_edge(v2, v1, w2);
+    }
+
+    void add_one_directional_edge(size_t v1, size_t v2, int64_t w1)
+    {
+        auto i = std::find_if(std::begin(adjacents[v1]), std::end(adjacents[v1]), [v2](const auto& p) {return p.first == v2; });
+        if (i == std::end(adjacents[v1]))
+        {
+            adjacents[v1].push_back({ v2, w1 });
+        }
+    }
+
+    const std::vector<std::pair<int64_t, int64_t>>& get_adjacend(size_t vertex) const
+    {
+        return adjacents[vertex];
+    }
+
+private:
+    size_t vertex_count;
+    std::vector<std::vector<std::pair<int64_t, int64_t> >> adjacents;
+};
 
 struct helper
 {
+    static size_t dijkstra_shortest_path(const graph_weighted& graph, size_t src, size_t dest)
+    {
+        std::priority_queue<std::pair<int64_t, int64_t>, std::vector<std::pair<int64_t, int64_t>>, std::greater<std::pair<int64_t, int64_t>> > pq;
+        std::vector<int64_t> dist(graph.count(), std::numeric_limits<int64_t>::max());
+        pq.push({ 0, src });
+        dist[src] = 0;
+        while (!pq.empty())
+        {
+            int64_t u = pq.top().second;
+            pq.pop();
+            for (auto x : graph.get_adjacend(u))
+            {
+                auto v = x.first;
+                auto  weight = x.second;
+                if (dist[v] > dist[u] + weight)
+                {
+                    dist[v] = dist[u] + weight;
+                    pq.push({ dist[v], v });
+                }
+            }
+        }
+        return dist[dest];
+    }
+
     template <typename TK, typename TV>
     static void modify_value_in_map_safe(std::map<TK, TV>& map, TK key, TV init_value, std::function<void(TV&)> action)
     {
