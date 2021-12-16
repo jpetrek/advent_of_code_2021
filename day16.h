@@ -5,10 +5,6 @@ class day16 : public day_base<16>
 {
     struct bitstream
     {
-        bitstream(std::vector<unsigned char> bits) : read_index(0), values(bits)
-        {
-        }
-
         bitstream(const std::string& hex_input) : read_index(0)
         {
             for (auto h : hex_input)
@@ -21,33 +17,33 @@ class day16 : public day_base<16>
             }
         }
 
+        bitstream(bitstream& orig, size_t number_of_bits) : read_index(0), values(orig.get_part_of_stream(number_of_bits))
+        {
+        }
+
         bool is_empty_or_contains_zeros_only() const
         {
-            for (size_t i = read_index; i < values.size(); i++) if (values[i] == 1) return false;
-            return true;
+            return read_index == values.size() || std::all_of(std::begin(values) + read_index, std::end(values), [](auto v) {return v == 0; });
         }
 
         size_t getvalue(size_t number_of_bits)
         {
-            size_t ret = 0;
+            size_t value = 0;
             for (size_t i = 0; i < number_of_bits; i++)
             {
-                ret = (ret << 1) + values[read_index++];
+                value = (value << 1) + values[read_index++];
             }
-            return ret;
+            return value;
         }
 
-        std::vector<unsigned char> get_stream(size_t number_of_bits)
-        {
-            std::vector<unsigned char> ret;
-            for (size_t i = 0; i < number_of_bits; i++)
-            {
-                ret.push_back(values[read_index++]);
-            }
-            return ret;
-        }
-    
     private:
+
+        std::vector<unsigned char> get_part_of_stream(size_t number_of_bits)
+        {
+            read_index += number_of_bits;
+            return { values.begin() + read_index - number_of_bits, values.begin() + read_index};
+        }
+
         size_t read_index;
         std::vector<unsigned char> values;
     };
@@ -76,13 +72,13 @@ class day16 : public day_base<16>
         literal_packet(size_t v, bitstream& b) : packet_base(v)
         {
             value = 0;
-            size_t val = b.getvalue(5);
-            while ((val & 16) > 0)
+            size_t binary_value = b.getvalue(5);
+            while ((binary_value & 16) > 0)
             {
-                value = (value + (val & 15)) << 4;
-                val = b.getvalue(5);
+                value = (value + (binary_value & 15)) << 4;
+                binary_value = b.getvalue(5);
             }
-            value += (val & 15);
+            value += (binary_value & 15);
         }
 
         size_t get_sum_of_versions() const override
@@ -94,6 +90,7 @@ class day16 : public day_base<16>
         {
             return value;
         }
+
     private:
         size_t value;
     };
@@ -115,7 +112,7 @@ class day16 : public day_base<16>
             }
             else
             {
-                bitstream m_bs(b.get_stream(b.getvalue(15)));
+                bitstream m_bs(b, b.getvalue(15));
                 while (!m_bs.is_empty_or_contains_zeros_only())
                 {
                     packets.push_back(packet_factory::create_packet(m_bs));
@@ -125,52 +122,40 @@ class day16 : public day_base<16>
 
         size_t get_sum_of_versions() const override
         {
-            size_t ret = get_version();
-            for (const auto& ip : packets) ret+=ip->get_sum_of_versions();
-            return ret;
+            return std::accumulate(std::cbegin(packets), std::cend(packets), get_version(), [](auto a, const auto& b) {return a + b->get_sum_of_versions(); });
         }
 
         int64_t get_value() const override
         {
             if (type == 0)
             {
-                int64_t sum = 0;
-                for (const auto& ip : packets) sum += ip->get_value();
-                return sum;
+                return std::accumulate(std::cbegin(packets), std::cend(packets), static_cast<size_t>(0), [](auto a, const auto& b) {return a + b->get_value(); });
             }
             if (type == 1)
             {
-                int64_t mult = 1;
-                for (const auto& ip : packets) mult *= ip->get_value();
-                return mult;
+                return std::accumulate(std::cbegin(packets), std::cend(packets), static_cast<size_t>(1), [](auto a, const auto& b) {return a * b->get_value(); });
             }
             if (type == 2)
             {
-                min_max_counter<int64_t> mm;
-                for (const auto& ip : packets) mm.check_value(ip->get_value());
-                return mm.minimum();
+                return (*std::min_element(std::cbegin(packets), std::cend(packets), [](auto& a, auto& b) { return a->get_value() < b->get_value(); }))->get_value();
             }
             if (type == 3)
             {
-                min_max_counter<int64_t> mm;
-                for (const auto& ip : packets) mm.check_value(ip->get_value());
-                return mm.maximum();
+                return (*std::max_element(std::cbegin(packets), std::cend(packets), [](auto& a, auto& b) { return a->get_value() < b->get_value(); }))->get_value();
             }
             if (type == 5)
             {
-                if (packets[0]->get_value() > packets[1]->get_value()) return 1;
-                return 0;
+                return (packets[0]->get_value() > packets[1]->get_value()) ? 1 : 0;
             }
             if (type == 6)
             {
-                if (packets[0]->get_value() < packets[1]->get_value()) return 1;
-                return 0;
+                return (packets[0]->get_value() < packets[1]->get_value()) ? 1 : 0;
             }
             if (type == 7)
             {
-                if (packets[0]->get_value() == packets[1]->get_value()) return 1;
-                return 0;
+                return (packets[0]->get_value() == packets[1]->get_value()) ? 1 : 0;
             }
+            
             return 0;
         }
 
