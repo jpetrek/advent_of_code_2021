@@ -37,23 +37,21 @@ class day17 : public day_base<17>
 
     void run_interal() override
     {
-        std::pair< int64_t, int64_t> x_limits = {217, 240};
+        std::pair< int64_t, int64_t> x_limits = { 217, 240};
         std::pair< int64_t, int64_t> y_limits = {-126, -69};
 
-        int64_t max_v_y = abs(y_limits.first) - 1;
-        size_t m_h = max_v_y * (max_v_y + 1) / 2;;
-
-        set_star1_result(m_h);
+        int64_t max_y_velocity = abs(y_limits.first) - 1;
+        set_star1_result(max_y_velocity * (max_y_velocity + 1) / 2);
 
         auto x_min_velocity = get_velocity(0, x_limits.first);
         size_t hit_count = 0;
         size_t non_hit_count = 0;
 
-        for (int64_t i = x_min_velocity; i <= x_limits.second; i++)
+        for (auto x_velocity = x_min_velocity; x_velocity <= x_limits.second; x_velocity++)
         {
-            for (int64_t j = y_limits.first; j <= max_v_y; j++)
+            for (auto y_velocity = y_limits.first; y_velocity <= max_y_velocity; y_velocity++)
             {
-                if (is_target_hit(0, 0, i, j, x_limits, y_limits))
+                if (is_target_hit(0, 0, x_velocity, y_velocity, x_limits, y_limits))
                 {
                     hit_count++;
                 }
