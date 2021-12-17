@@ -10,7 +10,6 @@ class day17 : public day_base<17>
         return static_cast<int64_t>((1 + d) / 2);
     }
 
-
     bool is_target_hit(int64_t x, int64_t y, int64_t vx, int64_t vy, std::pair< int64_t, int64_t> x_limits, std::pair< int64_t, int64_t> y_limits)
     {
         int64_t n_x = x;
@@ -37,27 +36,45 @@ class day17 : public day_base<17>
 
     void run_interal() override
     {
+        //std::pair< int64_t, int64_t> x_limits = { 254, 275 };
+        //std::pair< int64_t, int64_t> y_limits = { -107, -57 };
+        // Simplified calculation of max height doesn't work here!
+        // Simply because there is not any x-velocity to be zero within the area
+        // x_velocity = 23 zeroes at 253, x_velocity 24 zeroes at 277
+        // if such x_velocity exists then max_h =  max_y_velocity * (max_y_velocity -1) / 2
+
         std::pair< int64_t, int64_t> x_limits = { 217, 240};
         std::pair< int64_t, int64_t> y_limits = {-126, -69};
 
         int64_t max_y_velocity = abs(y_limits.first) - 1;
-        set_star1_result(max_y_velocity * (max_y_velocity + 1) / 2);
-
         auto x_min_velocity = get_velocity(0, x_limits.first);
-        size_t hit_count = 0;
-        size_t non_hit_count = 0;
 
-        for (auto x_velocity = x_min_velocity; x_velocity <= x_limits.second; x_velocity++)
+        size_t hit_count = 0;
+        size_t max_h = 0;
+        std::pair<int64_t, int64_t> max_h_velocities;
+
+        for (auto x_velocity = x_min_velocity - 1; x_velocity <= x_limits.second; x_velocity++)
         {
             for (auto y_velocity = y_limits.first; y_velocity <= max_y_velocity; y_velocity++)
             {
                 if (is_target_hit(0, 0, x_velocity, y_velocity, x_limits, y_limits))
                 {
+                    if (y_velocity > 0)
+                    {
+                        size_t h = y_velocity * (y_velocity -1) / 2;
+                        if (h > max_h)
+                        {
+                            max_h = h;
+                            max_h_velocities = { x_velocity , y_velocity };
+                        }
+                    }
                     hit_count++;
                 }
             }
         }
 
+        std::cout << "Max height velocities: vx =" << max_h_velocities.first << ", vy=" << max_h_velocities.second << std::endl;
+        set_star1_result(max_h);
         set_star2_result(hit_count);
     }
 };
