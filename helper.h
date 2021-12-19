@@ -14,6 +14,28 @@
 #include <stack>
 #include <queue>
 
+struct point_3d
+{
+    int64_t x;
+    int64_t y;
+    int64_t z;
+};
+
+bool operator < (const point_3d& p1, const point_3d& p2)
+{
+    if (p1.x != p2.x)
+    {
+        return p1.x < p2.x;
+    }
+    if (p1.y != p2.y)
+    {
+        return p1.y < p2.y;
+    }
+    return p1.z < p2.z;
+}
+
+
+
 struct file_reader
 {
     file_reader(const std::string& file_name) : stream(file_name)
