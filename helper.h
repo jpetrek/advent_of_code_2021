@@ -155,6 +155,12 @@ struct min_max_counter
         return value_maximum;
     }
 
+    void adjust_limits(T minimum, T maximum)
+    {
+        value_minimum = minimum;
+        value_maximum = maximum;
+    }
+
     T value_minimum;
     T value_maximum;
 };

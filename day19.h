@@ -10,6 +10,7 @@ class day19 : public day_base<19>
         if (a == 1) return { i.x,  i.z, -i.y};
         if (a == 2) return { i.x, -i.y, -i.z};
         if (a == 3) return { i.x, -i.z,  i.y};
+        return { 0,0,0 };
     }
     
     point_3d transform(size_t a, const point_3d i)
@@ -21,6 +22,7 @@ class day19 : public day_base<19>
         if (s == 3) return transform_x(a % 4, { -i.z,  i.y,   i.x });
         if (s == 4) return transform_x(a % 4, { -i.y,  i.x,   i.z });
         if (s == 5) return transform_x(a % 4, {  i.y, -i.x,   i.z });
+        return { 0,0,0 };
     }
 
     size_t count_same_points(const std::set<point_3d>& s1, const std::vector<point_3d>& s2, const point_3d diff)

@@ -4,7 +4,7 @@
 class day20 : public day_base<20>
 {
     
-    size_t get_binary(int64_t x, int64_t y, std::map<std::pair<int64_t, int64_t>, bool>& field)
+    size_t get_binary(int64_t x, int64_t y, const std::map<std::pair<int64_t, int64_t>, bool>& field)
     {
         int64_t dx = -1;
         int64_t dy = -1;
@@ -12,7 +12,7 @@ class day20 : public day_base<20>
         for (size_t i = 0; i < 9; i++)
         {
             index = index << 1;
-            index += field[{x + dx, y + dy}];
+            index += field.at({x + dx, y + dy});
             dx += 1;
             if (dx == 2)
             {
@@ -23,19 +23,41 @@ class day20 : public day_base<20>
         return index;
     }
 
+    void fill_borders_with_value(std::map<std::pair<int64_t, int64_t>, bool>& points, const  min_max_counter<int64_t>&x_limits, const  min_max_counter<int64_t>& y_limits, size_t n, bool value)
+    {
+        for (int64_t x = x_limits.minimum(); x <= x_limits.maximum(); x++)
+        {
+            for (int d = 0; d < n; d++)
+            {
+                points[{x, y_limits.minimum() + d}] = value;
+                points[{x, y_limits.maximum() - d}] = value;
+            }
+        }
+        
+        for (int64_t y = y_limits.minimum(); y <= y_limits.maximum(); y++)
+        {
+            for (int d = 0; d < n; d++)
+            {
+                points[{x_limits.minimum() + d, y}] = value;
+                points[{x_limits.maximum() - d, y}] = value;
+            }
+        }
+    }
+
+
     void run_interal() override
     {
         
         min_max_counter<int64_t> x_limits;
         min_max_counter<int64_t> y_limits;
 
-        std::vector<bool> mapping;
+        std::vector<bool> kernel_3x3_value;
         std::map<std::pair<int64_t, int64_t>, bool> points;
         auto first_line = input_reader().get_line();
         for (auto c : first_line)
         {
-            if (c == '.') mapping.push_back(false);
-            if (c == '#') mapping.push_back(true);
+            if (c == '.') kernel_3x3_value.push_back(false);
+            if (c == '#') kernel_3x3_value.push_back(true);
         }
 
         auto empty_line = input_reader().get_line();
@@ -54,83 +76,38 @@ class day20 : public day_base<20>
             y++;
         }
 
-        // initial grow by zeros
-        x_limits.check_value(x_limits.minimum() - 1);
-        x_limits.check_value(x_limits.maximum() + 1);
-        y_limits.check_value(y_limits.minimum() - 1);
-        y_limits.check_value(y_limits.maximum() + 1);
-
-        for (int64_t x = x_limits.minimum(); x <= x_limits.maximum(); x++)
-        {
-            points[{x, y_limits.minimum()}] = false;
-            points[{x, y_limits.maximum()}] = false;
-        }
-
-        for (int64_t y = y_limits.minimum(); y <= y_limits.maximum(); y++)
-        {
-            points[{x_limits.minimum(), y}] = false;
-            points[{x_limits.maximum(), y}] = false;
-        }
-
+        x_limits.adjust_limits(x_limits.minimum() - 1, x_limits.maximum() + 1);
+        y_limits.adjust_limits(y_limits.minimum() - 1, y_limits.maximum() + 1);
+        fill_borders_with_value(points, x_limits, y_limits, 1, false);
 
         for (size_t i = 0; i < 50; i++)
         {
-            auto x_l_cbk = x_limits;
-            auto y_l_cbk = y_limits;
-
-            x_limits.check_value(x_limits.minimum() - 3);
-            x_limits.check_value(x_limits.maximum() + 3);
-            y_limits.check_value(y_limits.minimum() - 3);
-            y_limits.check_value(y_limits.maximum() + 3);
+            x_limits.adjust_limits(x_limits.minimum() -3, x_limits.maximum() +3);
+            y_limits.adjust_limits(y_limits.minimum() - 3, y_limits.maximum() + 3);
             
-            for (int64_t x = x_limits.minimum(); x <= x_limits.maximum(); x++)
-            {
-                for (int d = 0; d < 3; d++)
-                {
-                    points[{x, y_limits.minimum() + d}] = points[{x_limits.minimum() + 3, y_limits.minimum() + 3}];
-                    points[{x, y_limits.maximum() - d}] = points[{x_limits.minimum() + 3, y_limits.minimum() + 3}];
-                }
-            }
-
-            for (int64_t y = y_limits.minimum(); y <= y_limits.maximum(); y++)
-            {
-                for (int d = 0; d < 3; d++)
-                {
-                    points[{x_limits.minimum()+ d, y}] = points[{x_limits.minimum() + 3, y_limits.minimum() + 3}];
-                    points[{x_limits.maximum() - d, y}] = points[{x_limits.minimum() + 3, y_limits.minimum() + 3}];
-                }
-            }
+            fill_borders_with_value(points, x_limits, y_limits, 3, points[{x_limits.minimum() + 3, y_limits.minimum() + 3}]);
+            
+            x_limits.adjust_limits(x_limits.minimum() + 1, x_limits.maximum() - 1);
+            y_limits.adjust_limits(y_limits.minimum() + 1, y_limits.maximum() - 1);
 
             std::map<std::pair<int64_t, int64_t>, bool>  points_new;
 
-            for (int64_t y = y_limits.minimum() +1; y <= y_limits.maximum()-1;y++)
-                for (int64_t x = x_limits.minimum() +1; x <= x_limits.maximum()-1; x++)
+            for (int64_t y = y_limits.minimum(); y <= y_limits.maximum();y++)
+                for (int64_t x = x_limits.minimum(); x <= x_limits.maximum(); x++)
                 {
-                    auto i = get_binary(x, y, points);
-                    points_new[{x, y}] = mapping[i];
+                    points_new[{x, y}] = kernel_3x3_value[get_binary(x, y, points)];
                 }
 
             points = points_new;
 
-            x_limits = x_l_cbk;
-            y_limits = y_l_cbk;
-            x_limits.check_value(x_limits.minimum() - 2);
-            x_limits.check_value(x_limits.maximum() + 2);
-            y_limits.check_value(y_limits.minimum() - 2);
-            y_limits.check_value(y_limits.maximum() + 2);
-
             if (i == 1)
             {
-                size_t sum = 0;
-                for (const auto& p : points) if (p.second) sum++;
-                set_star1_result(sum);
+                set_star1_result(std::accumulate(std::cbegin(points), std::cend(points), static_cast<size_t>(0), [](size_t r, const auto& p) {return p.second ? r += 1 : r; }));
             }
 
             std::cout << i << std::endl;
         }
 
-        size_t sum = 0;
-        for (const auto& p : points) if (p.second) sum++;
-        set_star2_result(sum);
+        set_star2_result(std::accumulate(std::cbegin(points), std::cend(points), static_cast<size_t>(0), [](size_t r, const auto& p) {return p.second ? r += 1 : r; }));
     }
 };
