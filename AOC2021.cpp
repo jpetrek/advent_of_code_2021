@@ -6,6 +6,6 @@
 int main()
 {
     //run_all();
-    run_day<day19>();
+    run_day<day20>();
     return 0;
 }

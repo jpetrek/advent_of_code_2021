@@ -35,7 +35,6 @@ bool operator < (const point_3d& p1, const point_3d& p2)
 }
 
 
-
 struct file_reader
 {
     file_reader(const std::string& file_name) : stream(file_name)
