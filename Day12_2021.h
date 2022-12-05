@@ -2,7 +2,8 @@
 #include "helper.h"
 #include <cctype>
 
-class day12 : public day_base<12>
+template<>
+class day<12, 2021> : public day_base<12, 2021>
 {
     void search_path(
                     const size_t start, 

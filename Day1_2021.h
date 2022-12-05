@@ -1,17 +1,15 @@
 #pragma once
 #include "helper.h"
 
-class day1 : public day_base<1>
+template<>
+class day<1, 2021> : public day_base<1, 2021>
 {
     void run_interal() override
     {
         std::vector<unsigned int> numbers;
         while (!input_reader().is_end_of_file())
         {
-            std::istringstream iss(input_reader().get_line());
-            unsigned int a;
-            iss >> a;
-            numbers.push_back(a);
+            numbers.push_back(std::stoul(input_reader().get_line()));
         }
 
         size_t increased = 0;

@@ -1,7 +1,8 @@
 #pragma once
 #include "helper.h"
 
-class day9 : public day_base<9>
+template<>
+class day<9, 2021> : public day_base<9, 2021>
 {
     enum class directions
     {

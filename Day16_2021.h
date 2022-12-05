@@ -1,7 +1,8 @@
 #pragma once
 #include "helper.h"
 
-class day16 : public day_base<16>
+template<>
+class day<16, 2021> : public day_base<16, 2021>
 {
     struct bitstream
     {

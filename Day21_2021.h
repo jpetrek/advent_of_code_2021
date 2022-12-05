@@ -29,7 +29,8 @@ bool operator < (const cache_key& k1, const cache_key& k2)
 }
 
 
-class day21 : public day_base<21>
+template<>
+class day<21, 2021> : public day_base<21, 2021>
 {
 
     size_t get_dice_number(size_t &dice, size_t& rolls)

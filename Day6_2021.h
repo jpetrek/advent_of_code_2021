@@ -1,7 +1,8 @@
 #pragma once
 #include "helper.h"
 
-class day6 : public day_base<6>
+template<>
+class day<6, 2021> : public day_base<6, 2021>
 {
     void run_interal() override
     {

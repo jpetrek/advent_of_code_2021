@@ -1,7 +1,8 @@
 #pragma once
 #include "helper.h"
 
-class day20 : public day_base<20>
+template<>
+class day<20, 2021> : public day_base<20, 2021>
 {
     
     size_t get_binary(int64_t x, int64_t y, const std::map<std::pair<int64_t, int64_t>, bool>& field)

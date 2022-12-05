@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="AOC.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="days.h" />
+    <ClInclude Include="helper.h" />
+    <ClInclude Include="Day1_2021.h">
+      <Filter>2021</Filter>
+    </ClInclude>
+    <ClInclude Include="Day2_2021.h">
+      <Filter>2021</Filter>
+    </ClInclude>
+    <ClInclude Include="Day3_2021.h">
+      <Filter>2021</Filter>
+    </ClInclude>
+    <ClInclude Include="Day4_2021.h">
+      <Filter>2021</Filter>
+    </ClInclude>
+    <ClInclude Include="Day5_2021.h">
+      <Filter>2021</Filter>
+    </ClInclude>
+    <ClInclude Include="Day6_2021.h">
+      <Filter>2021</Filter>
+    </ClInclude>
+    <ClInclude Include="Day7_2021.h">
+      <Filter>2021</Filter>
+    </ClInclude>
+    <ClInclude Include="Day8_2021.h">
+      <Filter>2021</Filter>
+    </ClInclude>
+    <ClInclude Include="Day9_2021.h">
+      <Filter>2021</Filter>
+    </ClInclude>
+    <ClInclude Include="Day10_2021.h">
+      <Filter>2021</Filter>
+    </ClInclude>
+    <ClInclude Include="Day11_2021.h">
+      <Filter>2021</Filter>
+    </ClInclude>
+    <ClInclude Include="Day12_2021.h">
+      <Filter>2021</Filter>
+    </ClInclude>
+    <ClInclude Include="Day13_2021.h">
+      <Filter>2021</Filter>
+    </ClInclude>
+    <ClInclude Include="Day14_2021.h">
+      <Filter>2021</Filter>
+    </ClInclude>
+    <ClInclude Include="Day15_2021.h">
+      <Filter>2021</Filter>
+    </ClInclude>
+    <ClInclude Include="Day16_2021.h">
+      <Filter>2021</Filter>
+    </ClInclude>
+    <ClInclude Include="Day17_2021.h">
+      <Filter>2021</Filter>
+    </ClInclude>
+    <ClInclude Include="Day18_2021.h">
+      <Filter>2021</Filter>
+    </ClInclude>
+    <ClInclude Include="Day19_2021.h">
+      <Filter>2021</Filter>
+    </ClInclude>
+    <ClInclude Include="Day20_2021.h">
+      <Filter>2021</Filter>
+    </ClInclude>
+    <ClInclude Include="Day21_2021.h">
+      <Filter>2021</Filter>
+    </ClInclude>
+    <ClInclude Include="Day22_2021.h">
+      <Filter>2021</Filter>
+    </ClInclude>
+    <ClInclude Include="Day23_2021.h">
+      <Filter>2021</Filter>
+    </ClInclude>
+    <ClInclude Include="Day24_2021.h">
+      <Filter>2021</Filter>
+    </ClInclude>
+    <ClInclude Include="Day1_2022.h">
+      <Filter>2022</Filter>
+    </ClInclude>
+    <ClInclude Include="Day2_2022.h">
+      <Filter>2022</Filter>
+    </ClInclude>
+    <ClInclude Include="Day3_2022.h">
+      <Filter>2022</Filter>
+    </ClInclude>
+    <ClInclude Include="Day4_2022.h">
+      <Filter>2022</Filter>
+    </ClInclude>
+    <ClInclude Include="Day5_2022.h">
+      <Filter>2022</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="2021">
+      <UniqueIdentifier>{6bd23dde-d240-48c7-85eb-c6b9bbd4f649}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2022">
+      <UniqueIdentifier>{fb4a2f41-32a3-41e8-9389-1d80c5958208}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

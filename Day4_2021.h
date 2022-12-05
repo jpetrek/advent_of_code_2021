@@ -84,8 +84,8 @@ private:
     size_t order;
 };
 
-
-class day4 : public day_base<4>
+template<>
+class day<4, 2021> : public day_base<4, 2021>
 {
     void run_interal() override
     {

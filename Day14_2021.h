@@ -1,7 +1,8 @@
 #pragma once
 #include "helper.h"
 
-class day14 : public day_base<14>
+template<>
+class day<14, 2021> : public day_base<14, 2021>
 {
     size_t calculate_result(const std::map<std::pair<char, char>, size_t>& in, const char last)
     {

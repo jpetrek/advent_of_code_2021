@@ -5,7 +5,7 @@
 
 int main()
 {
-    //run_all();
-    run_day<day22>();
+    //helper::run_all<2021, 24>(); 
+    run_day<day<5,2022>>();
     return 0;
 }

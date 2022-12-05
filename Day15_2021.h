@@ -1,7 +1,8 @@
 #pragma once
 #include "helper.h"
 
-class day15 : public day_base<15>
+template<>
+class day<15, 2021> : public day_base<15, 2021>
 {
     graph_weighted transform_maze_to_graph(const std::vector<std::vector<size_t>>& maze)
     {

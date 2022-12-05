@@ -1,7 +1,8 @@
 #pragma once
 #include "helper.h"
 
-class day17 : public day_base<17>
+template<>
+class day<17, 2021> : public day_base<17, 2021>
 {
     int64_t get_velocity(int64_t x, int64_t dist)
     {

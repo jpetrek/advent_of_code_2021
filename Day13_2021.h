@@ -1,7 +1,8 @@
 ﻿#pragma once
 #include "helper.h"
 
-class day13 : public day_base<13>
+template<>
+class day<13, 2021> : public day_base<13, 2021>
 {
     void print(const std::set<std::pair<size_t, size_t>>& data)
     {

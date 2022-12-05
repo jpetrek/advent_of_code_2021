@@ -1,7 +1,8 @@
 #pragma once
 #include "helper.h"
 
-class day19 : public day_base<19>
+template<>
+class day<19, 2021> : public day_base<19, 2021>
 {
 
     point_3d transform_x(size_t a, const point_3d i)

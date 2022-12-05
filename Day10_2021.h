@@ -1,7 +1,8 @@
 #pragma once
 #include "helper.h"
 
-class day10 : public day_base<10>
+template<>
+class day<10, 2021> : public day_base<10, 2021>
 {
     struct chunk
     {

@@ -1,7 +1,8 @@
 #pragma once
 #include "helper.h"
 
-class day8 : public day_base<8>
+template<>
+class day<8, 2021> : public day_base<8, 2021>
 {
     const std::vector<std::string> patterns = { "abcefg","cf","acdeg","acdfg","bcdf","abdfg","abdefg","acf","abcdefg","abcdfg" };
 

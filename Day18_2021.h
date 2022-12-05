@@ -1,7 +1,8 @@
 #pragma once
 #include "helper.h"
 
-class day18 : public day_base<18>
+template<>
+class day<18, 2021> : public day_base<18, 2021>
 {
     struct number_pair
     {

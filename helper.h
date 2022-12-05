@@ -1,4 +1,5 @@
 #pragma once
+#include <cctype>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -13,6 +14,32 @@
 #include <set>
 #include <stack>
 #include <queue>
+
+
+template <typename K, typename V>
+bool contains_key(const std::map<K, V>& m, K key_value)
+{
+    return m.find(key_value) != std::end(m);
+}
+
+template <typename V>
+bool contains(const std::set<V>& m, V value)
+{
+    return m.find(value) != std::end(m);
+}
+
+
+bool contains(const std::string& m, char value)
+{
+    bool ret = m.find(value) != std::string::npos;
+    return ret;
+}
+
+template <typename V>
+bool contains(const std::vector<V>& m, V value)
+{
+    return std::find(std::begin(m), std::end(m), [value](const V& v1) {return v1 == value; }) != std::end(m);
+}
 
 struct point_3d
 {
@@ -61,10 +88,11 @@ private:
     std::ifstream stream;
 };
 
-template<size_t D>
+template<size_t D, size_t R>
 struct day_base
 {
-    day_base() : reader("d:\\i" + std::to_string(D) + ".txt"), day(D), is_s1_set(false), is_s2_set(false)
+//    day_base() : reader("d:\\i" + std::to_string(D) + ".txt"), day(D), is_s1_set(false), is_s2_set(false)
+    day_base() : reader("c:\\Git\\aoc\\" + std::to_string(R) + "\\i" + std::to_string(D) + ".txt"), day(D), is_s1_set(false), is_s2_set(false)
     {
     }
 
@@ -86,13 +114,25 @@ protected:
         return reader;
     }
 
-    void set_star1_result(size_t v)
+    template<typename T>
+    void set_star1_result(T v)
+    {
+        set_star1_result(std::to_string(v));
+    }
+
+    template<typename T>
+    void set_star2_result(T v)
+    {
+        set_star2_result(std::to_string(v));
+    }
+
+    void set_star1_result(std::string v)
     {
         is_s1_set = true;
         s1_value = v;
     }
 
-    void set_star2_result(size_t v)
+    void set_star2_result(std::string v)
     {
         is_s2_set = true;
         s2_value = v;
@@ -126,11 +166,60 @@ private:
 
     file_reader reader;
     size_t day;
-    size_t s1_value;
+    std::string s1_value;
     bool is_s1_set;
-    size_t s2_value;
+    std::string s2_value;
     bool is_s2_set;
 };
+
+template<size_t D, size_t R>
+class day : public day_base<D, R>
+{
+};
+
+template<typename T, typename TAverage>
+struct min_max_summary_average_counter
+{
+    min_max_summary_average_counter() : value_maximum(std::numeric_limits<T>::min()), value_minimum(std::numeric_limits<T>::max()), value_sum(T()), value_count(0)
+    {
+    }
+
+    inline void check_value(const T value)
+    {
+        if (value_maximum < value) value_maximum = value;
+        if (value_minimum > value) value_minimum = value;
+        value_count++;
+        value_sum += value;
+    }
+
+    T minimum() const
+    {
+        return value_minimum;
+    }
+
+    T maximum() const
+    {
+        return value_maximum;
+    }
+
+    T summary() const
+    {
+        return value_sum;
+    }
+
+    TAverage average() const
+    {
+        return static_cast<TAverage>(value_sum) / value_count;
+    }
+
+    T value_minimum;
+    T value_maximum;
+    T value_sum;
+    size_t value_count;
+};
+
+
+
 
 template<typename T>
 struct min_max_counter
@@ -321,6 +410,18 @@ struct helper
         return result;
     }
     
+    template<typename T>
+    static std::vector<T> split_and_convert(const std::string& s, char delim, std::function<T(const std::string&)> convert)
+    {
+        auto parts = split(s, delim);
+        std::vector<T> result;
+        for(auto &p : parts)
+        {
+            result.push_back(convert(p));
+        }
+        return result;
+    }
+
     template <typename T>
     static std::vector<T> get_numbers_per_line(const std::string& line)
     {
@@ -330,6 +431,29 @@ struct helper
             ret.push_back(static_cast<size_t>(c) - static_cast<size_t>('0'));
         }
         return ret;
+    }
+
+    template <typename T, std::size_t... Indices>
+    static auto vectorToTupleHelper(const std::vector<T>& v, std::index_sequence<Indices...>) {
+        return std::make_tuple(v[Indices]...);
+    }
+
+    template <std::size_t N, typename T>
+    static auto vectorToTuple(const std::vector<T>& v) {
+        return helper::vectorToTupleHelper(v, std::make_index_sequence<N>());
+    }
+
+
+    template <std::size_t Y, std::size_t... Indices>
+    static void _run_all(std::index_sequence<Indices...>) 
+    {
+        return (run_day<day<Indices + 1, Y>>(), ...);
+    }
+
+    template <std::size_t Y, std::size_t M = 25>
+    static void run_all()
+    {
+        helper::_run_all<Y>(std::make_index_sequence<M>());
     }
 
     template<typename T>

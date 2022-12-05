@@ -1,7 +1,8 @@
 #pragma once
 #include "helper.h"
 
-class day22 : public day_base<22>
+template<>
+class day<22, 2021> : public day_base<22, 2021>
 {
     std::pair<size_t, size_t> get_range(const std::vector<int64_t>& ranges, int64_t value_min, int64_t value_max)
     {
