@@ -8,6 +8,6 @@
 int main()
 {
     //helper::run_all<2022, 6>(); 
-    run_day<day<6,2022>>();
+    run_day<day<7,2022>>();
     return 0;
 }
