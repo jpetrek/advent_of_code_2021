@@ -6,7 +6,7 @@ class day<6, 2021> : public day_base<6, 2021>
 {
     void run_interal() override
     {
-        auto ages = helper::get_numbers_per_line<size_t>(input_reader().get_line(), ',');
+        auto ages = helper::split_and_convert<size_t>(input_reader().get_line(), ',');
 
         std::vector<size_t> histogram_of_ages(9, 0);
 

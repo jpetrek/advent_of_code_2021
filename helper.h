@@ -15,7 +15,6 @@
 #include <stack>
 #include <queue>
 
-
 template <typename K, typename V>
 bool contains_key(const std::map<K, V>& m, K key_value)
 {
@@ -88,11 +87,10 @@ private:
     std::ifstream stream;
 };
 
-template<size_t D, size_t R>
+template<size_t D, size_t Y>
 struct day_base
 {
-//    day_base() : reader("d:\\i" + std::to_string(D) + ".txt"), day(D), is_s1_set(false), is_s2_set(false)
-    day_base() : reader("c:\\Git\\aoc\\" + std::to_string(R) + "\\i" + std::to_string(D) + ".txt"), day(D), is_s1_set(false), is_s2_set(false)
+    day_base() : reader(PATH_TO_DATA(Y,D)), is_s1_set(false), is_s2_set(false)
     {
     }
 
@@ -142,7 +140,7 @@ private:
 
     void log_header()
     {
-        std::cout << "AOC 2021 - Day " << day << std::endl;
+        std::cout << "AOC "<< Y << " - Day " << D << std::endl;
     }
 
     void log_footer()
@@ -165,7 +163,6 @@ private:
     }
 
     file_reader reader;
-    size_t day;
     std::string s1_value;
     bool is_s1_set;
     std::string s2_value;
@@ -176,6 +173,13 @@ template<size_t D, size_t R>
 class day : public day_base<D, R>
 {
 };
+
+template <class T>
+static void run_day()
+{
+    T day;
+    day.run();
+}
 
 template<typename T, typename TAverage>
 struct min_max_summary_average_counter
@@ -411,7 +415,13 @@ struct helper
     }
     
     template<typename T>
-    static std::vector<T> split_and_convert(const std::string& s, char delim, std::function<T(const std::string&)> convert)
+    static std::vector<T> split_and_convert(const std::string& s, char delim, std::function<T(const std::string&)> convert = [](const std::string& n)
+        {
+            std::stringstream conv(n);
+            T a;
+            conv >> a;
+            return a;
+        })
     {
         auto parts = split(s, delim);
         std::vector<T> result;
@@ -423,7 +433,7 @@ struct helper
     }
 
     template <typename T>
-    static std::vector<T> get_numbers_per_line(const std::string& line)
+    static std::vector<T> convert_string_of_digits_to_vector(const std::string& line)
     {
         std::vector<T> ret;
         for (auto c : line)
@@ -432,6 +442,7 @@ struct helper
         }
         return ret;
     }
+
 
     template <typename T, std::size_t... Indices>
     static auto vectorToTupleHelper(const std::vector<T>& v, std::index_sequence<Indices...>) {
@@ -442,7 +453,6 @@ struct helper
     static auto vectorToTuple(const std::vector<T>& v) {
         return helper::vectorToTupleHelper(v, std::make_index_sequence<N>());
     }
-
 
     template <std::size_t Y, std::size_t... Indices>
     static void _run_all(std::index_sequence<Indices...>) 
@@ -455,23 +465,4 @@ struct helper
     {
         helper::_run_all<Y>(std::make_index_sequence<M>());
     }
-
-    template<typename T>
-    static std::vector<T> get_numbers_per_line(const std::string& line, char delim)
-    {
-        std::vector<T> ret;
-        auto numbers = split(line, delim);
-        for (const auto& n : numbers)
-        {
-            if (n.size() > 0)
-            {
-                std::stringstream conv(n);
-                T a;
-                conv >> a;
-                ret.push_back(a);
-            }
-        }
-        return ret;
-    }
-
 };

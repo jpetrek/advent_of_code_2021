@@ -24,7 +24,7 @@ class day<15, 2021> : public day_base<15, 2021>
         std::vector<std::vector<size_t>> maze;
         while (!input_reader().is_end_of_file())
         {
-            maze.push_back(helper::get_numbers_per_line<size_t>(input_reader().get_line()));
+            maze.push_back(helper::convert_string_of_digits_to_vector<size_t>(input_reader().get_line()));
         }
 
         std::vector<std::vector<size_t>> maze_huge;

@@ -35,9 +35,3 @@
 #include "Day4_2022.h"
 #include "Day5_2022.h"
 
-template <class T>
-static void run_day()
-{
-    T day;
-    day.run();
-}

@@ -6,7 +6,7 @@ class day<7, 2021> : public day_base<7, 2021>
 {
     void run_interal() override
     {
-        auto positions = helper::get_numbers_per_line<size_t>(input_reader().get_line(), ',');
+        auto positions = helper::split_and_convert<size_t>(input_reader().get_line(), ',');
 
         auto maxPos = *std::max_element(std::cbegin(positions), std::cend(positions));
 
