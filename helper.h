@@ -63,7 +63,7 @@ bool operator < (const point_3d& p1, const point_3d& p2)
 
 struct file_reader
 {
-    file_reader(const std::string& file_name) : stream(file_name)
+    file_reader(const std::string& _file_name) : file_name(_file_name), stream(_file_name)
     {
     }
     ~file_reader()
@@ -78,12 +78,23 @@ struct file_reader
         return line;
     }
 
+    std::string get_file_name() const
+    {
+        return file_name;
+    }
+
+    bool is_opened() const
+    {
+        return !stream.fail();
+    }
+
     bool is_end_of_file() const
     {
-        return stream.eof();
+        return !is_opened() || stream.eof();
     }
 
 private:
+    std::string file_name;
     std::ifstream stream;
 };
 
@@ -141,6 +152,8 @@ private:
     void log_header()
     {
         std::cout << "AOC "<< Y << " - Day " << D << std::endl;
+        if (reader.is_opened()) std::cout << "File: '" << reader.get_file_name() << "' found!" << std::endl;
+        else std::cout << "File: '" << reader.get_file_name() << "' NOT found!" << std::endl;
     }
 
     void log_footer()
