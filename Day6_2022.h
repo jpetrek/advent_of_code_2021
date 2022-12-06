@@ -10,17 +10,13 @@ class day<6, 2022> : public day_base<6,2022>
             for (size_t stars = 0; stars < 2; stars++)
             {
                 size_t length = stars == 0 ? 4 : 14;
-                for (size_t i = length-1; i++; i < line.size())
+                for (auto i = std::begin(line) + length; i < std::end(line); i++)
                 {
-                    std::set<char> diff;
-                    for (size_t j = 0; j < length; j++)
-                    {
-                        diff.insert(line[i - j]);
-                    }
+                    std::set<char> diff(i - length, i) ;
                     if (diff.size() == length)
                     {
-                        if (stars == 0) set_star1_result(i + 1);
-                        else set_star2_result(i + 1);
+                        if (stars == 0) set_star1_result(std::distance(std::begin(line),i));
+                        else set_star2_result(std::distance(std::begin(line), i));
                         break;
                     }
                 }

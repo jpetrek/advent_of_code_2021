@@ -35,3 +35,4 @@
 #include "Day4_2022.h"
 #include "Day5_2022.h"
 #include "Day6_2022.h"
+#include "Day7_2022.h"
