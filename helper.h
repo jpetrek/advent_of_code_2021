@@ -187,13 +187,6 @@ class day : public day_base<D, R>
 {
 };
 
-template <class T>
-static void run_day()
-{
-    T day;
-    day.run();
-}
-
 template<typename T, typename TAverage>
 struct min_max_summary_average_counter
 {
@@ -456,7 +449,6 @@ struct helper
         return ret;
     }
 
-
     template <typename T, std::size_t... Indices>
     static auto vectorToTupleHelper(const std::vector<T>& v, std::index_sequence<Indices...>) {
         return std::make_tuple(v[Indices]...);
@@ -467,15 +459,22 @@ struct helper
         return helper::vectorToTupleHelper(v, std::make_index_sequence<N>());
     }
 
-    template <std::size_t Y, std::size_t... Indices>
-    static void _run_all(std::index_sequence<Indices...>) 
+    template <class T>
+    static void run_day()
     {
-        return (run_day<day<Indices + 1, Y>>(), ...);
+        T day;
+        day.run();
     }
 
-    template <std::size_t Y, std::size_t M = 25>
-    static void run_all()
+    template <std::size_t Y, std::size_t Begin, std::size_t... Indices>
+    static void _run(std::index_sequence<Indices...>)
     {
-        helper::_run_all<Y>(std::make_index_sequence<M>());
+        return (run_day<day<Begin + Indices + 1, Y>>(), ...);
+    }
+
+    template <std::size_t Y, std::size_t Mbegin, std::size_t MEnd>
+    static void run()
+    {
+        helper::_run<Y, Mbegin-1>(std::make_index_sequence<MEnd - (Mbegin-1)>());
     }
 };
