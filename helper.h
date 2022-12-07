@@ -27,7 +27,6 @@ bool contains(const std::set<V>& m, V value)
     return m.find(value) != std::end(m);
 }
 
-
 bool contains(const std::string& m, char value)
 {
     bool ret = m.find(value) != std::string::npos;
