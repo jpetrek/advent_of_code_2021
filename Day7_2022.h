@@ -15,7 +15,7 @@ struct dir
     std::vector<file> files;
 };
 
-size_t count_dir_sizes(const dir* root, std::vector<size_t>& szs)
+size_t calculate_dir_sizes_recursively(const dir* root, std::vector<size_t>& szs)
 {
     size_t my = 0;
     for (const auto& f : root->files)
@@ -24,73 +24,80 @@ size_t count_dir_sizes(const dir* root, std::vector<size_t>& szs)
     }
     for (const auto& d : root->subs)
     {
-        my += count_dir_sizes(&d, szs);
+        my += calculate_dir_sizes_recursively(&d, szs);
     }
     szs.push_back(my);
     return my;
 }
 
+std::vector<size_t> calculate_dir_sizes_sorted(const dir* root)
+{
+    std::vector<size_t> result;
+    calculate_dir_sizes_recursively(root, result);
+    std::sort(result.begin(), result.end());
+    return result;
+}
+
+
 template<>
 class day<7, 2022> : public day_base<7,2022>
 {
-        void run_interal() override
+        dir create_filesystem_according_to_input()
         {
             dir root;
             root.name = "/";
             dir* current = &root;
-            auto line = input_reader().get_line();
-            while (!input_reader().is_end_of_file() && !line.empty())
+            while (!input_reader().is_end_of_file())
             {
-                if (auto pos = line.find("$ cd") != std::string::npos) 
+                auto line = input_reader().get_line();
+                if (contains(line, '$'))
                 {
                     auto p = helper::split(line, ' ');
-                    if (p[2] == "/")
+                    if (p[1] == "cd")
                     {
-                        current = &root;
-                    }
-                    else if (p[2] == "..")
-                    {
-                        current = current->parrent;
-                    }
-                    else
-                    {
-                        auto it = std::find_if(current->subs.begin(), current->subs.end(), [&](const auto& md) {return md.name == p[2]; });
-                        if (it != current->subs.end())
+                        if (p[2] == "/")
                         {
-                            current = &(*it);
+                            current = &root;
                         }
-                    }
-                    line = input_reader().get_line();
-                }
-                else if (line.find("$ ls") != std::string::npos)
-                {
-                    line = input_reader().get_line();
-                    while (!contains(line, '$') && !line.empty())
-                    {
-                        auto p = helper::split(line, ' ');
-                        if (p[0] == "dir")
+                        else if (p[2] == "..")
                         {
-                            dir tmp;
-                            tmp.name = p[1];
-                            tmp.parrent = current;
-                            current->subs.push_back(tmp);
+                            current = current->parrent;
                         }
                         else
                         {
-                            file tmp = { std::stoull(p[0]), p[1] };
-                            current->files.push_back(tmp);
+                            auto it = std::find_if(current->subs.begin(), current->subs.end(), [&](const auto& md) {return md.name == p[2]; });
+                            if (it != current->subs.end())
+                            {
+                                current = &(*it);
+                            }
                         }
-                        line = input_reader().get_line();
+                    }
+                }
+                else
+                {
+                    auto p = helper::split(line, ' ');
+                    if (p[0] == "dir")
+                    {
+                        dir tmp;
+                        tmp.name = p[1];
+                        tmp.parrent = current;
+                        current->subs.push_back(tmp);
+                    }
+                    else
+                    {
+                        file tmp = { std::stoull(p[0]), p[1] };
+                        current->files.push_back(tmp);
                     }
                 }
             }
-
-            std::vector<size_t> sizes;
-            size_t total = count_dir_sizes(&root, sizes);
-            std::sort(sizes.begin(), sizes.end());
+            return root;
+        }
+    
+        void run_interal() override
+        {
+            auto root = create_filesystem_according_to_input();
+            auto sizes = calculate_dir_sizes_sorted(&root);
             set_star1_result(std::accumulate(std::begin(sizes), std::end(sizes), size_t(0), [](auto v1, auto v2) {return v2 < 100000 ? v1 + v2 : v1; }));
-            size_t i = 0;
-            while (sizes[i] < (total - 40000000)) i++;
-            set_star2_result(sizes[i]);
+            set_star2_result(*std::upper_bound(std::begin(sizes), std::end(sizes), sizes.back() - 40000000));
         }
 };
