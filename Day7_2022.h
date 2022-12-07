@@ -17,15 +17,8 @@ struct dir
 
 size_t calculate_dir_sizes_recursively(const dir* root, std::vector<size_t>& szs)
 {
-    size_t my = 0;
-    for (const auto& f : root->files)
-    {
-        my += f.size;
-    }
-    for (const auto& d : root->subs)
-    {
-        my += calculate_dir_sizes_recursively(&d, szs);
-    }
+    auto my = std::accumulate(std::begin(root->files), std::end(root->files), size_t(0), [](size_t r, const auto& i) {return r + i.size; });
+    my += std::accumulate(std::begin(root->subs), std::end(root->subs), size_t(0), [&](size_t r, auto& i) {return r + calculate_dir_sizes_recursively(&i, szs); });
     szs.push_back(my);
     return my;
 }
@@ -65,11 +58,7 @@ class day<7, 2022> : public day_base<7,2022>
                         }
                         else
                         {
-                            auto it = std::find_if(current->subs.begin(), current->subs.end(), [&](const auto& md) {return md.name == p[2]; });
-                            if (it != current->subs.end())
-                            {
-                                current = &(*it);
-                            }
+                            current = &*std::find_if(current->subs.begin(), current->subs.end(), [&](const auto& md) {return md.name == p[2]; });
                         }
                     }
                 }
@@ -78,15 +67,11 @@ class day<7, 2022> : public day_base<7,2022>
                     auto p = helper::split(line, ' ');
                     if (p[0] == "dir")
                     {
-                        dir tmp;
-                        tmp.name = p[1];
-                        tmp.parrent = current;
-                        current->subs.push_back(tmp);
+                        current->subs.push_back({ current , p[1],{},{} });
                     }
                     else
                     {
-                        file tmp = { std::stoull(p[0]), p[1] };
-                        current->files.push_back(tmp);
+                        current->files.push_back({ std::stoull(p[0]), p[1] });
                     }
                 }
             }
