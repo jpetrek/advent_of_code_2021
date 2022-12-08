@@ -82,7 +82,7 @@ class day<7, 2022> : public day_base<7,2022>
         {
             auto root = create_filesystem_according_to_input();
             auto sizes = calculate_dir_sizes_sorted(&root);
-            set_star1_result(std::accumulate(std::begin(sizes), std::end(sizes), size_t(0), [](auto v1, auto v2) {return v2 < 100000 ? v1 + v2 : v1; }));
+            set_star1_result(std::accumulate(std::begin(sizes), std::end(sizes), size_t(0), [](const auto& v1, const auto& v2) {return v2 < 100000 ? v1 + v2 : v1; }));
             set_star2_result(*std::upper_bound(std::begin(sizes), std::end(sizes), sizes.back() - 40000000));
         }
 };
