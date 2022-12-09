@@ -19,51 +19,35 @@ class day<9, 2022> : public day_base<9,2022>
 
     void run_interal() override
     {
-        std::vector<std::pair<int, int>> snake2(2, { 0,0 });
-        std::vector<std::pair<int, int>> snake10(10, { 0,0 });
-        std::set<std::pair<int, int>> visited2 = { snake2[0] };
-        std::set<std::pair<int, int>> visited10 = { snake10[0] };
+        std::map<std::string, std::pair<int, int>> directions = { {"U",{0,-1}},{"D",{0,1}},{"L",{-1,0}},{"R",{1,0}} };
+        std::vector<std::pair<int, int>> snake_star1(2, { 0,0 });
+        std::vector<std::pair<int, int>> snake_star2(10, { 0,0 });
+        std::set<std::pair<int, int>> visited_star1 = { snake_star1[0] };
+        std::set<std::pair<int, int>> visited_star2 = { snake_star2[0] };
         while (!input_reader().is_end_of_file())
         {
             auto in = helper::split(input_reader().get_line(), ' ');
             auto r = std::stoul(in[1]);
             for (size_t s = 0; s < r; s++)
             {
-                if (in[0] == "U")
+                snake_star1[0].first += directions[in[0]].first;
+                snake_star1[0].second += directions[in[0]].second;
+                for (size_t i = 1; i < snake_star1.size(); i++)
                 {
-                    snake2[0].second--;
-                    snake10[0].second--;
+                    snake_star1[i] = get_new_position(snake_star1[i - 1], snake_star1[i]);
                 }
-                if (in[0] == "D")
-                {
-                    snake2[0].second++;
-                    snake10[0].second++;
-                }
-                if (in[0] == "L")
-                {
-                    snake2[0].first--;
-                    snake10[0].first--;
-                }
-                if (in[0] == "R")
-                {
-                    snake2[0].first++;
-                    snake10[0].first++;
-                }
-                    
-                for (size_t i = 1; i < snake2.size(); i++)
-                {
-                    snake2[i] = get_new_position(snake2[i - 1], snake2[i]);
-                }
-                visited2.insert(snake2.back());
+                visited_star1.insert(snake_star1.back());
 
-                for (size_t i = 1; i < snake10.size(); i++)
+                snake_star2[0].first += directions[in[0]].first;
+                snake_star2[0].second += directions[in[0]].second;
+                for (size_t i = 1; i < snake_star2.size(); i++)
                 {
-                    snake10[i] = get_new_position(snake10[i - 1], snake10[i]);
+                    snake_star2[i] = get_new_position(snake_star2[i - 1], snake_star2[i]);
                 }
-                visited10.insert(snake10.back());
+                visited_star2.insert(snake_star2.back());
             }
         }
-        set_star1_result(visited2.size());
-        set_star2_result(visited10.size());
+        set_star1_result(visited_star1.size());
+        set_star2_result(visited_star2.size());
     }
 };
