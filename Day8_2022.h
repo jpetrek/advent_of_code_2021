@@ -60,7 +60,7 @@ class day<8, 2022> : public day_base<8,2022>
             for (int i = 0; i < data[0].size(); i++)
             {
                 min_max_counter<int> counter;
-                for (int j = data.size()-1; j >=0; j--)
+                for (int j = static_cast<int>(data.size())-1; j >=0; j--)
                 {
                     if ((data[j][i]) > counter.maximum())
                     {
@@ -88,7 +88,7 @@ class day<8, 2022> : public day_base<8,2022>
             for (int j = 0; j < data.size(); j++)
             {
                 min_max_counter<int> counter;
-                for (int i = data[0].size()-1; i >=0; i--)
+                for (int i = static_cast<int>(data[0].size())-1; i >=0; i--)
                 {
                     if ((data[j][i]) > counter.maximum())
                     {
@@ -112,7 +112,7 @@ class day<8, 2022> : public day_base<8,2022>
             auto set = calculate(data);
             set_star1_result(set.size());
 
-            min_max_counter<int> max_view_score;
+            min_max_counter<size_t> max_view_score;
             for (int y = 0; y < data.size(); y++)
             {
                 for (int x = 0; x < data[0].size(); x++)
