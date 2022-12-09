@@ -6,15 +6,15 @@ class day<9, 2022> : public day_base<9,2022>
 {
     std::pair<int, int> get_new_position(const std::pair<int, int>& h, const std::pair<int, int>& t)
     {
-        std::pair<int, int> Tp = t;
+        std::pair<int, int> result = t;
         if (abs(h.first - t.first) > 1 || abs(h.second - t.second) > 1)
         {
-            if (h.first > t.first) Tp.first++;
-            if (h.first < t.first) Tp.first--;
-            if (h.second > t.second) Tp.second++;
-            if (h.second < t.second) Tp.second--;
+            if (h.first > t.first) result.first++;
+            if (h.first < t.first) result.first--;
+            if (h.second > t.second) result.second++;
+            if (h.second < t.second) result.second--;
         }
-        return Tp;
+        return result;
     }
 
     void run_interal() override
@@ -27,8 +27,7 @@ class day<9, 2022> : public day_base<9,2022>
         while (!input_reader().is_end_of_file())
         {
             auto in = helper::split(input_reader().get_line(), ' ');
-            auto r = std::stoul(in[1]);
-            for (size_t s = 0; s < r; s++)
+            for (size_t step = 0; step < std::stoul(in[1]); step++)
             {
                 snake_star1[0].first += directions[in[0]].first;
                 snake_star1[0].second += directions[in[0]].second;
