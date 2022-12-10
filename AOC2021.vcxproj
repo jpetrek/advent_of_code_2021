@@ -153,6 +153,7 @@
     <ClCompile Include="AOC.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Day10_2022.h" />
     <ClInclude Include="Day1_2021.h" />
     <ClInclude Include="Day10_2021.h" />
     <ClInclude Include="Day11_2021.h" />
