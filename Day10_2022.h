@@ -33,7 +33,7 @@ class day<10, 2022> : public day_base<10,2022>
             }
             else if (in.size() == 2)
             {
-                code.push_back({ 1, std::stoll(in[1]) });
+                code.push_back({ 1, std::stol(in[1]) });
             }
         }
 
@@ -46,7 +46,7 @@ class day<10, 2022> : public day_base<10,2022>
             {
                 std::cout << std::endl;
             }
-            int n = (i / 40)*40 - 1;
+            int n = (static_cast<int>(i) / 40)*40 - 1;
             if ((i >= (s1r[i] + n)) && (i < (s1r[i] + 3 + n ))) std::cout << '#';
             else std::cout << '.';
         }

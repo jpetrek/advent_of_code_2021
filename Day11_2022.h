@@ -4,13 +4,13 @@
 template<>
 class day<11, 2022> : public day_base<11,2022>
 {
-    enum operation
+    enum class operation
     {
         plus = 0,
         mult = 1
     };
 
-    enum operand
+    enum class operand
     {
         old = 0,
         number = 1
@@ -35,25 +35,8 @@ class day<11, 2022> : public day_base<11,2022>
         for (auto i : m.items)
         {
             size_t operand2 = m.op2 == operand::old ? i : m.op2_value;
-            size_t new_wl;
-            if (m.o == operation::plus)
-            {
-                new_wl = i + operand2;
-            }
-            else
-            {
-                new_wl = i * operand2;
-            }
-
-
-            if (normalize == 0)
-            {
-                new_wl /= 3;
-            }
-            else
-            {
-                new_wl = new_wl % normalize;
-            }
+            size_t new_wl = m.o == operation::plus ? i + operand2 : i * operand2;
+            new_wl = normalize == 0 ? new_wl / 3 : new_wl % normalize;
             
             if (new_wl % m.divisible_by == 0)
             {
@@ -67,11 +50,10 @@ class day<11, 2022> : public day_base<11,2022>
         m.items.clear();
     }
 
-
-    std::pair<std::vector<monkey>, size_t> create_monkey_set()
+    std::pair<std::vector<monkey>, size_t> create_monkey_set_and_common_divisibles_multiple()
     {
         std::vector<monkey> monkeys;
-        size_t norm = 1;
+        std::set<size_t> divisors;
         while (!input_reader().is_end_of_file())
         {
             monkey m;
@@ -84,19 +66,19 @@ class day<11, 2022> : public day_base<11,2022>
             if (m.op1 == operand::number) m.op1_value = std::stol(oper[3]);
             if (m.op2 == operand::number) m.op2_value = std::stol(oper[5]);
             m.divisible_by = std::stol(helper::split(input_reader().get_line(), ' ')[3]);
+            divisors.insert(m.divisible_by);
             m.where_to_throw_if_true = std::stol(helper::split(input_reader().get_line(), ' ')[5]);
             m.where_to_throw_if_false = std::stol(helper::split(input_reader().get_line(), ' ')[5]);
-            norm *= m.divisible_by;
             monkeys.push_back(m);
             input_reader().get_line();
         }
-        return { monkeys, norm };
-    }
 
+        return { monkeys, std::accumulate(std::begin(divisors), std::end(divisors),static_cast<size_t>(1), std::multiplies<size_t>()) };
+    }
 
     void run_interal() override
     {
-        auto [monkeys, norm] = create_monkey_set();
+        auto [monkeys, norm] = create_monkey_set_and_common_divisibles_multiple();
         auto  monkeys2 = monkeys;
         std::vector<size_t> inspects1(monkeys.size(), 0);
         for (size_t i = 0; i < 20; i++)
@@ -108,8 +90,6 @@ class day<11, 2022> : public day_base<11,2022>
         }
         std::sort(inspects1.begin(), inspects1.end());
         set_star1_result(inspects1.back() * inspects1[inspects1.size() - 2]);
-
-        //------------------------------------------------------------------------------------
 
         std::vector<size_t> inspects2(monkeys2.size(), 0);
         for (size_t i = 0; i < 10000; i++)
