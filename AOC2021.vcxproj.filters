@@ -108,6 +108,9 @@
     <ClInclude Include="Day10_2022.h">
       <Filter>2022</Filter>
     </ClInclude>
+    <ClInclude Include="Day11_2022.h">
+      <Filter>2022</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="2021">
