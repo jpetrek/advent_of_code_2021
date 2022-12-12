@@ -359,6 +359,18 @@ struct helper
         }
     }
     
+    static void do_for_adjacent(size_t width, size_t height, size_t x, size_t y, const std::vector<std::pair<int, int>> diffs, std::function<void(size_t, size_t)> action)
+    {
+        for (const auto& diff : diffs)
+        {
+            long n_x = static_cast<long>(x) + diff.first;
+            long n_y = static_cast<long>(y) + diff.second;
+            if ((n_x >= 0) && (n_x < width) && (n_y >= 0) && (n_y < height))
+            {
+                action(n_x, n_y);
+            }
+        }
+    }
     
     template<typename T, typename T1 = T>
     static T get_value_safe(const std::vector<std::vector<T>> data, size_t x, size_t y, int diff_x, int diff_y, T1 default_value)

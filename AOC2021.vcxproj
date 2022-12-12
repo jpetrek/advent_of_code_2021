@@ -110,6 +110,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <StackReserveSize>4194304</StackReserveSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -147,6 +148,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <StackReserveSize>4194304</StackReserveSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -155,6 +157,7 @@
   <ItemGroup>
     <ClInclude Include="Day10_2022.h" />
     <ClInclude Include="Day11_2022.h" />
+    <ClInclude Include="Day12_2022.h" />
     <ClInclude Include="Day1_2021.h" />
     <ClInclude Include="Day10_2021.h" />
     <ClInclude Include="Day11_2021.h" />
