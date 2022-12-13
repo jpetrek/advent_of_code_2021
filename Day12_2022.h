@@ -4,7 +4,7 @@
 template<>
 class day<12, 2022> : public day_base<12,2022>
 {
-    void next_step(const std::vector<std::vector<char>>& map, std::pair<size_t, size_t> current, size_t current_length, std::map<std::pair<size_t, size_t>, size_t>& path_cache, size_t star)
+    void next_step(const std::vector<std::vector<char>>& map, std::pair<size_t, size_t> current, size_t current_length, std::map<std::pair<size_t, size_t>, size_t>& path_cache)
     {
         if (path_cache.contains(current))
         {
@@ -15,19 +15,9 @@ class day<12, 2022> : public day_base<12,2022>
 
         helper::do_for_adjacent(map[0].size(), map.size(), current.first, current.second, { {1, 0}, {0,1}, {-1, 0}, {0, -1} }, [&](auto x, auto y)
             {
-                if (star == 1)
+                if (((map[y][x]) == (map[current.second][current.first] - 1)) || ((map[y][x] >= map[current.second][current.first])))
                 {
-                    if (((map[y][x]) == (map[current.second][current.first] + 1)) || ((map[y][x] <= map[current.second][current.first])))
-                    {
-                        next_step(map, { x, y }, current_length + 1, path_cache, star);
-                    }
-                }
-                else
-                {
-                    if (((map[y][x]) == (map[current.second][current.first] - 1)) || ((map[y][x] >= map[current.second][current.first])))
-                    {
-                        next_step(map, { x, y }, current_length + 1, path_cache, star);
-                    }
+                    next_step(map, { x, y }, current_length + 1, path_cache);
                 }
             });
     }
@@ -61,18 +51,15 @@ class day<12, 2022> : public day_base<12,2022>
         hieght_map[end_postion.second][end_postion.first] = 'z';
 
         std::map<std::pair<size_t, size_t>, size_t> path_cache;
-        next_step(hieght_map, start_position, 0, path_cache, 1);
-        set_star1_result(path_cache.at(end_postion));
-
-        path_cache.clear();
-        next_step(hieght_map, end_postion, 0,path_cache, 2);
+        next_step(hieght_map, end_postion, 0,path_cache);
+       
+        set_star1_result(path_cache.at(start_position));
 
         min_max_counter<size_t> m;
         for (const auto& c : path_cache)
         {
             if (hieght_map[c.first.second][c.first.first] == 'a') m.check_value(c.second);
         }
-        
         set_star2_result(m.minimum());
     }
 };
