@@ -227,9 +227,6 @@ struct min_max_summary_average_counter
     size_t value_count;
 };
 
-
-
-
 template<typename T>
 struct min_max_counter
 {
@@ -301,6 +298,13 @@ private:
 
 struct helper
 {
+    template <typename T>
+    static std::pair<T, T> get_min_max(T v1, T v2)
+    {
+        if (v1 < v2) return { v1,v2 };
+        else return { v2, v1 };
+    }
+
     static size_t dijkstra_shortest_path(const graph_weighted& graph, size_t src, size_t dest)
     {
         std::priority_queue<std::pair<int64_t, int64_t>, std::vector<std::pair<int64_t, int64_t>>, std::greater<std::pair<int64_t, int64_t>> > pq;
@@ -461,14 +465,25 @@ struct helper
     }
 
     template <typename T, std::size_t... Indices>
-    static auto vectorToTupleHelper(const std::vector<T>& v, std::index_sequence<Indices...>) {
+    static auto vector_to_tuple_helper(const std::vector<T>& v, std::index_sequence<Indices...>) {
         return std::make_tuple(v[Indices]...);
     }
 
     template <std::size_t N, typename T>
-    static auto vectorToTuple(const std::vector<T>& v) {
-        return helper::vectorToTupleHelper(v, std::make_index_sequence<N>());
+    static auto vector_to_tuple(const std::vector<T>& v) {
+        return helper::vector_to_tuple_helper(v, std::make_index_sequence<N>());
     }
+
+
+    template <typename T>
+    static std::pair<T, T> vector_to_pair(const std::vector<T>& v)
+    {
+        std::pair<T, T> ret;
+        std::tie(ret.first, ret.second) = helper::vector_to_tuple<2, T>(v);
+        return ret;
+    }
+
+
 
     template <class T>
     static void run_day()
