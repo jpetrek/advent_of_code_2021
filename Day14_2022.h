@@ -86,7 +86,7 @@ class day<14, 2022> : public day_base<14, 2022>
 
             if (y > void_y) return false;
         }
-        
+
         space[{x, y}] = part::ball;
         return true;
     }

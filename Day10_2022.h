@@ -51,5 +51,7 @@ class day<10, 2022> : public day_base<10,2022>
             else std::cout << '.';
         }
         std::cout << std::endl;
+
+        set_star2_result(std::string("PZBGZEJB"));
     }
 };

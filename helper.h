@@ -474,7 +474,6 @@ struct helper
         return helper::vector_to_tuple_helper(v, std::make_index_sequence<N>());
     }
 
-
     template <typename T>
     static std::pair<T, T> vector_to_pair(const std::vector<T>& v)
     {
@@ -482,8 +481,6 @@ struct helper
         std::tie(ret.first, ret.second) = helper::vector_to_tuple<2, T>(v);
         return ret;
     }
-
-
 
     template <class T>
     static void run_day()
