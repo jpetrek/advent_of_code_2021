@@ -187,7 +187,7 @@ class day<23, 2021> : public day_base<23, 2021>
 
 
 
-    void run_interal() override
+    void run_internal() override
     {
         // by hand and Excel
         // but anyway will try to do some stack based search

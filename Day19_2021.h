@@ -92,7 +92,7 @@ class day<19, 2021> : public day_base<19, 2021>
         return true;
     }
 
-    void run_interal() override
+    void run_internal() override
     {
         std::vector<std::vector<point_3d>> scanners;
 

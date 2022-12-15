@@ -4,7 +4,7 @@
 template<>
 class day<5, 2021> : public day_base<5, 2021>
 {
-    void run_interal() override
+    void run_internal() override
     {
         struct line
         {

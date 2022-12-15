@@ -28,7 +28,7 @@ class day<5, 2022> : public day_base<5,2022>
             return result;
         }
 
-        void run_interal() override
+        void run_internal() override
         {
             std::vector<std::list<char>> positions_star1;
 

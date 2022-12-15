@@ -23,7 +23,7 @@ class day<22, 2021> : public day_base<22, 2021>
         return { i0,i1 };
     }
 
-    void run_interal() override
+    void run_internal() override
     {
         struct input_record
         {

@@ -35,7 +35,7 @@ class day<17, 2021> : public day_base<17, 2021>
         return false;
     }
 
-    void run_interal() override
+    void run_internal() override
     {
         //std::pair< int64_t, int64_t> x_limits = { 254, 275 };
         //std::pair< int64_t, int64_t> y_limits = { -107, -57 };

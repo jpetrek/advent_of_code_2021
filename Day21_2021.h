@@ -71,7 +71,7 @@ class day<21, 2021> : public day_base<21, 2021>
         return ret;
     }
 
-    void run_interal() override
+    void run_internal() override
     {
         size_t p1 = 8;
         size_t p2 = 6;

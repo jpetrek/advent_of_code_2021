@@ -199,7 +199,7 @@ class day<18, 2021> : public day_base<18, 2021>
         return root;
     }
 
-    void run_interal() override
+    void run_internal() override
     {
         std::vector<std::string> input;
         input.push_back(input_reader().get_line());

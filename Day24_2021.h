@@ -6,7 +6,7 @@
 template<>
 class day<24, 2021> : public day_base<24, 2021>
 {
-    void run_interal() override
+    void run_internal() override
     {
         std::vector<std::vector<std::string>> lines;
         std::stack<std::pair<int64_t, int64_t>> stack;

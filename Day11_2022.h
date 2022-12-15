@@ -76,7 +76,7 @@ class day<11, 2022> : public day_base<11,2022>
         return { monkeys, std::accumulate(std::begin(divisors), std::end(divisors),static_cast<size_t>(1), std::multiplies<size_t>()) };
     }
 
-    void run_interal() override
+    void run_internal() override
     {
         auto [monkeys, norm] = create_monkey_set_and_common_divisibles_multiple();
         auto  monkeys2 = monkeys;

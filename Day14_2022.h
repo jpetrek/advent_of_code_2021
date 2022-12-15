@@ -127,7 +127,7 @@ class day<14, 2022> : public day_base<14, 2022>
     }
 
 
-    void run_interal() override
+    void run_internal() override
     {
         std::map<std::pair<int, int>, part> space_1;
         min_max_counter<int> limits_y;

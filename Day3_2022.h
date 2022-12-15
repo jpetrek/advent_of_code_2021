@@ -10,7 +10,7 @@ class day<3, 2022> : public day_base<3,2022>
         else return c - 'a' + 1;
     }
 
-    void run_interal() override
+    void run_internal() override
     {
         size_t s1 = 0;
         size_t s2 = 0;

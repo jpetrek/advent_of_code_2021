@@ -19,7 +19,7 @@ class day<13, 2021> : public day_base<13, 2021>
     }
     
     
-    void run_interal() override
+    void run_internal() override
     {
         std::vector<std::pair<size_t, size_t>> folds;
         std::vector<std::pair<size_t, size_t>> input;

@@ -21,7 +21,7 @@ class day<10, 2022> : public day_base<10,2022>
         return result;
     }
     
-    void run_interal() override
+    void run_internal() override
     {
         std::vector<std::pair<int, int>> code;
         while (!input_reader().is_end_of_file())

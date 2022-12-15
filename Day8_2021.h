@@ -119,7 +119,7 @@ class day<8, 2021> : public day_base<8, 2021>
         return mapping;
     }
     
-    void run_interal() override
+    void run_internal() override
     {
         size_t sum_star1 = 0;
         size_t sum_star2 = 0;

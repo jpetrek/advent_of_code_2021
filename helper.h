@@ -107,7 +107,7 @@ struct day_base
     void run()
     {
         log_header();
-        run_interal();
+        run_internal();
         log_star1();
         log_star2();
         log_footer();
@@ -115,7 +115,7 @@ struct day_base
     
 protected:
     
-    virtual void run_interal() = 0;
+    virtual void run_internal() = 0;
     
     file_reader& input_reader()
     {

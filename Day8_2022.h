@@ -101,7 +101,7 @@ class day<8, 2022> : public day_base<8,2022>
         }
     
     
-        void run_interal() override
+        void run_internal() override
         {
             std::vector<std::vector<int>> data;
             while (!input_reader().is_end_of_file())

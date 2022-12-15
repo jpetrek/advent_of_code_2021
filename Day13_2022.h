@@ -87,7 +87,7 @@ class day<13, 2022> : public day_base<13,2022>
     }
 
     
-    void run_interal() override
+    void run_internal() override
     {
         std::vector<item> items;
         items.push_back(process_line("[[2]]"));

@@ -4,7 +4,7 @@
 template<>
 class day<6, 2022> : public day_base<6,2022>
 {
-        void run_interal() override
+        void run_internal() override
         {
             auto line = input_reader().get_line();
             for (size_t stars = 0; stars < 2; stars++)

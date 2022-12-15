@@ -42,7 +42,7 @@ class day<12, 2021> : public day_base<12, 2021>
         }
     }
     
-    void run_interal() override
+    void run_internal() override
     {
         size_t index_cave = 0;
 

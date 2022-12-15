@@ -78,7 +78,7 @@ class day<7, 2022> : public day_base<7,2022>
             return root;
         }
     
-        void run_interal() override
+        void run_internal() override
         {
             auto root = create_filesystem_according_to_input();
             auto sizes = calculate_dir_sizes_sorted(&root);

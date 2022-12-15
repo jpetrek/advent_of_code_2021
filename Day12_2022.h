@@ -22,7 +22,7 @@ class day<12, 2022> : public day_base<12,2022>
             });
     }
 
-    void run_interal() override
+    void run_internal() override
     {
         std::vector<std::vector<char>> hieght_map;
         std::pair<size_t, size_t> start_position;

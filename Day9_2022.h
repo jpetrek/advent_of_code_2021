@@ -17,7 +17,7 @@ class day<9, 2022> : public day_base<9,2022>
         return result;
     }
 
-    void run_interal() override
+    void run_internal() override
     {
         std::map<std::string, std::pair<int, int>> directions = { {"U",{0,-1}},{"D",{0,1}},{"L",{-1,0}},{"R",{1,0}} };
         std::vector<std::pair<int, int>> snake_star1(2, { 0,0 });

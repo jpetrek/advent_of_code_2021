@@ -19,7 +19,7 @@ class day<15, 2021> : public day_base<15, 2021>
         return g;
     }
 
-    void run_interal() override
+    void run_internal() override
     {
         std::vector<std::vector<size_t>> maze;
         while (!input_reader().is_end_of_file())

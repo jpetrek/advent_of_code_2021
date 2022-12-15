@@ -4,7 +4,7 @@
 template<>
 class day<1, 2022> : public day_base<1,2022>
 {
-    void run_interal() override
+    void run_internal() override
     {
         std::vector<size_t> energy;
         size_t total = 0;

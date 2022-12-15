@@ -185,7 +185,7 @@ class day<16, 2021> : public day_base<16, 2021>
         }
     };
 
-    void run_interal() override
+    void run_internal() override
     {
         bitstream b(input_reader().get_line());
         auto root_packet = packet_factory::create_packet(b);

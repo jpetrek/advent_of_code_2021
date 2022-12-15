@@ -20,7 +20,7 @@ class day<10, 2021> : public day_base<10, 2021>
         {'<','>',25137,4}
     };
 
-    void run_interal() override
+    void run_internal() override
     {
         size_t total_error = 0;
         std::vector<size_t> scores;

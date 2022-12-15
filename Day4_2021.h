@@ -87,7 +87,7 @@ private:
 template<>
 class day<4, 2021> : public day_base<4, 2021>
 {
-    void run_interal() override
+    void run_internal() override
     {
         std::vector<long> pickedValues;
         std::string firstLine = input_reader().get_line();

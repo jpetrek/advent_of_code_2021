@@ -7,7 +7,7 @@ class day<2, 2022> : public day_base<2,2022>
     const std::vector<size_t> scores = { 3, 6, 0, 0, 3, 6, 6, 0, 3 };
     const std::vector<size_t> moves = { 3, 1, 2, 1, 2, 3, 2, 3, 1 };
 
-    void run_interal() override
+    void run_internal() override
     {
         size_t s1 = 0;
         size_t s2 = 0;

@@ -4,7 +4,7 @@
 template<>
 class day<7, 2021> : public day_base<7, 2021>
 {
-    void run_interal() override
+    void run_internal() override
     {
         auto positions = helper::split_and_convert<size_t>(input_reader().get_line(), ',');
 

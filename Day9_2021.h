@@ -27,7 +27,7 @@ class day<9, 2021> : public day_base<9, 2021>
         }
     }
     
-    void run_interal() override
+    void run_internal() override
     {
         std::vector<std::vector<size_t>> heights;
         while (!input_reader().is_end_of_file())

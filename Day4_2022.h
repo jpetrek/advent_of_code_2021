@@ -4,7 +4,7 @@
 template<>
 class day<4, 2022> : public day_base<4,2022>
 {
-    void run_interal() override
+    void run_internal() override
     {
         size_t s1 = 0;
         size_t s2 = 0;

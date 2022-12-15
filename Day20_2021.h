@@ -46,7 +46,7 @@ class day<20, 2021> : public day_base<20, 2021>
     }
 
 
-    void run_interal() override
+    void run_internal() override
     {
         
         min_max_counter<int64_t> x_limits;

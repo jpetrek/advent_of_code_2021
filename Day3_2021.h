@@ -4,7 +4,7 @@
 template<>
 class day<3, 2021> : public day_base<3, 2021>
 {
-    void run_interal() override
+    void run_internal() override
     {
         std::vector<long>counts = { 0,0,0,0,0,0,0,0,0,0,0,0 };
         std::vector<std::vector<unsigned>> bits;

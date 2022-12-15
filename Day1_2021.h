@@ -4,7 +4,7 @@
 template<>
 class day<1, 2021> : public day_base<1, 2021>
 {
-    void run_interal() override
+    void run_internal() override
     {
         std::vector<unsigned int> numbers;
         while (!input_reader().is_end_of_file())

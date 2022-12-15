@@ -23,7 +23,7 @@ class day<14, 2021> : public day_base<14, 2021>
     
     
     
-    void run_interal() override
+    void run_internal() override
     {
         std::map<std::pair<char, char>, char> inserts;
         auto input = input_reader().get_line();

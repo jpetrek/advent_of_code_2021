@@ -51,7 +51,7 @@ class day<15, 2022> : public day_base<15, 2022>
         return min_x - 1;
     }
 
-    void run_interal() override
+    void run_internal() override
     {
 
         min_max_counter<long> x_limits;
