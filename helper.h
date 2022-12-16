@@ -181,6 +181,7 @@ private:
     bool is_s2_set;
 };
 
+
 template<size_t D, size_t R>
 class day : public day_base<D, R>
 {
@@ -298,6 +299,16 @@ private:
 
 struct helper
 {
+    static std::string trim(const std::string& s)
+    {
+        std::string ret;
+        for (auto c : s)
+        {
+            if (c != ' ') ret.push_back(c);
+        }
+        return ret;
+    }
+
     template <typename T>
     static std::pair<T, T> get_min_max(T v1, T v2)
     {
