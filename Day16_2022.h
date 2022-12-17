@@ -32,34 +32,38 @@ class day<16, 2022> : public day_base<16, 2022>
         return !static_cast<bool>(r);
     }
 
+    size_t calculate_key(bool elephant, size_t time, size_t position, size_t opened)
+    {
+        size_t k_ele = static_cast<size_t>(elephant) << 63;
+        size_t k_t = (time << 57);
+        size_t k_pos = (position << 51);
+        size_t k_os = opened;
+        size_t key = k_ele + k_t + k_os + k_pos;
+    }
+
     size_t calculate_rate(const std::string position, const std::map<std::string, valve>& v, const size_t time, const size_t opened, const std::map<std::string, size_t>& indexes, std::map<size_t, size_t>& hit_cache, const bool elephant)
     {
         if (time == 0)
         {
             if (elephant)
             {
-                return calculate_rate("AA", v, 26, opened, indexes,  hit_cache, false);
+                return calculate_rate("AA", v, 26, opened, indexes, hit_cache, false);
             }
             else
             {
                 return 0;
             }
         }
-        size_t k_ele = static_cast<size_t>(elephant) << 63;
-        size_t k_t = (time << 57);
-        size_t k_pos = (indexes.at(position) << 51);
-        size_t k_os = opened;
-        size_t key = k_ele + k_t + k_os + k_pos;
+
+        auto key = calculate_key(elephant, time, indexes.at(position), opened);
 
         if (hit_cache.contains(key)) return hit_cache.at(key);
                       
-
         min_max_counter<size_t> m;
 
         if (is_valve_closed(opened, position, indexes) && (v.at(position).rate > 0))
         {
-            auto new_opened = open_valve(opened, position, indexes);
-            m.check_value((time - 1) * v.at(position).rate + calculate_rate(position, v, time - 1, new_opened, indexes, hit_cache, elephant));
+            m.check_value((time - 1) * v.at(position).rate + calculate_rate(position, v, time - 1, open_valve(opened, position, indexes), indexes, hit_cache, elephant));
         }
 
         for (const auto& id : v.at(position).connections)
