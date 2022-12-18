@@ -47,3 +47,4 @@
 #include "Day16_2022.h"
 #include "Day17_2022.h"
 #include "Day18_2022.h"
+#include "Day19_2022.h"

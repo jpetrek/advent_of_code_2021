@@ -21,6 +21,13 @@ class day<18, 2022> : public day_base<18, 2022>
         return ret;
     }
 
+    bool is_value_in_range(coords value, const min_max_counter<double>& x_limits, const min_max_counter<double>& y_limits, const min_max_counter<double>& z_limits)
+    {
+        return  ((x_limits.minimum() <= value.x) && (value.x <= x_limits.maximum()) &&
+            (y_limits.minimum() <= value.y) && (value.y <= y_limits.maximum()) &&
+            (z_limits.minimum() <= value.z) && (value.z <= z_limits.maximum()));
+    }
+
     void run_internal() override
     {
         std::set<coords> cubes;
@@ -55,15 +62,11 @@ class day<18, 2022> : public day_base<18, 2022>
             coords actual = air_spread.front(); air_spread.pop();
             for (const auto& o : offsets)
             {
-                coords move_by_one_queue = { actual.x + o.x * 2, actual.y + o.y * 2, actual.z + o.z * 2 };
-                if ((x_limits.minimum() <= move_by_one_queue.x) && (move_by_one_queue.x <= x_limits.maximum()) &&
-                    (y_limits.minimum() <= move_by_one_queue.y) && (move_by_one_queue.y <= y_limits.maximum()) &&
-                    (z_limits.minimum() <= move_by_one_queue.z) && (move_by_one_queue.z <= z_limits.maximum()) &&
-                    (!cubes.contains(move_by_one_queue)) &&
-                    (!air.contains(move_by_one_queue)))
+                coords move_by_one_cube = { actual.x + o.x * 2, actual.y + o.y * 2, actual.z + o.z * 2 };
+                if (is_value_in_range(move_by_one_cube, x_limits, y_limits, z_limits) && !cubes.contains(move_by_one_cube) && !air.contains(move_by_one_cube))
                 {
-                    air.insert(move_by_one_queue);
-                    air_spread.push(move_by_one_queue);
+                    air.insert(move_by_one_cube);
+                    air_spread.push(move_by_one_cube);
                 }
             }
         }
