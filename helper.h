@@ -39,6 +39,7 @@ bool contains(const std::vector<V>& m, V value)
     return std::find(std::begin(m), std::end(m), [value](const V& v1) {return v1 == value; }) != std::end(m);
 }
 
+
 struct point_3d
 {
     int64_t x;
