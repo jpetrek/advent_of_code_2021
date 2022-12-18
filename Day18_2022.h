@@ -1,25 +1,7 @@
 #pragma once
 #include "helper.h"
 
-struct coords
-{
-    double x;
-    double y;
-    double z;
-};
-
-bool operator < (const coords& p1, const coords& p2)
-{
-    if (p1.x != p2.x)
-    {
-        return p1.x < p2.x;
-    }
-    if (p1.y != p2.y)
-    {
-        return p1.y < p2.y;
-    }
-    return p1.z < p2.z;
-}
+typedef point_3d_generic<double> coords;
 
 template<>
 class day<18, 2022> : public day_base<18, 2022>
@@ -58,22 +40,19 @@ class day<18, 2022> : public day_base<18, 2022>
         auto faces = convert_to_faces(cubes);
         set_star1_result(std::accumulate(std::begin(faces), std::end(faces), size_t(0), [](size_t r, const auto& v) {return v.second == 1 ? r + 1 : r; }));
         
-        x_limits.check_value(x_limits.maximum() + 1);
-        x_limits.check_value(x_limits.minimum() - 1);
-        y_limits.check_value(y_limits.maximum() + 1);
-        y_limits.check_value(y_limits.minimum() - 1);
-        z_limits.check_value(z_limits.maximum() + 1);
-        z_limits.check_value(z_limits.minimum() - 1);
+        x_limits = modify_limits_symmetrically<double>(x_limits, 1);
+        y_limits = modify_limits_symmetrically<double>(y_limits, 1);
+        z_limits = modify_limits_symmetrically<double>(z_limits, 1);
 
-        std::queue<coords> q;
-        q.push({ x_limits.minimum(), y_limits.minimum(), z_limits.minimum() });
+        std::queue<coords> air_spread;
+        air_spread.push({ x_limits.minimum(), y_limits.minimum(), z_limits.minimum() });
 
         std::set<coords> air;
         air.insert({ x_limits.minimum(), y_limits.minimum(), z_limits.minimum() });
 
-        while (!q.empty())
+        while (!air_spread.empty())
         {
-            coords actual = q.front(); q.pop();
+            coords actual = air_spread.front(); air_spread.pop();
             for (const auto& o : offsets)
             {
                 coords move_by_one_queue = { actual.x + o.x * 2, actual.y + o.y * 2, actual.z + o.z * 2 };
@@ -84,13 +63,13 @@ class day<18, 2022> : public day_base<18, 2022>
                     (!air.contains(move_by_one_queue)))
                 {
                     air.insert(move_by_one_queue);
-                    q.push(move_by_one_queue);
+                    air_spread.push(move_by_one_queue);
                 }
             }
         }
 
         auto free_faces = convert_to_faces(air);
-        set_star2_result(std::accumulate(std::begin(faces), std::end(faces), size_t(0), [&](size_t r, const auto& v) {return free_faces.contains(v.first) ? r + 1 : r; }));
+        set_star2_result(std::accumulate(std::begin(faces), std::end(faces), size_t(0), [&free_faces](size_t r, const auto& v) {return free_faces.contains(v.first) ? r + 1 : r; }));
     }
 };
 

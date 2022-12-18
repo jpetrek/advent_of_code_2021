@@ -1,6 +1,8 @@
 #pragma once
 #include "helper.h"
 
+typedef point_3d_generic<int64_t> point_3d;
+
 template<>
 class day<19, 2021> : public day_base<19, 2021>
 {

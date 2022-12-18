@@ -40,14 +40,16 @@ bool contains(const std::vector<V>& m, V value)
 }
 
 
-struct point_3d
+template <typename T>
+struct point_3d_generic
 {
-    int64_t x;
-    int64_t y;
-    int64_t z;
+    T x;
+    T y;
+    T z;
 };
 
-bool operator < (const point_3d& p1, const point_3d& p2)
+template <typename T>
+bool operator < (const point_3d_generic<T>& p1, const point_3d_generic<T>& p2)
 {
     if (p1.x != p2.x)
     {
@@ -59,7 +61,6 @@ bool operator < (const point_3d& p1, const point_3d& p2)
     }
     return p1.z < p2.z;
 }
-
 
 struct file_reader
 {
@@ -261,6 +262,15 @@ struct min_max_counter
     T value_minimum;
     T value_maximum;
 };
+
+template<typename T>
+min_max_counter<T> modify_limits_symmetrically(const min_max_counter<T>& limits, T modificator)
+{
+    min_max_counter<T> ret = limits;
+    ret.check_value(limits.minimum() - modificator);
+    ret.check_value(limits.maximum() + modificator);
+    return ret;
+}
 
 struct graph_weighted
 {
