@@ -15,6 +15,15 @@
 #include <stack>
 #include <queue>
 
+
+template <typename T>
+T pop(std::queue<T>& q)
+{
+    auto r = q.front();
+    q.pop();
+    return r;
+}
+
 template <typename K, typename V>
 bool contains_key(const std::map<K, V>& m, K key_value)
 {
