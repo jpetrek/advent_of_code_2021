@@ -49,3 +49,12 @@
 #include "Day18_2022.h"
 #include "Day19_2022.h"
 #include "Day20_2022.h"
+#include "Day21_2022.h"
+#include "Day22_2022.h"
+#include "Day26_2022.h"
+
+//-----------------------
+
+#include "Day1_2023.h"
+
+

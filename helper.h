@@ -281,6 +281,25 @@ min_max_counter<T> modify_limits_symmetrically(const min_max_counter<T>& limits,
     return ret;
 }
 
+template<typename T>
+struct summary_counter
+{
+    summary_counter(const T init = 0) : val(init){}
+    
+    inline void add(const T v)
+    {
+        val += v;
+    }
+
+    T value() const
+    {
+        return val;
+    }
+
+private:    
+    T val;
+};
+
 struct graph_weighted
 {
     graph_weighted(size_t v_count) : vertex_count(v_count), adjacents(v_count, std::vector<std::pair<int64_t, int64_t>>())

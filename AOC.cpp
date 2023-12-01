@@ -8,6 +8,6 @@
 
 int main()
 {
-    helper::run<2022, 20, 20>(); 
+    helper::run<2023,1, 1>(); 
     return 0;
 }
