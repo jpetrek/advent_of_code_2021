@@ -15,34 +15,33 @@ class day<1, 2023> : public day_base<1,2023>
         {"one",1}, {"two",2}, {"three",3}, {"four",4}, {"five",5}, {"six",6}, {"seven",7}, {"eight",8}, {"nine",9}
     };
 
-    size_t compare_position_safe(const size_t current_position, const size_t new_position, const std::function<bool(size_t, size_t)>& comp) const
+    size_t get_number(const std::string& in, const std::vector<std::pair<std::string, size_t>>& digit_definitions) const
     {
-        if (new_position != std::string::npos)
+        size_t i = 0;
+        while (i < in.length())
         {
-            if ((current_position == std::string::npos) || comp(new_position, current_position)) { return new_position; };
-        }
-        return current_position;
-    }
-
-    size_t extract_number(const std::string& in, const std::vector<std::pair<std::string, size_t>>& substring) const
-    {
-        std::pair<size_t, size_t> left_min_pos_and_digit = { std::string::npos, 0 };
-        std::pair<size_t, size_t> right_max_pos_and_digit = { std::string::npos, 0 };
-        for (const auto& number : substring)
-        {
-            auto new_left_position = compare_position_safe(left_min_pos_and_digit.first, in.find(number.first), [](size_t a, size_t b) {return a < b; });
-            if (new_left_position != left_min_pos_and_digit.first)
+            std::string_view view_moving_start = std::string_view(in).substr(i, in.length() - i);
+            for (const auto& decimal_digit_definition : digit_definitions)
             {
-                left_min_pos_and_digit = { new_left_position , number.second };
+                if (view_moving_start.starts_with(decimal_digit_definition.first))
+                {
+                    size_t j = 0;
+                    while (j < in.length())
+                    {
+                        std::string_view view_moving_end = std::string_view(in).substr(0, in.length() - j);
+                        for (const auto& digit_definition : digit_definitions)
+                        {
+                            if (view_moving_end.ends_with(digit_definition.first))
+                            {
+                                return 10 * decimal_digit_definition.second + digit_definition.second;
+                            }
+                        }
+                        j++;
+                    }
+                }
             }
-
-            auto new_right_position = compare_position_safe(right_max_pos_and_digit.first, in.rfind(number.first), [](size_t a, size_t b) {return a > b; });
-            if (new_right_position != right_max_pos_and_digit.first)
-            {
-                right_max_pos_and_digit = { new_right_position, number.second };
-            }
+            i++;
         }
-        return 10 * left_min_pos_and_digit.second + right_max_pos_and_digit.second;
     }
 
      void run_internal() override
@@ -52,8 +51,8 @@ class day<1, 2023> : public day_base<1,2023>
         while (!input_reader().is_end_of_file())
         {
             auto line = input_reader().get_line();
-            s1.add(extract_number(line, numbers1));
-            s2.add(extract_number(line, numbers2));
+            s1.add(get_number(line, numbers1));
+            s2.add(get_number(line, numbers2));
         }
         set_star1_result(s1.value());
         set_star2_result(s2.value());
