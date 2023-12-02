@@ -150,6 +150,9 @@
     <ClInclude Include="Day1_2023.h">
       <Filter>2023</Filter>
     </ClInclude>
+    <ClInclude Include="Day2_2023.h">
+      <Filter>2023</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="2021">

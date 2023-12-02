@@ -190,6 +190,7 @@
     <ClInclude Include="Day23_2021.h" />
     <ClInclude Include="Day24_2021.h" />
     <ClInclude Include="Day2_2022.h" />
+    <ClInclude Include="Day2_2023.h" />
     <ClInclude Include="Day3_2021.h" />
     <ClInclude Include="Day3_2022.h" />
     <ClInclude Include="Day4_2021.h" />
