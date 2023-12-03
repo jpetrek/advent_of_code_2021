@@ -193,6 +193,8 @@ private:
 };
 
 
+
+
 template<size_t D, size_t R>
 class day : public day_base<D, R>
 {
@@ -335,6 +337,23 @@ private:
     size_t vertex_count;
     std::vector<std::vector<std::pair<int64_t, int64_t> >> adjacents;
 };
+
+template<typename T>
+std::vector<std::vector<T>> transform_input_into_array(file_reader& input_reader, std::function<T(char)> tr)
+{
+    std::vector<std::vector<T>> data;
+    while (!input_reader.is_end_of_file())
+    {
+        auto line = input_reader.get_line();
+        std::vector<T> lv;
+        for (auto c : line)
+        {
+            lv.push_back(tr(c));
+        }
+        data.push_back(lv);
+    }
+    return data;
+}
 
 struct helper
 {

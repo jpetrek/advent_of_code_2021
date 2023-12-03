@@ -42,6 +42,7 @@ class day<1, 2023> : public day_base<1,2023>
             }
             i++;
         }
+        return 0; 
     }
 
      void run_internal() override
