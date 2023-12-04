@@ -543,6 +543,30 @@ struct helper
         return helper::vector_to_tuple_helper(v, std::make_index_sequence<N>());
     }
 
+    /*
+    template <typename T, typename TI, typename R>
+    static R accumulate_if(const T& data, R init, std::function < R(const TI&)> acc)
+    {
+        R ret = init;
+        for (const auto& i : data)
+        {
+            ret += acc(i);
+        }
+        return ret;
+    }
+    */
+
+    template <typename R, typename T>
+    static R accumulate_if(const T& data, R init, std::function < R(const typename T::value_type&)> acc)
+    {
+        R ret = init;
+        for (const auto& i : data)
+        {
+            ret += acc(i);
+        }
+        return ret;
+    }
+
     template <typename T>
     static std::pair<T, T> vector_to_pair(const std::vector<T>& v)
     {
@@ -569,4 +593,7 @@ struct helper
     {
         helper::_run<Y, Mbegin-1>(std::make_index_sequence<MEnd - (Mbegin-1)>());
     }
+
+
+
 };
