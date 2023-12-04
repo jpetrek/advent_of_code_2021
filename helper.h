@@ -398,13 +398,22 @@ struct helper
         return dist[dest];
     }
 
+    /*
     template <typename TK, typename TV>
     static void modify_value_in_map_safe(std::map<TK, TV>& map, TK key, TV init_value, std::function<void(TV&)> action)
     {
         if (map.find(key) == std::end(map))  map[key] = init_value;
         action(map.at(key));
     }
-    
+    */
+
+    template <typename TK, typename TV>
+    static void modify_value_in_map_safe(std::map<TK, TV>& map, TK key, TV init_value, std::function<TV(const TV&)> action)
+    {
+        if (map.find(key) == std::end(map))  map[key] = init_value;
+        map.at(key) = action(map.at(key));
+    }
+
     
     static bool is_all_upper(const std::string& i)
     {

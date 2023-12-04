@@ -22,8 +22,8 @@ class day<4, 2023> : public day_base<4,2023>
             auto hand_numbers = helper::split_and_convert<size_t>(sets[1], ' ', [](const auto& in) {return stoul(in); });
 
             std::map<size_t, size_t> solver;
-            for (const auto cn : card_numbers) helper::modify_value_in_map_safe<size_t, size_t>(solver, cn, 0, [](auto& v) { v++; });
-            for (const auto hn : hand_numbers) helper::modify_value_in_map_safe<size_t, size_t>(solver, hn, 0, [](auto& v) { v++; });
+            for (const auto cn : card_numbers) helper::modify_value_in_map_safe<size_t, size_t>(solver, cn, 0, [](const auto& v) { return v+1; });
+            for (const auto hn : hand_numbers) helper::modify_value_in_map_safe<size_t, size_t>(solver, hn, 0, [](const auto& v) { return v+1; });
 
             cards.push_back({ helper::accumulate_if<size_t>(solver, 0, [](const auto& i) { return i.second > 1 ? 1 : 0; }), 1 });
         }

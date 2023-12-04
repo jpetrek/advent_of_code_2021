@@ -15,7 +15,7 @@ class day<18, 2022> : public day_base<18, 2022>
         {
             for (const auto& o : offsets)
             {
-                helper::modify_value_in_map_safe<coords, size_t>(ret, { c.x + o.x, c.y + o.y, c.z + o.z }, 0, [&](auto& v) {return v++; });
+                helper::modify_value_in_map_safe<coords, size_t>(ret, { c.x + o.x, c.y + o.y, c.z + o.z }, 0, [&](const auto& v) {return v+1; });
             }
         }
         return ret;
