@@ -531,6 +531,18 @@ struct helper
         return result;
     }
 
+    template<typename T>
+    static T split_and_convert_generic(const std::string& s, char delim, std::function<void(T&, const std::string&)> store)
+    {
+        T result;
+        auto parts = split(s, delim);
+        for (auto& p : parts)
+        {
+            store(result, p);
+        }
+        return result;
+    }
+
     template <typename T>
     static std::vector<T> convert_string_of_digits_to_vector(const std::string& line)
     {

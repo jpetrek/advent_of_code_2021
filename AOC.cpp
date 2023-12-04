@@ -8,6 +8,6 @@
 
 int main()
 {
-    helper::run<2023,5, 5>(); 
+    helper::run<2023,5, 5 >(); 
     return 0;
 }
