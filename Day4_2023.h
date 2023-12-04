@@ -19,11 +19,7 @@ class day<4, 2023> : public day_base<4,2023>
             auto sets = helper::split(helper::split(input_reader().get_line(), ':')[1], '|');
             auto card_numbers = helper::split_and_convert_generic<std::set<size_t>>(sets[0], ' ', [](auto& s, const auto& in) {s.insert(stoul(in)); });
             auto hand_numbers = helper::split_and_convert_generic<std::set<size_t>>(sets[1], ' ', [](auto& s, const auto& in) {s.insert(stoul(in)); });
-
-            std::vector<size_t> hits;
-            std::set_intersection(std::begin(card_numbers), std::end(card_numbers), std::begin(hand_numbers), std::end(hand_numbers), std::back_inserter(hits));
-            
-            cards.push_back({ hits.size(), 1 });
+            cards.push_back({ helper::intersect(card_numbers, hand_numbers).size(), 1 });
         }
 
         for (size_t i = 0; i < cards.size(); i++)

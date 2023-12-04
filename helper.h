@@ -544,6 +544,20 @@ struct helper
     }
 
     template <typename T>
+    static auto intersect(const std::set<T>& s1, const std::set<T>& s2)
+    {
+        std::set<T> intersection;
+        for (auto value : s1)
+        {
+            if (s2.find(value) != s2.end())
+            {
+                intersection.insert(value);
+            }
+        }
+        return intersection;
+    }
+
+    template <typename T>
     static std::vector<T> convert_string_of_digits_to_vector(const std::string& line)
     {
         std::vector<T> ret;
