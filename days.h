@@ -60,4 +60,4 @@
 #include "Day3_2023.h"
 #include "Day4_2023.h"
 #include "Day5_2023.h"
-
+#include "Day6_2023.h"
