@@ -75,13 +75,13 @@ class day<5, 2023> : public day_base<5,2023>
             min_max_counter<size_t> star2;
             for (size_t i = 0; i < seeds.size(); i += 2)
             {
-                std::vector<std::pair<size_t, size_t>> buffer_ranges = { {seeds[i], seeds[i] + seeds[i + 1] -1 } };
+                std::set<std::pair<size_t, size_t>> current_ranges = { {seeds[i], seeds[i] + seeds[i + 1] -1 } };
                 std::string act = "seed";
                 const std::string dest = "location";
                 while (act != dest)
                 {
-                    std::vector<std::pair<size_t, size_t>> new_ranges;
-                    for (const auto r : buffer_ranges)
+                    std::set<std::pair<size_t, size_t>> new_ranges;
+                    for (const auto r : current_ranges)
                     {
                         size_t l = r.first;
                         for (const auto& mr : ranges[mapped_ranges[act]])
@@ -90,26 +90,23 @@ class day<5, 2023> : public day_base<5,2023>
                             if (mr.source > r.second) continue;
                             if (l < mr.source)
                             {
-                                new_ranges.push_back({ map(ranges[mapped_ranges[act]], l), map(ranges[mapped_ranges[act]], mr.source - 1) });
+                                new_ranges.insert({ map(ranges[mapped_ranges[act]], l), map(ranges[mapped_ranges[act]], mr.source - 1) });
                             }
 
                             l = std::max(mr.source, l);
                             auto rp = std::min(r.second, mr.source + mr.size - 1);
-                            new_ranges.push_back({ map(ranges[mapped_ranges[act]], l), map(ranges[mapped_ranges[act]], rp) });
+                            new_ranges.insert({ map(ranges[mapped_ranges[act]], l), map(ranges[mapped_ranges[act]], rp) });
                             l = rp+1;
                         }
-                        if (l < r.second) new_ranges.push_back({ map(ranges[mapped_ranges[act]], l),map(ranges[mapped_ranges[act]], r.second) });
+                        if (l < r.second) new_ranges.insert({ map(ranges[mapped_ranges[act]], l),map(ranges[mapped_ranges[act]], r.second) });
                     }
 
-                    buffer_ranges = new_ranges;
-                    std::sort(std::begin(buffer_ranges), std::end(buffer_ranges), [](const auto& a, const auto& b) {return a.first < b.first; });
-
+                    current_ranges = new_ranges;
                     act = mapping_path[act];
                 }
 
-                star2.check_value(buffer_ranges[0].first);
+                star2.check_value(current_ranges.begin()->first);
             }
-            set_star1_result(star1.minimum());
             set_star2_result(star2.minimum());
         }
 };
