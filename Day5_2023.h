@@ -15,7 +15,7 @@ class day<5, 2023> : public day_base<5,2023>
         {
             for (const auto& m : transform)
             {
-                if ((m.source <= from) && ((m.source + m.size) >= from))
+                if ((m.source <= from) && ((m.source + m.size) > from))
                 {
                     return m.dest + (from - m.source);
                 }
@@ -46,12 +46,13 @@ class day<5, 2023> : public day_base<5,2023>
             std::map<std::string, size_t> mapped_ranges;
             
             auto seeds = helper::split_convert_vector<size_t>(helper::split(input_reader().get_line(), ':')[1], ' ', [](const auto& in) { return stoul(in); });
-            auto empty = input_reader().get_line();
+            input_reader().get_line();
             while (!input_reader().is_end_of_file())
             {
                 auto [range, s_from, s_to] = parse_range();
                 mapped_ranges[s_from] = ranges.size();
                 mapping_path[s_from] = s_to;
+                std::sort(std::begin(range), std::end(range), [](const auto& s1, const auto& s2) {return s1.source < s2.source; });
                 ranges.push_back(range);
             }
             
@@ -59,7 +60,7 @@ class day<5, 2023> : public day_base<5,2023>
             for (const auto& s : seeds)
             {
                 std::string act = "seed";
-                std::string dest = "location";
+                const std::string dest = "location";
                 size_t number = s;
                 while (act != dest)
                 {
@@ -76,38 +77,36 @@ class day<5, 2023> : public day_base<5,2023>
             {
                 std::vector<std::pair<size_t, size_t>> buffer_ranges = { {seeds[i], seeds[i] + seeds[i + 1] -1 } };
                 std::string act = "seed";
-                std::string dest = "location";
+                const std::string dest = "location";
                 while (act != dest)
                 {
-                    std::set<size_t> axis;
+                    std::vector<std::pair<size_t, size_t>> new_ranges;
                     for (const auto r : buffer_ranges)
                     {
-                        axis.insert( r.first );
-                        axis.insert( r.second );
+                        size_t l = r.first;
                         for (const auto& mr : ranges[mapped_ranges[act]])
                         {
-                            if ((mr.source >= r.first) && (mr.source < r.second))
+                            if (mr.source + mr.size - 1 < l) continue;
+                            if (mr.source > r.second) continue;
+                            if (l < mr.source)
                             {
-                                axis.insert(mr.source);
+                                new_ranges.push_back({ map(ranges[mapped_ranges[act]], l), map(ranges[mapped_ranges[act]], mr.source - 1) });
                             }
-                            if ((mr.source + mr.size - 1 >= r.first) && (mr.source + mr.size -1 <= r.second))
-                            {
-                                axis.insert(mr.source + mr.size - 1);
-                            }
+
+                            l = std::max(mr.source, l);
+                            auto rp = std::min(r.second, mr.source + mr.size - 1);
+                            new_ranges.push_back({ map(ranges[mapped_ranges[act]], l), map(ranges[mapped_ranges[act]], rp) });
+                            l = rp+1;
                         }
+                        if (l < r.second) new_ranges.push_back({ map(ranges[mapped_ranges[act]], l),map(ranges[mapped_ranges[act]], r.second) });
                     }
 
-                    auto axis_v = helper::set_to_vector<size_t>(axis);
-
-                    buffer_ranges.clear();
-                    for (size_t i = 0; i < axis_v.size() - 1; i += 2)
-                    {
-                        buffer_ranges.push_back({ map(ranges[mapped_ranges[act]],axis_v[i]), map(ranges[mapped_ranges[act]],axis_v[i + 1]) });
-                    }
+                    buffer_ranges = new_ranges;
                     std::sort(std::begin(buffer_ranges), std::end(buffer_ranges), [](const auto& a, const auto& b) {return a.first < b.first; });
 
                     act = mapping_path[act];
                 }
+
                 star2.check_value(buffer_ranges[0].first);
             }
             set_star1_result(star1.minimum());
