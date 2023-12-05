@@ -543,6 +543,38 @@ struct helper
         return result;
     }
 
+    template<typename T>
+    static std::set<T> split_convert_set(const std::string& s, char delim, std::function<T(const std::string&)> conv)
+    {
+        std::set <T> result;
+        auto parts = split(s, delim);
+        for (auto& p : parts)
+        {
+            result.insert(conv(p));
+        }
+        return result;
+    }
+
+    template <typename T>
+    static std::vector<T> set_to_vector(const std::set<T> s)
+    {
+        std::vector<T> ret;
+        for (const auto& si : s) ret.push_back(si);
+        return ret;
+    }
+
+    template<typename T>
+    static std::vector<T> split_convert_vector(const std::string& s, char delim, std::function<T(const std::string&)> conv)
+    {
+        std::vector<T> result;
+        auto parts = split(s, delim);
+        for (auto& p : parts)
+        {
+            result.push_back(conv(p));
+        }
+        return result;
+    }
+
     template <typename T>
     static auto intersect(const std::set<T>& s1, const std::set<T>& s2)
     {
