@@ -513,8 +513,18 @@ struct helper
         return result;
     }
     
+    static std::vector<double> solve_quadratic_eq(const double a, const double b, const double c)
+    {
+        double discriminant = b * b - 4.0 * a * c;
+        if (discriminant < 0) return {};
+        if (discriminant == 0) return { b / (2 * a) };
+        double r1 = (b + sqrt(discriminant)) / (2 * a);
+        double r2 = (b - sqrt(discriminant)) / (2 * a);
+        return { std::min(r1,r2), std::max(r1,r2)};
+    }
+
     template<typename T>
-    static std::vector<T> split_and_convert(const std::string& s, char delim, std::function<T(const std::string&)> convert = [](const std::string& n)
+    static std::vector<T> split_and_convert(const std::string& s, const char delim, std::function<T(const std::string&)> convert = [](const std::string& n)
         {
             std::stringstream conv(n);
             T a;
@@ -532,7 +542,7 @@ struct helper
     }
 
     template<typename T>
-    static T split_and_convert_generic(const std::string& s, char delim, std::function<void(T&, const std::string&)> store)
+    static T split_and_convert_generic(const std::string& s, const char delim, std::function<void(T&, const std::string&)> store)
     {
         T result;
         auto parts = split(s, delim);
@@ -544,7 +554,7 @@ struct helper
     }
 
     template<typename T>
-    static std::set<T> split_convert_set(const std::string& s, char delim, std::function<T(const std::string&)> conv)
+    static std::set<T> split_convert_set(const std::string& s, const char delim, std::function<T(const std::string&)> conv)
     {
         std::set <T> result;
         auto parts = split(s, delim);
@@ -564,7 +574,7 @@ struct helper
     }
 
     template<typename T>
-    static std::vector<T> split_convert_vector(const std::string& s, char delim, std::function<T(const std::string&)> conv)
+    static std::vector<T> split_convert_vector(const std::string& s, const char delim, std::function<T(const std::string&)> conv)
     {
         std::vector<T> result;
         auto parts = split(s, delim);
@@ -624,12 +634,12 @@ struct helper
     */
 
     template <typename R, typename T>
-    static R accumulate_if(const T& data, R init, std::function < R(const typename T::value_type&)> acc)
+    static R accumulate_if(const T& data, R init, std::function < R(const size_t , const typename T::value_type&)> acc)
     {
         R ret = init;
-        for (const auto& i : data)
+        for (size_t i = 0; i < data.size(); i++)
         {
-            ret += acc(i);
+            ret += acc(i,data.at(i));
         }
         return ret;
     }

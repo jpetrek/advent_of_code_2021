@@ -33,7 +33,7 @@ class day<4, 2023> : public day_base<4,2023>
             }
         }
 
-        set_star1_result(helper::accumulate_if<size_t>(cards, 0, [](const auto& i) { return i.hits > 0 ? static_cast<size_t>(pow(2, i.hits - 1)) : 0; }));
-        set_star2_result(helper::accumulate_if<size_t>(cards, 0, [](const auto& i) { return i.count; }));
+        set_star1_result(helper::accumulate_if<size_t>(cards, 0, [](auto index, const auto& i) { return i.hits > 0 ? static_cast<size_t>(pow(2, i.hits - 1)) : 0; }));
+        set_star2_result(helper::accumulate_if<size_t>(cards, 0, [](auto index, const auto& i) { return i.count; }));
     }
 };
