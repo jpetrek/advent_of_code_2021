@@ -16,33 +16,32 @@ class day<7, 2023> : public day_base<7,2023>
             pair = 2,
             one = 1
         };
-    
-        size_t first_rule_score(const std::string& card)
+
+        std::vector<size_t> count(const std::string& card, size_t max_occurences)
         {
-            std::map<char, size_t> score;
+            std::map<char, size_t> m;
             for (const auto c : card)
             {
-                helper::modify_value_in_map_safe<char, size_t>(score, c, 0, [](const auto& i) {return i+1; });
+                helper::modify_value_in_map_safe<char, size_t>(m, c, 0, [](const auto& i) {return i + 1; });
             }
 
-            size_t five = 0;
-            size_t four = 0;
-            size_t three = 0;
-            size_t two = 0;
-            for (const auto& s : score)
+            std::vector<size_t> ret(max_occurences + 1, 0);
+            for (const auto& i : m)
             {
-                if (s.second == 5) five++;
-                if (s.second == 4) four++;
-                if (s.second == 3) three++;
-                if (s.second == 2) two++;
+                if (i.second < max_occurences + 1) ret[i.second]++;
             }
+            return ret;
+        }
 
-            if (five == 1) return hand_scores::five;
-            if (four == 1) return hand_scores::four;
-            if ((three == 1) && (two == 1)) return hand_scores::full_house;
-            if ((three == 1) && (two == 0)) return hand_scores::three;
-            if (two == 2) return hand_scores::two_pairs;
-            if (two == 1) return hand_scores::pair;
+        size_t first_rule_score(const std::string& card)
+        {
+            auto nums = count(card, 5);
+            if (nums[5] == 1) return hand_scores::five;
+            if (nums[4] == 1) return hand_scores::four;
+            if ((nums[3] == 1) && (nums[2] == 1)) return hand_scores::full_house;
+            if ((nums[3] == 1) && (nums[2] == 0)) return hand_scores::three;
+            if (nums[2] == 2) return hand_scores::two_pairs;
+            if (nums[2] == 1) return hand_scores::pair;
             return hand_scores::one;    
         }
 

@@ -513,6 +513,26 @@ struct helper
         return result;
     }
     
+    static size_t lcm(const std::vector<size_t> in)
+    {
+        size_t r = in[0];
+        for (size_t i = 1; i < in.size(); i++)
+        {
+            r = std::lcm(r, in[i]);
+        }
+        return r;
+    }
+
+    static std::vector<std::string> extract_from_input_according_to_positions(const std::string& input, std::vector<std::pair<size_t, size_t>> positions)
+    {
+        std::vector<std::string> result;
+        for (const auto& pos : positions)
+        {
+            result.push_back(input.substr(pos.first, pos.second - pos.first + 1));
+        }
+        return result;
+    }
+
     static std::vector<double> solve_quadratic_eq(const double a, const double b, const double c)
     {
         double discriminant = b * b - 4.0 * a * c;
