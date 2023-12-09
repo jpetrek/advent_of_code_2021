@@ -88,6 +88,11 @@ struct file_reader
         return line;
     }
 
+    void skip_line()
+    {
+        get_line();
+    }
+
     std::string get_file_name() const
     {
         return file_name;
@@ -640,18 +645,16 @@ struct helper
         return helper::vector_to_tuple_helper(v, std::make_index_sequence<N>());
     }
 
-    /*
-    template <typename T, typename TI, typename R>
-    static R accumulate_if(const T& data, R init, std::function < R(const TI&)> acc)
+    template<typename V, typename T>
+    static std::set<V> extract_if(const T& in, std::function<bool(const typename  T::value_type&)> cond, std::function<V(const typename T::value_type&)> ex)
     {
-        R ret = init;
-        for (const auto& i : data)
+        std::set<V> ret;
+        for (const auto& v : in)
         {
-            ret += acc(i);
+            if (cond(v)) ret.insert(ex(v));
         }
         return ret;
     }
-    */
 
     template <typename R, typename T>
     static R accumulate_if(const T& data, R init, std::function < R(const size_t , const typename T::value_type&)> acc)

@@ -6,39 +6,25 @@ class day<8, 2023> : public day_base<8,2023>
 {
         void run_internal() override
         {
-            std::set<size_t> possible_starts;
-            std::set<size_t> possible_ends;
-            std::map<std::string, std::size_t> names_to_ids;
             std::map < size_t, std::pair< size_t, size_t>> map;
+            std::map<std::string, std::size_t> names_to_ids;
             
-            std::string LR = input_reader().get_line();
+            std::string directions = input_reader().get_line();
             size_t id = 0;
 
-            std::function<void(const std::string&)> mofify_map_propely = [&](const auto& s)
-                {
-                    if (names_to_ids.find(s) == std::end(names_to_ids))
-                    {
-                        names_to_ids[s] = id++;
-                    }
-                    if (s[2] == 'A')
-                    {
-                        possible_starts.insert(names_to_ids.at(s));
-                    }
-                    if (s[2] == 'Z')
-                    {
-                        possible_ends.insert(names_to_ids.at(s));
-                    }
-                };
-            
-            input_reader().get_line();
+            input_reader().skip_line();
+
             while (!input_reader().is_end_of_file())
             {
                 auto in = helper::extract_from_input_according_to_positions(input_reader().get_line(), { {0,2},{7,9},{12,14} });
-                mofify_map_propely(in[0]);
-                mofify_map_propely(in[1]);
-                mofify_map_propely(in[2]);
+                if (!names_to_ids.contains(in[0])) names_to_ids[in[0]] = id++;
+                if (!names_to_ids.contains(in[1])) names_to_ids[in[1]] = id++;
+                if (!names_to_ids.contains(in[2])) names_to_ids[in[2]] = id++;
                 map[names_to_ids.at(in[0])] = { names_to_ids.at(in[1]), names_to_ids.at(in[2]) };
             }
+
+            auto possible_starts = helper::extract_if<size_t>(names_to_ids, [](const auto& i) { return i.first[2] == 'A'; }, [](const auto& i) {return i.second; });
+            auto possible_ends = helper::extract_if<size_t>(names_to_ids, [](const auto& i) { return i.first[2] == 'Z'; }, [](const auto& i) {return i.second; });
 
             std::vector<size_t> act = helper::set_to_vector(possible_starts);
             std::vector<size_t> results;
@@ -49,14 +35,14 @@ class day<8, 2023> : public day_base<8,2023>
                 while (true)
                 {
                     if (possible_ends.contains(a)) break;
-                    auto c = LR[steps % LR.size()];
+                    auto direction = directions[steps % directions.size()];
                     steps++;
 
-                    if (c == 'L')
+                    if (direction == 'L')
                     {
                         a = map[a].first;
                     }
-                    if (c == 'R')
+                    else if (direction == 'R')
                     {
                         a = map[a].second;
                     }

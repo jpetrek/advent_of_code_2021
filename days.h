@@ -63,3 +63,5 @@
 #include "Day6_2023.h"
 #include "Day7_2023.h"
 #include "Day8_2023.h"
+#include "Day9_2023.h"
+#include "Day10_2023.h"
