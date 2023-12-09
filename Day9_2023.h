@@ -6,25 +6,28 @@ class day<9, 2023> : public day_base<9,2023>
 {
     void run_internal() override
     {
+        set_is_test(true);
+
         size_t sum_s1 = 0;
         size_t sum_s2 = 0;
         while (!input_reader().is_end_of_file())
         {
-            auto in = helper::split_and_convert<long>(input_reader().get_line(), ' ', [](const auto& i) {return stol(i); });
+            auto in = helper::split_and_convert<long>(input_reader().get_line(), ' ', helper::stol());
             long sum_last = 0;
             long sum_first = 0;
             long coef = 1;
             size_t s = in.size();
-            
-            while (!std::all_of(in.begin(), in.begin() + s, [](const auto& i) {return i == 0; }))
-            {
+            while (!std::all_of(in.begin(), in.begin() + s, helper::is_zero<long>()))
+                {
                 sum_last += in[s - 1];
-                sum_first += coef * in[0];
+                sum_first += in[0] * coef;
                 coef *= -1;
+                
                 for (size_t i = 0; i < (s-1); i++)
                 {
                     in[i] = in[i + 1] - in[i];
                 }
+
                 s--;
             }
             sum_s1 += sum_last;

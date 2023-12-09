@@ -116,7 +116,7 @@ private:
 template<size_t D, size_t Y>
 struct day_base
 {
-    day_base() : reader(PATH_TO_DATA(Y,D)), is_s1_set(false), is_s2_set(false)
+    day_base() : reader(PATH_TO_DATA(Y, D)), test_reader(PATH_TO_TEST_DATA(Y, D)), is_s1_set(false), is_s2_set(false), is_test(false)
     {
     }
 
@@ -135,6 +135,7 @@ protected:
     
     file_reader& input_reader()
     {
+        if (is_test) return test_reader;
         return reader;
     }
 
@@ -162,6 +163,11 @@ protected:
         s2_value = v;
     }
 
+    void set_is_test(bool it)
+    {
+        is_test = it;
+    }
+
 private:
 
     void log_header()
@@ -169,10 +175,16 @@ private:
         std::cout << "AOC "<< Y << " - Day " << D << std::endl;
         if (reader.is_opened()) std::cout << "File: '" << reader.get_file_name() << "' found!" << std::endl;
         else std::cout << "File: '" << reader.get_file_name() << "' NOT found!" << std::endl;
+        if (test_reader.is_opened()) std::cout << "File: '" << test_reader.get_file_name() << "' found!" << std::endl;
+        else std::cout << "File: '" << test_reader.get_file_name() << "' NOT found!" << std::endl;
     }
 
     void log_footer()
     {
+        if (is_test)
+        {
+            std::cout << "Test input used!" << std::endl;
+        }
         std::cout << "-------------------" << std::endl;
     }
 
@@ -191,10 +203,12 @@ private:
     }
 
     file_reader reader;
+    file_reader test_reader;
     std::string s1_value;
     bool is_s1_set;
     std::string s2_value;
     bool is_s2_set;
+    bool is_test;
 };
 
 
@@ -362,6 +376,44 @@ std::vector<std::vector<T>> transform_input_into_array(file_reader& input_reader
 
 struct helper
 {
+    static std::function<unsigned long long(const std::string&)> stoull()
+    {
+        return [](const auto& i) {return std::stoull(i); };
+    }
+
+    static std::function<unsigned long(const std::string&)> stoul()
+    {
+        return [](const auto& i) {return std::stoul(i); };
+    }
+
+    static std::function<long long(const std::string&)> stoll()
+    {
+        return [](const auto& i) {return std::stoll(i); };
+    }
+
+    static std::function<long(const std::string&)> stol()
+    {
+        return [](const auto& i) {return std::stol(i); };
+    }
+
+    template <typename T>
+    static std::function<bool(const T&)> is_zero()
+    {
+        return [](const auto& i) {return i == 0; };
+    }
+
+    template <typename T>
+    static std::function<bool(const T&)> is_bigger()
+    {
+        return [](const auto& a, const auto& b) {return a > b; };
+    }
+
+    template <typename T>
+    static std::function<bool(const T&)> is_smaller()
+    {
+        return [](const auto& a, const auto& b) {return a < b; };
+    }
+
     static std::string trim(const std::string& s)
     {
         std::string ret;
