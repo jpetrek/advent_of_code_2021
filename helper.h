@@ -58,6 +58,14 @@ struct point_3d_generic
 };
 
 template <typename T>
+struct point_2d_generic
+{
+    T x;
+    T y;
+};
+
+
+template <typename T>
 bool operator < (const point_3d_generic<T>& p1, const point_3d_generic<T>& p2)
 {
     if (p1.x != p2.x)
