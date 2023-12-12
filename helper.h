@@ -384,6 +384,28 @@ std::vector<std::vector<T>> transform_input_into_array(file_reader& input_reader
 
 struct helper
 {
+    template<typename T>
+    static std::vector<T> slice(std::vector<T> source, size_t count)
+    {
+        if (count == 0) return source;
+        if (count >= source.size()) return {};
+        else
+        {
+            source.erase(source.begin() + (count-1));
+            return source;
+        }
+    }
+
+    static std::string slice(const std::string& source, size_t count)
+    {
+        if (count == 0) return source;
+        if (count >= source.size()) return "";
+        else
+        {
+            return source.substr(count);
+        }
+    }
+
     static std::function<unsigned long long(const std::string&)> stoull()
     {
         return [](const auto& i) {return std::stoull(i); };
