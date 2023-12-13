@@ -365,25 +365,42 @@ private:
     std::vector<std::vector<std::pair<int64_t, int64_t> >> adjacents;
 };
 
-template<typename T>
-std::vector<std::vector<T>> transform_input_into_array(file_reader& input_reader, std::function<T(char)> tr)
-{
-    std::vector<std::vector<T>> data;
-    while (!input_reader.is_end_of_file())
-    {
-        auto line = input_reader.get_line();
-        std::vector<T> lv;
-        for (auto c : line)
-        {
-            lv.push_back(tr(c));
-        }
-        data.push_back(lv);
-    }
-    return data;
-}
-
 struct helper
 {
+    template<typename T>
+    static std::vector<std::vector<T>> transpose(const std::vector<std::vector<T>>& input)
+    {
+        std::vector<std::vector<T>> ret;
+        for (size_t x = 0; x < input[0].size(); x++)
+        {
+            std::vector<T> line;
+            for (size_t y = 0; y < input.size(); y++)
+            {
+                line.push_back(input[y][x]);
+            }
+            ret.push_back(line);
+        }
+        return ret;
+    }
+
+    template<typename T>
+    static std::vector<std::vector<T>> transform_input_into_array(file_reader& input_reader, std::function<T(char)> tr)
+    {
+        std::vector<std::vector<T>> data;
+        while (!input_reader.is_end_of_file())
+        {
+            auto line = input_reader.get_line();
+            if (line.size() == 0) return data;
+            std::vector<T> lv;
+            for (auto c : line)
+            {
+                lv.push_back(tr(c));
+            }
+            data.push_back(lv);
+        }
+        return data;
+    }
+    
     template<typename T>
     static std::vector<T> slice(std::vector<T> source, size_t count)
     {

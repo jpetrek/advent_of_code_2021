@@ -12,7 +12,7 @@ class day<10, 2023> : public day_base<10,2023>
         down = 3
     };
 
-    std::tuple<size_t, size_t, direction, bool> go(std::tuple<size_t, size_t, direction> actual, const size_t w, const size_t h, const const std::map<std::pair<size_t, size_t>, char>& map)
+    std::tuple<size_t, size_t, direction, bool> go(std::tuple<size_t, size_t, direction> actual, const size_t w, const size_t h, const std::map<std::pair<size_t, size_t>, char>& map)
     {
         auto [x, y, d] = actual;
         if (d == direction::right) return go_right(actual, w, h, map);
@@ -21,7 +21,7 @@ class day<10, 2023> : public day_base<10,2023>
         if (d == direction::down) return go_down(actual, w, h, map);
     }
 
-    std::tuple<size_t, size_t, direction, bool> go_up(std::tuple<size_t, size_t, direction> actual, const size_t w, const size_t h, const const std::map<std::pair<size_t, size_t>, char>& map)
+    std::tuple<size_t, size_t, direction, bool> go_up(std::tuple<size_t, size_t, direction> actual, const size_t w, const size_t h, const std::map<std::pair<size_t, size_t>, char>& map)
     {
         auto [x, y, d] = actual;
         if (y == 0) return { x,y,d,false };
@@ -32,7 +32,7 @@ class day<10, 2023> : public day_base<10,2023>
         return { x,y-1,d,false };
     }
 
-    std::tuple<size_t, size_t, direction, bool> go_down(std::tuple<size_t, size_t, direction> actual, const size_t w, const size_t h, const const std::map<std::pair<size_t, size_t>, char>& map)
+    std::tuple<size_t, size_t, direction, bool> go_down(std::tuple<size_t, size_t, direction> actual, const size_t w, const size_t h, const std::map<std::pair<size_t, size_t>, char>& map)
     {
         auto [x, y, d] = actual;
         if (y == (h-1)) return { x,y,d,false };
@@ -43,7 +43,7 @@ class day<10, 2023> : public day_base<10,2023>
         return { x,y+1,d,false };
     }
 
-    std::tuple<size_t, size_t, direction, bool> go_right(std::tuple<size_t, size_t, direction> actual, const size_t w, const size_t h, const const std::map<std::pair<size_t, size_t>, char>& map)
+    std::tuple<size_t, size_t, direction, bool> go_right(std::tuple<size_t, size_t, direction> actual, const size_t w, const size_t h, const std::map<std::pair<size_t, size_t>, char>& map)
     {
         auto [x, y, d] = actual;
         if (x == (w-1)) return { x,y,d,false };
@@ -54,7 +54,7 @@ class day<10, 2023> : public day_base<10,2023>
         return { x+1,y,d,false };
     }
 
-    std::tuple<size_t, size_t, direction, bool> go_left(std::tuple<size_t, size_t, direction> actual, const size_t w, const size_t h, const const std::map<std::pair<size_t, size_t>, char>& map)
+    std::tuple<size_t, size_t, direction, bool> go_left(std::tuple<size_t, size_t, direction> actual, const size_t w, const size_t h, const std::map<std::pair<size_t, size_t>, char>& map)
     {
         auto [x, y, d] = actual;
         if (x == 0) return { x,y,d,false };

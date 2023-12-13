@@ -6,7 +6,7 @@ class day<3, 2023> : public day_base<3,2023>
 {
     void run_internal() override
     {
-        auto data = transform_input_into_array<char>(input_reader(), [](char c) { return c; });
+        auto data = helper::transform_input_into_array<char>(input_reader(), [](char c) { return c; });
 
         std::map<std::pair<size_t, size_t>, std::vector<size_t>> gears;
 
