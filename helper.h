@@ -16,6 +16,7 @@
 #include <queue>
 
 
+
 template <typename T>
 T pop(std::queue<T>& q)
 {
@@ -58,14 +59,6 @@ struct point_3d_generic
 };
 
 template <typename T>
-struct point_2d_generic
-{
-    T x;
-    T y;
-};
-
-
-template <typename T>
 bool operator < (const point_3d_generic<T>& p1, const point_3d_generic<T>& p2)
 {
     if (p1.x != p2.x)
@@ -77,6 +70,23 @@ bool operator < (const point_3d_generic<T>& p1, const point_3d_generic<T>& p2)
         return p1.y < p2.y;
     }
     return p1.z < p2.z;
+}
+
+template <typename T>
+struct point_2d_generic
+{
+    T x;
+    T y;
+};
+
+template <typename T>
+bool operator < (const point_2d_generic<T>& p1, const point_2d_generic<T>& p2)
+{
+    if (p1.x != p2.x)
+    {
+        return p1.x < p2.x;
+    }
+    return p1.y < p2.y;
 }
 
 struct file_reader
@@ -364,6 +374,50 @@ private:
     size_t vertex_count;
     std::vector<std::vector<std::pair<int64_t, int64_t> >> adjacents;
 };
+
+template<typename T>
+struct direction_2D_generic
+{
+    struct diference
+    {
+        T dx;
+        T dy;
+    };
+
+    enum name
+    {
+        north = 0,
+        northeast = 1,
+        east = 2,
+        southeast = 3,
+        south = 4,
+        southwest = 5,
+        west = 6,
+        northwest = 7
+    };
+
+    static diference get_diference(const name n) { return data[n]; }
+
+    static std::vector<diference> generate_diferences(const std::vector<name>& names)
+    {
+        std::vector<diference> ret;
+        for (auto d : names) ret.push_back(get_diference(d));
+        return ret;
+    }
+
+    static void do_for_differences(const std::vector<name>& names, std::function<void(const diference dif)> action)
+    {
+        for (auto d : generate_diferences(names))
+        {
+            action(d);
+        }
+    }
+
+private:
+    inline static const std::vector<diference> data = { { 0, -1 }, { 1, -1 }, { 1, 0 }, { 1, 1 }, { 0, 1 }, { -1, 1 }, { -1, 0 } ,{ -1, 1 } };
+};
+
+typedef direction_2D_generic<long> direction_2D;
 
 struct helper
 {

@@ -69,3 +69,4 @@
 #include "Day12_2023.h"
 #include "Day13_2023.h"
 #include "Day14_2023.h"
+#include "Day15_2023.h"
