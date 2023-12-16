@@ -145,12 +145,21 @@ private:
 template<size_t D, size_t Y>
 struct day_base
 {
-    day_base() : reader(PATH_TO_DATA(Y, D)), test_reader(PATH_TO_TEST_DATA(Y, D)), is_s1_set(false), is_s2_set(false), is_test(false)
+    day_base() : reader(nullptr), is_s1_set(false), is_s2_set(false)
     {
     }
 
     void run()
     {
+        if (is_test())
+        {
+            reader = make_unique<file_reader>(PATH_TO_TEST_DATA(Y, D));
+        }
+        else
+        {
+            reader = make_unique<file_reader>(PATH_TO_DATA(Y, D));
+        }
+
         log_header();
         run_internal();
         log_star1();
@@ -161,11 +170,12 @@ struct day_base
 protected:
     
     virtual void run_internal() = 0;
-    
+
+    inline virtual bool is_test() const { return false; }
+
     file_reader& input_reader()
     {
-        if (is_test) return test_reader;
-        return reader;
+        return *reader;
     }
 
     template<typename T>
@@ -192,28 +202,18 @@ protected:
         s2_value = v;
     }
 
-    void set_is_test(bool it)
-    {
-        is_test = it;
-    }
-
 private:
 
     void log_header()
     {
         std::cout << "AOC "<< Y << " - Day " << D << std::endl;
-        if (reader.is_opened()) std::cout << "File: '" << reader.get_file_name() << "' found!" << std::endl;
-        else std::cout << "File: '" << reader.get_file_name() << "' NOT found!" << std::endl;
-        if (test_reader.is_opened()) std::cout << "File: '" << test_reader.get_file_name() << "' found!" << std::endl;
-        else std::cout << "File: '" << test_reader.get_file_name() << "' NOT found!" << std::endl;
+        if (is_test()) std::cout << "Test input used!" << std::endl;
+        if (reader->is_opened()) std::cout << "File: '" << reader->get_file_name() << "' found!" << std::endl;
+        else std::cout << "File: '" << reader->get_file_name() << "' NOT found!" << std::endl;
     }
 
     void log_footer()
     {
-        if (is_test)
-        {
-            std::cout << "Test input used!" << std::endl;
-        }
         std::cout << "-------------------" << std::endl;
     }
 
@@ -231,13 +231,11 @@ private:
         else std::cout << "not implemented yet" << std::endl;
     }
 
-    file_reader reader;
-    file_reader test_reader;
+    std::unique_ptr<file_reader> reader;
     std::string s1_value;
     bool is_s1_set;
     std::string s2_value;
     bool is_s2_set;
-    bool is_test;
 };
 
 

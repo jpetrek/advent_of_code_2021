@@ -4,9 +4,13 @@
 template<>
 class day<17, 2023> : public day_base<17, 2023>
 {
+    bool is_test() const override
+    {
+        return true;
+    }
+    
     void run_internal() override
     {
-        //set_is_test(true);
         while (!input_reader().is_end_of_file())
         {
             auto line = input_reader().get_line();

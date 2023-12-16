@@ -55,7 +55,6 @@ class day<14, 2023> : public day_base<14, 2023>
 
     void run_internal() override
     {
-        //set_is_test(true);
         map_points movable_rocks;
         map_points empty_space;
         map_points solid_rocks;

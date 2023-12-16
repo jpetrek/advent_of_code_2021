@@ -14,7 +14,6 @@ class day<15, 2023> : public day_base<15, 2023>
     {
         const std::function<size_t(const std::string&)> hash = [](const std::string& s) { return helper::accumulate_generic<size_t>(s, 0, [](const auto r, const auto& c) { return ((r + c) * 17) % 256; }); };
         std::vector<box> boxes(256, box());
-        //set_is_test(true);
 
         auto commands = helper::split(input_reader().read_file(), ',');
 

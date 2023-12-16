@@ -6,8 +6,6 @@ class day<9, 2023> : public day_base<9,2023>
 {
     void run_internal() override
     {
-        set_is_test(true);
-
         size_t sum_s1 = 0;
         size_t sum_s2 = 0;
         while (!input_reader().is_end_of_file())

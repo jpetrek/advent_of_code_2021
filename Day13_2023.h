@@ -26,7 +26,6 @@ class day<13, 2023> : public day_base<13,2023>
 
     void run_internal() override
     {
-        //set_is_test(true);
         std::vector<std::vector<std::vector<char>>> patterns;
         while (!input_reader().is_end_of_file())
         {

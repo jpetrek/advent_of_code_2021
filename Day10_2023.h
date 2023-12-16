@@ -18,7 +18,7 @@ class day<10, 2023> : public day_base<10,2023>
         if (d == direction::right) return go_right(actual, w, h, map);
         if (d == direction::left) return go_left (actual, w, h, map);
         if (d == direction::up) return go_up(actual, w, h, map);
-        if (d == direction::down) return go_down(actual, w, h, map);
+        return go_down(actual, w, h, map);
     }
 
     std::tuple<size_t, size_t, direction, bool> go_up(std::tuple<size_t, size_t, direction> actual, const size_t w, const size_t h, const std::map<std::pair<size_t, size_t>, char>& map)
@@ -142,7 +142,6 @@ class day<10, 2023> : public day_base<10,2023>
 
     void run_internal() override
     {
-        //set_is_test(true);
         std::vector<direction> dirs = { direction::right, direction::left,direction::up,direction::down };
         std::pair<size_t, size_t> start = { 0,0 };
         std::map<std::pair<size_t, size_t>, char> map;

@@ -9,7 +9,6 @@ class day<11, 2023> : public day_base<11,2023>
         const size_t star1_expansion_coefficient = 2;
         const size_t star2_expansion_coefficient = 1000000;
 
-        //set_is_test(true);
         std::set<std::pair<size_t, size_t>> galaxies;
         std::size_t w = 0;
         std::size_t h = 0;

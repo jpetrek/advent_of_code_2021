@@ -33,7 +33,6 @@ class day<12, 2023> : public day_base<12,2023>
         size_t s2 = 0;
         while (!input_reader().is_end_of_file())
         {
-            //set_is_test(true);
             auto line = helper::split(input_reader().get_line(), ' ');
             auto line20 = line[0] + "?" + line[0] + "?" + line[0] + "?" + line[0] + "?" + line[0];
             auto line21 = line[1] + "," + line[1] + "," + line[1] + "," + line[1] + "," + line[1];

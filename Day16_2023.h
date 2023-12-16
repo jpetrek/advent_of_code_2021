@@ -83,7 +83,6 @@ class day<16, 2023> : public day_base<16, 2023>
 
     void run_internal() override
     {
-        //set_is_test(true);
         auto map = helper::transfor_input_into_char_array(input_reader());
         set_star1_result(calculate_energy(map, { {-1,0}, direction_2d::e}));
 
