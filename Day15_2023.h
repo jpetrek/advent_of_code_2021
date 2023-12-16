@@ -4,18 +4,6 @@
 template<>
 class day<15, 2023> : public day_base<15, 2023>
 {
-    size_t calculate_hash(const std::string& s)
-    {
-        size_t ret = 0;
-        for (auto c : s)
-        {
-            ret += c;
-            ret *= 17;
-            ret %= 256;
-        }
-        return ret;
-    }
-    
     struct box
     {
         std::map < std::string, size_t > name_position;
@@ -24,23 +12,20 @@ class day<15, 2023> : public day_base<15, 2023>
     
     void run_internal() override
     {
+        const std::function<size_t(const std::string&)> hash = [](const std::string& s) { return helper::accumulate_generic<size_t>(s, 0, [](const auto r, const auto& c) { return ((r + c) * 17) % 256; }); };
         std::vector<box> boxes(256, box());
-        std::string bs;
         //set_is_test(true);
-        while (!input_reader().is_end_of_file())
-        {
-            bs += input_reader().get_line();
-        }
-        auto subs = helper::split(bs, ',');
+
+        auto commands = helper::split(input_reader().read_file(), ',');
+
         size_t s1 = 0;
-        for (const auto& s : subs)
+        for (const auto& command : commands)
         {
-            s1 += calculate_hash(s);
-            
-            if (contains(s, '='))
+            s1 += hash(command);
+            if (contains(command, '='))
             {
-                auto parts = helper::split(s, '=');
-                auto index = calculate_hash(parts[0]);
+                auto parts = helper::split(command, '=');
+                auto index = hash(parts[0]);
                 size_t value = stoull(parts[1]);
                 if (boxes[index].name_position.contains(parts[0])) boxes[index].values[boxes[index].name_position[parts[0]]] = value;
                 else
@@ -51,12 +36,12 @@ class day<15, 2023> : public day_base<15, 2023>
             }
             else
             {
-                auto parts = helper::split(s, '-');
-                auto index = calculate_hash(parts[0]);
+                auto parts = helper::split(command, '-');
+                auto index = hash(parts[0]);
                 if (boxes[index].name_position.contains(parts[0]))
                 {
                     size_t i = boxes[index].name_position[parts[0]];
-                    for (auto& m : boxes[index].name_position) if (m.second > i) m.second--;
+                    for (auto& m : boxes[index].name_position) m.second += (m.second > i) ? -1 : 0;
                     boxes[index].values.erase(std::begin(boxes[index].values) + boxes[index].name_position[parts[0]]);
                     boxes[index].name_position.erase(parts[0]);
                 }
@@ -64,6 +49,7 @@ class day<15, 2023> : public day_base<15, 2023>
         }
 
         set_star1_result(s1);
+        
         size_t s2 = 0;
         for (size_t i =0; i< boxes.size(); i++)
         {

@@ -99,6 +99,16 @@ struct file_reader
         stream.close();
     }
 
+    std::string read_file()
+    {
+        std::string r;
+        while (!is_end_of_file())
+        {
+            r += get_line();
+        }
+        return r;
+    }
+
     std::string get_line()
     {
         std::string line;
@@ -816,6 +826,17 @@ struct helper
         for (size_t i = 0; i < data.size(); i++)
         {
             ret += acc(i,data.at(i));
+        }
+        return ret;
+    }
+
+    template <typename R, typename T>
+    static R accumulate_generic(const T& data, R init, std::function < R(const R, const typename T::value_type&)> acc)
+    {
+        R ret = init;
+        for (size_t i = 0; i < data.size(); i++)
+        {
+            ret = acc(ret, data.at(i));
         }
         return ret;
     }
