@@ -75,6 +75,7 @@ bool operator < (const point_3d_generic<T>& p1, const point_3d_generic<T>& p2)
 template <typename T>
 struct point_2d_generic
 {
+    typedef T basic_type;
     T x;
     T y;
 };
@@ -396,14 +397,34 @@ struct direction_2D_generic
 
     enum name
     {
+        n = 0,
         north = 0,
+        up = 0,
+        ne = 1,
         northeast = 1,
+        upright = 1,
+        rightup = 1,
+        e = 2,
         east = 2,
+        right = 2,
+        se = 3,
         southeast = 3,
+        rightdown = 3,
+        downright = 3,
+        s = 4,
         south = 4,
+        down = 4,
+        sw = 5,
         southwest = 5,
+        leftdown = 5,
+        downleft = 5,
+        w = 6,
         west = 6,
-        northwest = 7
+        left = 6,
+        nw = 7,
+        northwest = 7,
+        upleft = 7,
+        leftup = 7
     };
 
     static diference get_diference(const name n) { return data[n]; }
@@ -427,7 +448,7 @@ private:
     inline static const std::vector<diference> data = { { 0, -1 }, { 1, -1 }, { 1, 0 }, { 1, 1 }, { 0, 1 }, { -1, 1 }, { -1, 0 } ,{ -1, 1 } };
 };
 
-typedef direction_2D_generic<long> direction_2D;
+typedef direction_2D_generic<long> direction_2d;
 
 struct helper
 {
@@ -463,6 +484,11 @@ struct helper
             data.push_back(lv);
         }
         return data;
+    }
+
+    static std::vector<std::vector<char>> transfor_input_into_char_array(file_reader& input_reader) 
+    {
+        return helper::transform_input_into_array<char>(input_reader, [](const char c) {return c; });
     }
     
     template<typename T>

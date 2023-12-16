@@ -7,7 +7,7 @@ typedef std::set<point_2d_generic<size_t>> map_points;
 template<>
 class day<14, 2023> : public day_base<14, 2023>
 {
-    std::pair< map_points, map_points > do_tilt(const map_points& solid_rocks, map_points empty_space, map_points movable_rocks, const direction_2D::diference direction, const size_t width, const size_t height)
+    std::pair< map_points, map_points > do_tilt(const map_points& solid_rocks, map_points empty_space, map_points movable_rocks, const direction_2d::diference direction, const size_t width, const size_t height)
     {
         bool move = true;
         while (move)
@@ -76,7 +76,7 @@ class day<14, 2023> : public day_base<14, 2023>
         }
         h = y;
         
-        auto [es, mr]= do_tilt(solid_rocks, empty_space, movable_rocks, direction_2D::get_diference(direction_2D::name::north), w, h);
+        auto [es, mr]= do_tilt(solid_rocks, empty_space, movable_rocks, direction_2d::get_diference(direction_2d::name::north), w, h);
         set_star1_result(calculate_load(mr, w, h));
 
         std::map<map_points, size_t> cache;
@@ -87,7 +87,7 @@ class day<14, 2023> : public day_base<14, 2023>
         while (!cycle_identified)
         {
             cycle++;
-            for (const auto direction : direction_2D::generate_diferences({ direction_2D::name::north, direction_2D::name::west, direction_2D::name::south, direction_2D::name::east }))
+            for (const auto direction : direction_2d::generate_diferences({ direction_2d::name::north, direction_2d::name::west, direction_2d::name::south, direction_2d::name::east }))
             {
                 auto [es, mr] = do_tilt(solid_rocks, empty_space, movable_rocks, direction, w, h);
                 empty_space = es;

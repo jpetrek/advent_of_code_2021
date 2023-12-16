@@ -4,100 +4,101 @@
 template<>
 class day<16, 2023> : public day_base<16, 2023>
 {
+    typedef point_2d_generic<long long> point_2d;
+    
     struct beam
     {
-        point_2d_generic<long long> position;
-        direction_2D ::name dir;
+        point_2d position;
+        direction_2d ::name dir;
     };
 
-    size_t calculate_energy(const std::vector<std::vector<char>>& map, beam init_beam)
+    size_t calculate_energy(const std::vector<std::vector<char>>& map, const beam init_beam)
     {
-        std::vector<std::vector<size_t>> energy(map.size(), std::vector<size_t>(map[0].size(), 0));
-        std::map<std::pair<long long, long long>, direction_2D::name> direction_cache;
-        
+        std::map<point_2d, direction_2d::name> visited;
+
         std::vector<beam> active_beams;
         active_beams.push_back(init_beam);
-        direction_cache[{init_beam.position.x, init_beam.position.y}] = init_beam.dir;
-        
+
         while (active_beams.size() > 0)
         {
             std::vector<beam> new_active_beams;
             for (auto ab : active_beams)
             {
-                if ((ab.position.x + direction_2D::get_diference(ab.dir).dx >= 0) && (ab.position.x + direction_2D::get_diference(ab.dir).dx < static_cast<long long>(map[0].size())) &&
-                    (ab.position.y + direction_2D::get_diference(ab.dir).dy >= 0) && (ab.position.y + direction_2D::get_diference(ab.dir).dy < static_cast<long long>(map.size())))
+                auto dx = direction_2d::get_diference(ab.dir).dx;
+                auto dy = direction_2d::get_diference(ab.dir).dy;
+                
+                if ((ab.position.x + dx >= 0) && (ab.position.x + dx < static_cast<point_2d::basic_type>(map[0].size())) &&
+                    (ab.position.y + dy >= 0) && (ab.position.y + dy < static_cast<point_2d::basic_type>(map.size())))
                 {
-                    ab.position.x += direction_2D::get_diference(ab.dir).dx;
-                    ab.position.y += direction_2D::get_diference(ab.dir).dy;
+                    ab.position.x += dx;
+                    ab.position.y += dy;
 
-                    if (!direction_cache.contains({ ab.position.x, ab.position.y }) || direction_cache.at({ ab.position.x, ab.position.y }) != ab.dir)
-                    {
-                        direction_cache[{ ab.position.x, ab.position.y }] = ab.dir;
-                        energy[ab.position.y][ab.position.x]++;
+                    if (!visited.contains(ab.position) || visited.at(ab.position) != ab.dir)
+                        {
+                        visited[ab.position] = ab.dir;
 
                         if ((map[ab.position.y][ab.position.x] == '.')||
-                            (map[ab.position.y][ab.position.x] == '-' && ((ab.dir == direction_2D::east) || (ab.dir == direction_2D::west)))||
-                            (map[ab.position.y][ab.position.x] == '|' && ((ab.dir == direction_2D::north) || (ab.dir == direction_2D::south))))
+                            (map[ab.position.y][ab.position.x] == '-' && ((ab.dir == direction_2d::e) || (ab.dir == direction_2d::w)))||
+                            (map[ab.position.y][ab.position.x] == '|' && ((ab.dir == direction_2d::n) || (ab.dir == direction_2d::s))))
                         {
                             new_active_beams.push_back(ab);
                         }
 
                         if (map[ab.position.y][ab.position.x] == '/')
                         {
-                            if (ab.dir == direction_2D::east) ab.dir = direction_2D::north;
-                            else if (ab.dir == direction_2D::west) ab.dir = direction_2D::south;
-                            else if (ab.dir == direction_2D::north) ab.dir = direction_2D::east;
-                            else if (ab.dir == direction_2D::south) ab.dir = direction_2D::west;
+                            if (ab.dir == direction_2d::e) ab.dir = direction_2d::n;
+                            else if (ab.dir == direction_2d::w) ab.dir = direction_2d::s;
+                            else if (ab.dir == direction_2d::n) ab.dir = direction_2d::e;
+                            else if (ab.dir == direction_2d::s) ab.dir = direction_2d::w;
                             new_active_beams.push_back(ab);
                         }
 
                         if (map[ab.position.y][ab.position.x] == '\\')
                         {
-                            if (ab.dir == direction_2D::east) ab.dir = direction_2D::south;
-                            else if (ab.dir == direction_2D::west) ab.dir = direction_2D::north;
-                            else if (ab.dir == direction_2D::north) ab.dir = direction_2D::west;
-                            else if (ab.dir == direction_2D::south) ab.dir = direction_2D::east;
+                            if (ab.dir == direction_2d::e) ab.dir = direction_2d::south;
+                            else if (ab.dir == direction_2d::w) ab.dir = direction_2d::n;
+                            else if (ab.dir == direction_2d::n) ab.dir = direction_2d::w;
+                            else if (ab.dir == direction_2d::s) ab.dir = direction_2d::e;
                             new_active_beams.push_back(ab);
                         }
 
                         if (map[ab.position.y][ab.position.x] == '-')
                         {
-                            new_active_beams.push_back({ ab.position, direction_2D::east });
-                            new_active_beams.push_back({ ab.position, direction_2D::west });
+                            new_active_beams.push_back({ ab.position, direction_2d::e });
+                            new_active_beams.push_back({ ab.position, direction_2d::w });
                         }
 
                         if (map[ab.position.y][ab.position.x] == '|')
                         {
-                            new_active_beams.push_back({ ab.position, direction_2D::north });
-                            new_active_beams.push_back({ ab.position, direction_2D::south });
+                            new_active_beams.push_back({ ab.position, direction_2d::n });
+                            new_active_beams.push_back({ ab.position, direction_2d::s });
                         }
                     }
                 }
             }
             active_beams = new_active_beams;
         }
-
-        return helper::accumulate_generic<size_t>(energy, 0, [](size_t r, const auto& row) {return r + helper::accumulate_generic<size_t>(row, 0, [](size_t r, const auto& n) {return  n > 0 ? r + 1 : r; }); });
+        return visited.size();
     }
 
     void run_internal() override
     {
         //set_is_test(true);
-        std::vector<std::vector<char>> map = helper::transform_input_into_array<char>(input_reader(), [](const char c) {return c; });
-        set_star1_result(calculate_energy(map, { {-1,0}, direction_2D::east }));
+        auto map = helper::transfor_input_into_char_array(input_reader());
+        set_star1_result(calculate_energy(map, { {-1,0}, direction_2d::e}));
 
         min_max_counter<size_t> s2;
         for (long long y = 0; y < static_cast<long long>(map.size()); y++)
         {
-            s2.check_value(calculate_energy(map, { {-1,y}, direction_2D::east }));
-            s2.check_value(calculate_energy(map, { {static_cast<long long>(map[0].size()),y}, direction_2D::west}));
+            s2.check_value(calculate_energy(map, { {-1,y}, direction_2d::e }));
+            s2.check_value(calculate_energy(map, { {static_cast<point_2d::basic_type>(map[0].size()),y}, direction_2d::w}));
         }
 
         for (long long x = 0; x < static_cast<long long>(map[0].size()); x++)
         {
-            s2.check_value(calculate_energy(map, { {x,-1}, direction_2D::south }));
-            s2.check_value(calculate_energy(map, { {x, static_cast<long long>(map.size())}, direction_2D::west }));
+            s2.check_value(calculate_energy(map, { {x,-1}, direction_2d::s}));
+            s2.check_value(calculate_energy(map, { {x, static_cast<point_2d::basic_type>(map.size())}, direction_2d::n}));
         }
-        set_star2_result(s2.value_maximum);
+        set_star2_result(s2.maximum());
     }
 };
