@@ -142,7 +142,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -173,6 +173,7 @@
     <ClInclude Include="Day17_2022.h" />
     <ClInclude Include="Day17_2023.h" />
     <ClInclude Include="Day18_2022.h" />
+    <ClInclude Include="Day18_2023.h" />
     <ClInclude Include="Day19_2022.h" />
     <ClInclude Include="Day1_2021.h" />
     <ClInclude Include="Day10_2021.h" />

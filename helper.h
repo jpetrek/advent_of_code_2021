@@ -90,6 +90,13 @@ bool operator < (const point_2d_generic<T>& p1, const point_2d_generic<T>& p2)
     return p1.y < p2.y;
 }
 
+template <typename T>
+bool operator ==(const point_2d_generic<T>& p1, const point_2d_generic<T>& p2)
+{
+    return ((p1.x == p2.x) && (p1.y==p2.y));
+}
+
+
 struct file_reader
 {
     file_reader(const std::string& _file_name) : file_name(_file_name), stream(_file_name)
@@ -464,6 +471,55 @@ struct helper
             ret.push_back(line);
         }
         return ret;
+    }
+
+    template<typename T>
+    static std::vector<std::vector<T>> reverse_rows(const std::vector<std::vector<T>>& input)
+    {
+        std::vector<std::vector<T>> ret;
+        for (size_t y = 0; y < input.size(); y++)
+        {
+            ret.push_back(input[input.size() - y -1]);
+        }
+        return ret;
+    }
+
+    template<typename T>
+    static std::vector<std::vector<T>> reverse_columns(const std::vector<std::vector<T>>& input)
+    {
+        std::vector<std::vector<T>> ret;
+        for (size_t y = 0; y < input.size(); y++)
+        {
+            std::vector<T> line = input[y];
+            std::reverse(line.begin(), line.end());
+            ret.push_back(line);
+        }
+        return ret;
+    }
+
+    template<typename T>
+    static std::vector<std::vector<T>> rotate_left(const std::vector<std::vector<T>>& input)
+    {
+        return helper::reverse_rows(helper::transpose(input));
+    }
+
+    template<typename T>
+    static std::vector<std::vector<T>> rotate_right(const std::vector<std::vector<T>>& input)
+    {
+        return helper::reverse_columns(helper::transpose(input));
+    }
+
+    template<typename T>
+    static void print(const std::vector<std::vector<T>>& input)
+    {
+        for (size_t y = 0; y < input.size(); y++)
+        {
+            for (size_t x = 0; x < input[0].size(); x++)
+            {
+                std::cout << input[y][x];
+            }
+            std::cout << std::endl;
+        }
     }
 
     template<typename T>
