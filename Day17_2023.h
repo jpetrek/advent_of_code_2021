@@ -7,20 +7,20 @@ class day<17, 2023> : public day_base<17, 2023>
     typedef point_2d_generic<size_t> point_2d;
     typedef std::tuple<point_2d, direction_2d::name, size_t> state_key;
     typedef std::tuple<state_key, size_t> state;
-    typedef std::priority_queue < state, std::vector<state>, decltype([](const state& s1, const state& s2) { return get<1>(s1) > get<1>(s2); }) > state_queue;
+    typedef std::priority_queue < state, std::vector<state>, decltype([](const state& s1, const state& s2) { return get<1>(s1) > get<1>(s2); }) > state_queue_prioritized_by_lower_heat_loss;
 
     bool is_test() const override
     {
         return false;
     }
 
-    size_t calculate_s1(const std::vector<std::vector<size_t>>& map, state_queue queue, const point_2d end_point)
+    size_t calculate_s1(const std::vector<std::vector<size_t>>& map, state_queue_prioritized_by_lower_heat_loss queue, const point_2d end_point)
     {
         std::map <state_key, size_t> cache;
         while (!queue.empty())
         {
-            auto [key, heat_loss] = queue.top(); queue.pop();
-            auto [pos, dir, dir_count] = key;
+            auto  [key, heat_loss] = queue.top(); queue.pop();
+            auto& [pos, dir, dir_count] = key;
 
             heat_loss += map[pos.y][pos.x];
 
@@ -61,13 +61,13 @@ class day<17, 2023> : public day_base<17, 2023>
         return 0;
     }
 
-    size_t calculate_s2(const std::vector<std::vector<size_t>>& map, state_queue queue, const point_2d end_point)
+    size_t calculate_s2(const std::vector<std::vector<size_t>>& map, state_queue_prioritized_by_lower_heat_loss queue, const point_2d end_point)
     {
         std::map <state_key, size_t> cache;
         while (!queue.empty())
         {
-            auto [key, heat_loss] = queue.top(); queue.pop();
-            auto [pos, dir, dir_count] = key;
+            auto  [key, heat_loss] = queue.top(); queue.pop();
+            auto& [pos, dir, dir_count] = key;
 
             heat_loss += map[pos.y][pos.x];
 
@@ -115,7 +115,7 @@ class day<17, 2023> : public day_base<17, 2023>
 
         point_2d end_point = { m[0].size() - 1, m.size() - 1 };
 
-        state_queue queue;
+        state_queue_prioritized_by_lower_heat_loss queue;
         queue.push({ {{ 1,0 }, direction_2d::e, 1},0 });
         queue.push({ {{ 0,1 }, direction_2d::s, 1},0 });
 

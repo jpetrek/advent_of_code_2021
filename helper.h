@@ -14,6 +14,7 @@
 #include <set>
 #include <stack>
 #include <queue>
+#include <ranges>
 
 
 
@@ -48,7 +49,6 @@ bool contains(const std::vector<V>& m, V value)
 {
     return std::find(std::begin(m), std::end(m), [value](const V& v1) {return v1 == value; }) != std::end(m);
 }
-
 
 template <typename T>
 struct point_3d_generic

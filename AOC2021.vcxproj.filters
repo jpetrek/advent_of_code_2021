@@ -201,6 +201,9 @@
     <ClInclude Include="Day18_2023.h">
       <Filter>2023</Filter>
     </ClInclude>
+    <ClInclude Include="Day19_2023.h">
+      <Filter>2023</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="2021">
