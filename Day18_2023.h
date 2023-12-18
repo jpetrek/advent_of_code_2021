@@ -15,9 +15,71 @@ class day<18, 2023> : public day_base<18, 2023>
 
     const std::map<char, direction_2d::name> mapping = { {'U', direction_2d::up }, {'D', direction_2d::down }, {'R', direction_2d::right }, {'L', direction_2d::left } };
 
-    bool is_test() const override
+    std::pair<std::vector<record>, std::vector<record>> parse_input()
     {
-        return false;
+        std::vector<record> records_s1;
+        std::vector<record> records_s2;
+
+        while (!input_reader().is_end_of_file())
+        {
+            auto l = helper::split(input_reader().get_line(), ' ');
+
+            record r1;
+            r1.dir = mapping.at(l[0][0]);
+            r1.steps = std::stoull(l[1]);
+            records_s1.push_back(r1);
+
+            record r2;
+            auto n = std::stoul(l[2].substr(7, 1));
+            if (n == 0) r2.dir = direction_2d::right;
+            else if (n == 1) r2.dir = direction_2d::down;
+            else if (n == 2) r2.dir = direction_2d::left;
+            else if (n == 3) r2.dir = direction_2d::up;
+            r2.steps = std::stoul(l[2].substr(2, 5), nullptr, 16);
+            records_s2.push_back(r2);
+        }
+        return { records_s1, records_s2 };
+    }
+
+    std::pair< std::vector<std::pair<int64_t, int64_t>>, size_t> transform_to_polygon(const std::vector<record>& records)
+    {
+        size_t length = 0;
+        std::vector < std::pair<int64_t, int64_t>> result = { { 0,0 } };
+        for (const auto r : records)
+        {
+            length += r.steps;
+            if (r.dir == direction_2d::right)
+            {
+                result.push_back({ result[result.size() - 1].first + r.steps, result[result.size() - 1].second });
+            }
+            else if (r.dir == direction_2d::left)
+            {
+                result.push_back({ result[result.size() - 1].first - r.steps, result[result.size() - 1].second });
+            }
+            else if (r.dir == direction_2d::up)
+            {
+                result.push_back({ result[result.size() - 1].first, result[result.size() - 1].second - r.steps });
+            }
+            else if (r.dir == direction_2d::down)
+            {
+                result.push_back({ result[result.size() - 1].first, result[result.size() - 1].second + r.steps });
+            }
+        }
+        return{ result , length };
+    }
+
+    size_t calculate_polygon_space(const std::pair<std::vector<std::pair<int64_t, int64_t>>, size_t>& data)
+    {
+        auto& [points, trench_length] = data;
+        int64_t s = 0;
+        for (size_t i = 0; i < points.size(); i++)
+        {
+            auto i_minus_1 = i == 0 ? points.size() - 1 : i - 1;
+            auto i_plus_1 = (i + 1) % points.size();
+            s += points[i].first * (points[i_plus_1].second - points[i_minus_1].second);
+        }
+
+        return 1 + (abs(s) + trench_length) / 2;
     }
 
     std::pair< horizontal_lines_t, vertical_lines_t> transform(const std::vector<record>& records)
@@ -54,32 +116,6 @@ class day<18, 2023> : public day_base<18, 2023>
         return{ horizontal_lines , vertical_lines };
     }
 
-    std::pair<std::pair<horizontal_lines_t, vertical_lines_t>, std::pair<horizontal_lines_t, vertical_lines_t>> parse_input()
-    {
-        std::vector<record> records_s1;
-        std::vector<record> records_s2;
-
-        while (!input_reader().is_end_of_file())
-        {
-            auto l = helper::split(input_reader().get_line(), ' ');
-            
-            record r1;
-            r1.dir = mapping.at(l[0][0]);
-            r1.steps = std::stoull(l[1]);
-            records_s1.push_back(r1);
-
-            record r2;
-            auto n = std::stoul(l[2].substr(7, 1));
-            if (n == 0) r2.dir = direction_2d::right;
-            else if (n == 1) r2.dir = direction_2d::down;
-            else if (n == 2) r2.dir = direction_2d::left;
-            else if (n == 3) r2.dir = direction_2d::up;
-            r2.steps = std::stoul(l[2].substr(2, 5), nullptr, 16);
-            records_s2.push_back(r2);
-        }
-        return { transform(records_s1), transform(records_s2) };
-    }
-    
     size_t calculate_space(const std::pair<horizontal_lines_t, vertical_lines_t>& space)
     {
         auto [horizontal_lines, vertical_lines] = space;
@@ -105,7 +141,7 @@ class day<18, 2023> : public day_base<18, 2023>
             for (size_t i = 0; i < vertical_lines_interacting_with_top.size() - 1; i += 2)
             {
                 total_space += (vertical_lines_interacting_with_top[i + 1].first.second - vertical_lines_interacting_with_top[i].first.second + 1) * (bottom_y - top_y);
-                
+
                 vertical_lines_interacting_with_top[i].first.first = bottom_y;
                 vertical_lines_interacting_with_top[i + 1].first.first = bottom_y;
 
@@ -113,7 +149,7 @@ class day<18, 2023> : public day_base<18, 2023>
                 {
                     bool start_found = vertical_lines_interacting_with_top[i].first.second == l.first;
                     bool end_found = vertical_lines_interacting_with_top[i + 1].first.second == l.second;
-                    
+
                     if (start_found && end_found) total_space += l.second - l.first + 1;
                     else if ((!start_found && end_found) || (start_found && !end_found)) total_space += l.second - l.first;
                     else if (!start_found && !end_found && (vertical_lines_interacting_with_top[i].first.second < l.first) && (vertical_lines_interacting_with_top[i + 1].first.second > l.second))
@@ -122,7 +158,7 @@ class day<18, 2023> : public day_base<18, 2023>
                     }
                 }
             }
-            
+
             for (size_t i = 0; i < vertical_lines_interacting_with_top.size(); i++)
             {
                 if (vertical_lines_interacting_with_top[i].first.first < vertical_lines_interacting_with_top[i].second) vertical_lines[vertical_lines_interacting_with_top[i].first] = vertical_lines_interacting_with_top[i].second;
@@ -131,11 +167,23 @@ class day<18, 2023> : public day_base<18, 2023>
         return total_space;
     }
 
+    bool is_test() const override
+    {
+        return false;
+    }
+
     void run_internal() override
     {
         auto [lines_s1, lines_s2] = parse_input();
-        set_star1_result(calculate_space(lines_s1));
-        set_star2_result(calculate_space(lines_s2));
+
+        auto s1_math = calculate_polygon_space(transform_to_polygon(lines_s1));
+        auto s2_math = calculate_polygon_space(transform_to_polygon(lines_s2));
+
+        auto s1_rectangles = calculate_space(transform(lines_s1));
+        auto s2_rectangles = calculate_space(transform(lines_s2));
+
+        if (s1_math == s1_rectangles) set_star1_result(s1_rectangles);
+        if (s2_math == s2_rectangles) set_star2_result(s2_rectangles);
     }
 };
 
