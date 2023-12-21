@@ -12,11 +12,6 @@ class day<21, 2023> : public day_base<21, 2023>
         gplot = 2
     };
 
-    bool is_test() const override
-    {
-        return false;
-    }
-
     double extrapolate_quadratic(size_t a0, size_t a1, size_t a2, double n)
     {
         double b0 = static_cast<double>(a0);
@@ -61,6 +56,11 @@ class day<21, 2023> : public day_base<21, 2023>
             }
         }
         return reach;
+    }
+
+    bool is_test() const override
+    {
+        return false;
     }
 
     void run_internal() override
