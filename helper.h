@@ -615,6 +615,18 @@ struct helper
         return ret;
     }
 
+    static std::string trim(const std::string& s, const size_t tl, const size_t tr )
+    {
+        return s.substr(tl, s.size() - tl - tr);
+    }
+
+    static std::pair<std::string, std::string> split_to_two(const std::string& s, const char c)
+    {
+        auto i = s.find(c);
+        if (i == std::string::npos) throw;
+        return { s.substr(0, i) , s.substr(i) };
+    }
+
     template <typename T>
     static std::pair<T, T> get_min_max(T v1, T v2)
     {
@@ -689,7 +701,8 @@ struct helper
         }
     }
     
-    static void do_for_adjacent(size_t width, size_t height, size_t x, size_t y, const std::vector<std::pair<int, int>> diffs, std::function<void(size_t, size_t)> action)
+    template<typename T = size_t>
+    static void do_for_adjacent(T width, T height, T x, T y, const std::vector<std::pair<int, int>> diffs, std::function<void(T, T)> action)
     {
         for (const auto& diff : diffs)
         {
@@ -748,7 +761,20 @@ struct helper
         }
         return false;
     }
-    
+
+    static std::vector<std::pair<std::string, std::string>> double_split(const std::string& s, char delim1, char delim2)
+    {
+        std::vector<std::pair<std::string, std::string>> result;
+        auto s1 = split(s, delim1);
+        for (const auto& a : s1)
+        {
+            auto r = split(a, delim2);
+            if (r.size()==1) result.push_back({ r[0], "" });
+            if (r.size()==2) result.push_back({ r[0], r[1] });
+        }
+        return result;
+    }
+
     static std::vector<std::string> split(const std::string& s, char delim) 
     {
         std::vector<std::string> result;

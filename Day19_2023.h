@@ -174,14 +174,11 @@ class day<19, 2023> : public day_base<19, 2023>
         std::vector<single_values> data;
         while (!input_reader().is_end_of_file())
         {
-            auto l = helper::split(input_reader().get_line(), ',');
+            auto vars = helper::double_split(helper::trim(input_reader().get_line(),1,1), ',', '=');
             single_values val;
-            size_t i = 0;
-            for (auto v : l)
+            for (const auto v : vars)
             {
-                auto n = helper::split(v, '=');
-                val.set(static_cast<variable::name>(i), std::stoll(n[1]));
-                i++;
+                val.set(variable::get_name(v.first[0]), std::stoll(v.second));
             }
             data.push_back(val);
         }
@@ -193,39 +190,40 @@ class day<19, 2023> : public day_base<19, 2023>
         std::map<std::string, node> nodes;
         while (!input_reader().is_end_of_file())
         {
-            auto l = helper::split(input_reader().get_line(), '{');
+            auto l = input_reader().get_line();
             if (l.empty()) break;
 
-            node n;
-            auto conds = helper::split(l[1], ',');
-            for (auto c : conds)
+            auto def = helper::split_to_two(l, '{');
+
+            node new_node;
+            auto conditions = helper::double_split(helper::trim(def.second, 1, 1), ',', ':');
+            for (auto c : conditions)
             {
-                auto p = helper::split(c, ':');
-                if (p.size() > 1)
+                if (!c.second.empty())
                 {
                     condition cond;
-                    cond.target = p[1];
-                    if (contains(p[0], '<'))
+                    cond.target = c.second;
+                    if (contains(c.first, '<'))
                     {
-                        auto pp = helper::split(p[0], '<');
+                        auto pp = helper::split(c.first, '<');
                         cond.lower = true;
                         cond.value = std::stoll(pp[1]);
-                        n.conditions.push_back({ variable::get_name(pp[0][0]), cond });
+                        new_node.conditions.push_back({ variable::get_name(pp[0][0]), cond });
                     }
-                    if (contains(p[0], '>'))
+                    if (contains(c.first, '>'))
                     {
-                        auto pp = helper::split(p[0], '>');
+                        auto pp = helper::split(c.first, '>');
                         cond.lower = false;
                         cond.value = std::stoll(pp[1]);
-                        n.conditions.push_back({ variable::get_name(pp[0][0]), cond });
+                        new_node.conditions.push_back({ variable::get_name(pp[0][0]), cond });
                     }
                 }
                 else
                 {
-                    n.else_target = p[0].substr(0, p[0].size() - 1);
+                    new_node.else_target = c.first;
                 }
             }
-            nodes[l[0]] = n;
+            nodes[def.first] = new_node;
         }
         return nodes;
     }

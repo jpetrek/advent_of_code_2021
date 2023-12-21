@@ -13,7 +13,7 @@ class day<12, 2022> : public day_base<12,2022>
 
         path_cache[current] = current_length;
 
-        helper::do_for_adjacent(map[0].size(), map.size(), current.first, current.second, { {1, 0}, {0,1}, {-1, 0}, {0, -1} }, [&](auto x, auto y)
+        helper::do_for_adjacent<size_t>(map[0].size(), map.size(), current.first, current.second, { {1, 0}, {0,1}, {-1, 0}, {0, -1} }, [&](auto x, auto y)
             {
                 if (((map[y][x]) == (map[current.second][current.first] - 1)) || ((map[y][x] >= map[current.second][current.first])))
                 {
