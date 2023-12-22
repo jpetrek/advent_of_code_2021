@@ -91,7 +91,10 @@ class day<21, 2023> : public day_base<21, 2023>
         }
 
         set_star1_result(get_number(64, field, w, h, start));
-        set_star2_result(static_cast<size_t>(extrapolate_quadratic(get_number(65, field, w, h, start), get_number(65+131, field, w, h, start), get_number(65 + 131 + 131, field, w, h, start), 202300)));
+
+        const size_t required_number_of_steps = 26501365;
+        const size_t div = required_number_of_steps / w;
+        const size_t rest = required_number_of_steps - div * w;
+        set_star2_result(static_cast<size_t>(extrapolate_quadratic(get_number(rest, field, w, h, start), get_number(rest+w, field, w, h, start), get_number(rest + w + w, field, w, h, start), static_cast<double>(div))));
     }
 };
-
