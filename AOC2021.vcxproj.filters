@@ -219,6 +219,12 @@
     <ClInclude Include="Day24_2023.h">
       <Filter>2023</Filter>
     </ClInclude>
+    <ClInclude Include="Day1_2024.h">
+      <Filter>2024</Filter>
+    </ClInclude>
+    <ClInclude Include="Day2_2024.h">
+      <Filter>2024</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="2021">
@@ -229,6 +235,9 @@
     </Filter>
     <Filter Include="2023">
       <UniqueIdentifier>{8a79af2a-6445-481b-b92b-af3c18972a08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2024">
+      <UniqueIdentifier>{ad3049de-2ce3-45ce-b832-298b5fcddfb0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
