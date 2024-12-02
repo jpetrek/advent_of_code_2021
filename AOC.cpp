@@ -9,6 +9,6 @@
 
 int main()
 {
-    helper::run<2024,1, 1 >(); 
+    helper::run<2024,3, 3 >(); 
     return 0;
 }

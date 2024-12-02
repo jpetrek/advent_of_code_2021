@@ -18,6 +18,13 @@
 #include <bit>
 
 
+template <typename T>
+T sign(const T val)
+{
+    if (val > 0) return 1;
+    if (val < 0) return -1;
+    return 0;
+}
 
 template <typename T>
 T pop(std::queue<T>& q)
