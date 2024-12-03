@@ -19,6 +19,23 @@
 
 
 template <typename T>
+struct closest_cmp
+{
+    bool operator()(const T& x, const T& y) { return x > y; }
+};
+
+template <typename T>
+T closest(const std::vector<T>& vec, T value)
+{
+    typename std::vector<T>::const_reverse_iterator cri = std::lower_bound(vec.rbegin(), vec.rend(), value, closest_cmp<T>());
+    if (cri != vec.rend()) 
+    {
+        return *cri;
+    }
+    return -1;
+}
+
+template <typename T>
 T sign(const T val)
 {
     if (val > 0) return 1;
