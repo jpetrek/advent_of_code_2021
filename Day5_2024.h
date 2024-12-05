@@ -4,20 +4,19 @@
 template<>
 class day<5, 2024> : public day_base<5,2024>
 {
-    typedef std::set<std::pair<long, long>> set_rules;
+    typedef std::set<std::pair<long, long>> rules;
 
     inline bool is_test() const override { return false; }
     void run_internal() override
     {
-        set_rules rules;
+        rules rules_for_comparison;
         long sum_1 = 0;
         long sum_2 = 0;
 
         std::string line;
         while ((line = input_reader().get_line()) != "")
         {
-            auto numbers = helper::split_convert_vector<long>(line, '|', [](const auto& in) { return stol(in); });
-            rules.insert({ numbers[0] , numbers[1] });
+            rules_for_comparison.insert(helper::vector_to_pair<long>(helper::split_convert_vector<long>(line, '|', [](const auto& in) { return stol(in); })));
         }
 
         while (!input_reader().is_end_of_file())
@@ -26,7 +25,7 @@ class day<5, 2024> : public day_base<5,2024>
             auto backup = numbers;
             std::sort(std::begin(numbers), std::end(numbers), [&](const auto a, const auto b)
                 {
-                    return rules.contains({ a,b });
+                    return rules_for_comparison.contains({ a,b });
                 });
 
             if (numbers == backup)
