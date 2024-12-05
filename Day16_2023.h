@@ -24,8 +24,8 @@ class day<16, 2023> : public day_base<16, 2023>
             std::vector<beam> new_active_beams;
             for (auto ab : active_beams)
             {
-                auto dx = direction_2d::get_diference(ab.dir).dx;
-                auto dy = direction_2d::get_diference(ab.dir).dy;
+                auto dx = direction_2d::name_to_diff(ab.dir).dx;
+                auto dy = direction_2d::name_to_diff(ab.dir).dy;
                 
                 if ((ab.position.x + dx >= 0) && (ab.position.x + dx < static_cast<point_2d::basic_type>(map[0].size())) &&
                     (ab.position.y + dy >= 0) && (ab.position.y + dy < static_cast<point_2d::basic_type>(map.size())))

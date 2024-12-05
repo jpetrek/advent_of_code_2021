@@ -75,7 +75,7 @@ class day<14, 2023> : public day_base<14, 2023>
         }
         h = y;
         
-        auto [es, mr]= do_tilt(solid_rocks, empty_space, movable_rocks, direction_2d::get_diference(direction_2d::name::north), w, h);
+        auto [es, mr]= do_tilt(solid_rocks, empty_space, movable_rocks, direction_2d::name_to_diff(direction_2d::name::north), w, h);
         set_star1_result(calculate_load(mr, w, h));
 
         std::map<map_points, size_t> cache;

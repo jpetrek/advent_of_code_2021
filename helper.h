@@ -457,16 +457,19 @@ struct direction_2D_generic
         leftup = 7
     };
 
-    static diference get_diference(const name n) { return data[n]; }
+    inline static const std::vector<name> four_directions = { name::n, name::s, name::e, name::w};
+    inline static const std::vector<name> eight_directions = { name::n, name::s, name::e, name::w, name::ne, name::nw, name::se, name::sw};
+
+    static diference name_to_diff(const name n) { return data[n]; }
 
     static std::vector<diference> generate_diferences(const std::vector<name>& names)
     {
         std::vector<diference> ret;
-        for (auto d : names) ret.push_back(get_diference(d));
+        for (auto d : names) ret.push_back(name_to_diff(d));
         return ret;
     }
 
-    static void do_for_differences(const std::vector<name>& names, std::function<void(const diference dif)> action)
+    static void do_for_directions(const std::vector<name>& names, std::function<void(const diference dif)> action)
     {
         for (auto d : generate_diferences(names))
         {
@@ -475,7 +478,7 @@ struct direction_2D_generic
     }
 
 private:
-    inline static const std::vector<diference> data = { { 0, -1 }, { 1, -1 }, { 1, 0 }, { 1, 1 }, { 0, 1 }, { -1, 1 }, { -1, 0 } ,{ -1, 1 } };
+    inline static const std::vector<diference> data = { { 0, -1 }, { 1, -1 }, { 1, 0 }, { 1, 1 }, { 0, 1 }, { -1, 1 }, { -1, 0 } ,{ -1, -1 } };
 };
 
 typedef direction_2D_generic<long> direction_2d;
@@ -508,6 +511,7 @@ struct helper
         }
         return ret;
     }
+
 
     template<typename T>
     static std::vector<std::vector<T>> reverse_columns(const std::vector<std::vector<T>>& input)
@@ -683,9 +687,17 @@ struct helper
         return dist[dest];
     }
 
+    template <typename TM>
+    static void modify_map(TM& map, TM::key_type key, TM::mapped_type init_value, std::function<void(typename TM::mapped_type&)> action)
+    {
+        if (map.find(key) == std::end(map))  map[key] = init_value;
+        action(map.at(key));
+    }
+
+
     /*
     template <typename TK, typename TV>
-    static void modify_value_in_map_safe(std::map<TK, TV>& map, TK key, TV init_value, std::function<void(TV&)> action)
+    static void modify_map(std::map<TK, TV>& map, TK key, TV init_value, std::function<void(TV&)> action)
     {
         if (map.find(key) == std::end(map))  map[key] = init_value;
         action(map.at(key));
