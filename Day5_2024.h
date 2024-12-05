@@ -4,12 +4,12 @@
 template<>
 class day<5, 2024> : public day_base<5,2024>
 {
-    typedef std::map<long, std::set<long>> map_rules;
+    typedef std::set<std::pair<long, long>> set_rules;
 
     inline bool is_test() const override { return false; }
     void run_internal() override
     {
-        map_rules rules;
+        set_rules rules;
         long sum_1 = 0;
         long sum_2 = 0;
 
@@ -17,7 +17,7 @@ class day<5, 2024> : public day_base<5,2024>
         while ((line = input_reader().get_line()) != "")
         {
             auto numbers = helper::split_convert_vector<long>(line, '|', [](const auto& in) { return stol(in); });
-            helper::modify_map<map_rules>(rules, numbers[0], {}, [&](auto& s) {s.insert(numbers[1]); });
+            rules.insert({ numbers[0] , numbers[1] });
         }
 
         while (!input_reader().is_end_of_file())
@@ -26,7 +26,7 @@ class day<5, 2024> : public day_base<5,2024>
             auto backup = numbers;
             std::sort(std::begin(numbers), std::end(numbers), [&](const auto a, const auto b)
                 {
-                    return (rules.find(a) != std::end(rules)) && (rules[a].find(b) != std::end(rules[a]));
+                    return rules.contains({ a,b });
                 });
 
             if (numbers == backup)
