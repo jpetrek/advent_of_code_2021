@@ -14,7 +14,7 @@ class day<6, 2024> : public day_base<6,2024>
     
     inline bool is_test() const override { return false; }
 
-    size_t calculate_visited(const std::vector<std::string>& space, point_2d_generic<long> position, const char wall_id)
+    std::set<point_2d_generic<long>> calculate_visited(const std::vector<std::string>& space, point_2d_generic<long> position, const char wall_id)
     {
         direction_2d::name direction = direction_2d::up;
         std::set<point_2d_generic<long>> visited;
@@ -34,7 +34,7 @@ class day<6, 2024> : public day_base<6,2024>
                 direction = rotation.at(direction);
             }
         }
-        return visited.size();
+        return visited;
     }
 
     bool is_loop(const std::vector<std::string>& space, point_2d_generic<long> position, const point_2d_generic<long> additional_obstacle, const char wall_id)
@@ -63,16 +63,13 @@ class day<6, 2024> : public day_base<6,2024>
         return false;
     }
 
-    size_t find_all_positions(const std::vector<std::string>& space, point_2d_generic<long> start_position, const char wall_id)
+    size_t find_all_positions(const std::vector<std::string>& space, point_2d_generic<long> start_position, const std::set<point_2d_generic<long>>& additionals, const char wall_id)
     {
         size_t sum = 0;
-        foreach_in_2D_array<long>(space, [&](const auto& position, const auto value)
+        for (const auto p : additionals)
         {
-            if (value == '.')
-            {
-                if (is_loop(space, start_position, position, '#')) sum++;
-            }
-        });
+            if (is_loop(space, start_position, p, '#')) sum++;
+        }
         return sum;
     }
 
@@ -87,8 +84,10 @@ class day<6, 2024> : public day_base<6,2024>
                 space.push_back(line);
             });
  
-        set_star1_result(calculate_visited(space,start_position, '#'));
-        set_star2_result(find_all_positions(space, start_position, '#'));
+        auto visited = calculate_visited(space, start_position, '#');
+        set_star1_result(visited.size());
 
+        visited.erase(start_position);
+        set_star2_result(find_all_positions(space, start_position, visited, '#'));
     }
 };
