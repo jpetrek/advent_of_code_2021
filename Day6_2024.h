@@ -4,14 +4,91 @@
 template<>
 class day<6, 2024> : public day_base<6,2024>
 {
+    const std::map<direction_2d::name, direction_2d::name> rotation =
+    {
+        { direction_2d::up, direction_2d::right },
+        { direction_2d::right, direction_2d::down },
+        { direction_2d::down, direction_2d::left },
+        { direction_2d::left, direction_2d::up }
+    };
+    
     inline bool is_test() const override { return false; }
+
+    size_t calculate_visited(const std::vector<std::string>& space, point_2d_generic<long> position, const char wall_id)
+    {
+        direction_2d::name direction = direction_2d::up;
+        std::set<point_2d_generic<long>> visited;
+
+        bool finish = false;
+        while (!finish)
+        {
+            visited.insert(position);
+            position = add(position, direction);
+            if (is_outside_2D_array(space, position))
+            {
+                finish = true;
+            }
+            else if (get_value(space, position) == wall_id)
+            {
+                position = sub(position, direction);
+                direction = rotation.at(direction);
+            }
+        }
+        return visited.size();
+    }
+
+    bool is_loop(const std::vector<std::string>& space, point_2d_generic<long> position, const point_2d_generic<long> additional_obstacle, const char wall_id)
+    {
+        direction_2d::name dir = direction_2d::up;
+        std::set<std::pair<point_2d_generic<long>, direction_2d::name> > visited;
+        
+        bool finish = false;
+        while (!finish)
+        {
+            if (visited.contains({ position,dir })) return true;
+            
+            visited.insert({ position,dir });
+            position = add(position, dir);
+
+            if (is_outside_2D_array(space, position))
+            {
+                finish = true;
+            }
+            else if ((get_value(space, position) == wall_id) || (position == additional_obstacle))
+            {
+                position = sub(position, dir);
+                dir = rotation.at(dir);
+            }
+        }
+        return false;
+    }
+
+    size_t find_all_positions(const std::vector<std::string>& space, point_2d_generic<long> start_position, const char wall_id)
+    {
+        size_t sum = 0;
+        foreach_in_2D_array<long>(space, [&](const auto& position, const auto value)
+        {
+            if (value == '.')
+            {
+                if (is_loop(space, start_position, position, '#')) sum++;
+            }
+        });
+        return sum;
+    }
+
     void run_internal() override
     {
-        while (!input_reader().is_end_of_file())
-        {
-            auto numbers = helper::split_convert_vector<long>(input_reader().get_line(), ' ', [](const auto& in) { return stol(in); });
-        }
-        //set_star1_result(sum);
-        //set_star2_result(sum);
+        std::vector<std::string> space;
+        point_2d_generic<long> start_position;
+
+        input_reader().read_by_line_until_condition_or_eof<file_reader::read_conditions::empty_line>([&](const auto& line)
+            {
+                if (line.find('^') != std::string::npos) start_position = { static_cast<long>(line.find('^')), static_cast<long>(space.size()) };
+                space.push_back(line);
+            });
+ 
+        set_star1_result(calculate_visited(space,start_position, '#'));
+        set_star2_result(find_all_positions(space, start_position, '#'));
+
     }
 };

@@ -17,7 +17,6 @@
 #include <ranges>
 #include <bit>
 
-
 template <typename T>
 struct closest_cmp
 {
@@ -121,6 +120,31 @@ bool operator ==(const point_2d_generic<T>& p1, const point_2d_generic<T>& p2)
     return ((p1.x == p2.x) && (p1.y==p2.y));
 }
 
+template <typename TP, typename TA>
+bool is_outside_2D_array(const TA& a, const point_2d_generic<TP>& pos)
+{   
+    return (pos.x < 0) || (pos.x == a[0].size()) || (pos.y < 0) || (pos.y == a.size());
+}
+
+template <typename TP, typename TA>
+typename TA::value_type::value_type get_value(const TA& a, const point_2d_generic<TP>& pos)
+{
+    return a.at(pos.y).at(pos.x);
+}
+
+template <typename TP, typename TA>
+void foreach_in_2D_array(const TA& a, std::function<void(const point_2d_generic<TP>&, typename TA::value_type::value_type)> action)
+{
+    for (size_t y = 0; y < a.size(); y++)
+    {
+        for (size_t x = 0; x < a[0].size(); x++)
+        {
+            action({ static_cast<TP>(x),static_cast<TP>(y) }, a.at(y).at(x));
+        }
+    }
+}
+
+
 
 struct file_reader
 {
@@ -130,6 +154,32 @@ struct file_reader
     ~file_reader()
     {
         stream.close();
+    }
+    struct read_conditions
+    {
+        struct nocondition{};
+        struct empty_line{};
+    };
+
+    template<typename T = read_conditions::nocondition>
+    void read_by_line_until_condition_or_eof(std::function<void(const std::string&)> action)
+    {
+        while (!is_end_of_file())
+        {
+            std::string line = get_line();
+            action(line);
+        }
+    };
+
+    template<>
+    void read_by_line_until_condition_or_eof<read_conditions::empty_line>(std::function<void(const std::string&)> action)
+    {
+        while (!is_end_of_file())
+        {
+            std::string line = get_line();
+            if (line == "") break;
+            action(line);
+        }
     }
 
     std::string read_file()
@@ -168,7 +218,7 @@ struct file_reader
     {
         return !is_opened() || stream.eof();
     }
-
+    
 private:
     std::string file_name;
     std::ifstream stream;
@@ -469,6 +519,8 @@ struct direction_2D_generic
         return ret;
     }
 
+
+
     static void do_for_directions(const std::vector<name>& names, std::function<void(const diference dif)> action)
     {
         for (auto d : generate_diferences(names))
@@ -482,6 +534,21 @@ private:
 };
 
 typedef direction_2D_generic<long> direction_2d;
+
+
+template <typename T>
+point_2d_generic<T> add(const point_2d_generic<T> orig, const typename direction_2D_generic<T>::name dir)
+{
+    auto d = direction_2D_generic<T>::name_to_diff(dir);
+    return { orig.x + d.dx, orig.y + d.dy };
+}
+
+template <typename T>
+point_2d_generic<T> sub(const point_2d_generic<T> orig, const typename direction_2D_generic<T>::name dir)
+{
+    auto d = direction_2D_generic<T>::name_to_diff(dir);
+    return { orig.x - d.dx, orig.y - d.dy };
+}
 
 struct helper
 {
@@ -693,16 +760,6 @@ struct helper
         if (map.find(key) == std::end(map))  map[key] = init_value;
         action(map.at(key));
     }
-
-
-    /*
-    template <typename TK, typename TV>
-    static void modify_map(std::map<TK, TV>& map, TK key, TV init_value, std::function<void(TV&)> action)
-    {
-        if (map.find(key) == std::end(map))  map[key] = init_value;
-        action(map.at(key));
-    }
-    */
 
     template <typename TK, typename TV>
     static void modify_value_in_map_safe(std::map<TK, TV>& map, TK key, TV init_value, std::function<TV(const TV&)> action)
@@ -1010,7 +1067,4 @@ struct helper
     {
         helper::_run<Y, Mbegin-1>(std::make_index_sequence<MEnd - (Mbegin-1)>());
     }
-
-
-
 };
