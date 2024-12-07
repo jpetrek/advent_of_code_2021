@@ -18,6 +18,32 @@
 #include <bit>
 
 template <typename T>
+T digits10(uint64_t v) 
+{
+    return  1
+        + (T)(v >= 10)
+        + (T)(v >= 100)
+        + (T)(v >= 1000)
+        + (T)(v >= 10000)
+        + (T)(v >= 100000)
+        + (T)(v >= 1000000)
+        + (T)(v >= 10000000)
+        + (T)(v >= 100000000)
+        + (T)(v >= 1000000000)
+        + (T)(v >= 10000000000ull)
+        + (T)(v >= 100000000000ull)
+        + (T)(v >= 1000000000000ull)
+        + (T)(v >= 10000000000000ull)
+        + (T)(v >= 100000000000000ull)
+        + (T)(v >= 1000000000000000ull)
+        + (T)(v >= 10000000000000000ull)
+        + (T)(v >= 100000000000000000ull)
+        + (T)(v >= 1000000000000000000ull)
+        + (T)(v >= 10000000000000000000ull);
+}
+
+
+template <typename T>
 struct closest_cmp
 {
     bool operator()(const T& x, const T& y) { return x > y; }
