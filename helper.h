@@ -188,7 +188,7 @@ struct file_reader
     };
 
     template<typename T = read_conditions::nocondition>
-    void read_by_line_until_condition_or_eof(std::function<void(const std::string&)> action)
+    void read_by_line_until_condition_met_or_eof(std::function<void(const std::string&)> action)
     {
         while (!is_end_of_file())
         {
@@ -198,7 +198,7 @@ struct file_reader
     };
 
     template<>
-    void read_by_line_until_condition_or_eof<read_conditions::empty_line>(std::function<void(const std::string&)> action)
+    void read_by_line_until_condition_met_or_eof<read_conditions::empty_line>(std::function<void(const std::string&)> action)
     {
         while (!is_end_of_file())
         {
@@ -570,11 +570,27 @@ point_2d_generic<T> add(const point_2d_generic<T> orig, const typename direction
 }
 
 template <typename T>
+point_2d_generic<T> add(const point_2d_generic<T> orig, const typename direction_2D_generic<T>::difference d)
+{
+    return { orig.x + d.dx, orig.y + d.dy };
+}
+
+
+template <typename T>
 point_2d_generic<T> sub(const point_2d_generic<T> orig, const typename direction_2D_generic<T>::name dir)
 {
     auto d = direction_2D_generic<T>::name_to_diff(dir);
     return { orig.x - d.dx, orig.y - d.dy };
 }
+
+template <typename T>
+point_2d_generic<T> sub(const point_2d_generic<T> orig, const typename direction_2D_generic<T>::difference d)
+{
+    return { orig.x - d.dx, orig.y - d.dy };
+}
+
+
+
 
 struct helper
 {

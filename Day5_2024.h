@@ -13,12 +13,12 @@ class day<5, 2024> : public day_base<5,2024>
         long sum_1 = 0;
         long sum_2 = 0;
 
-        input_reader().read_by_line_until_condition_or_eof<file_reader::read_conditions::empty_line>([&](const auto& l)
+        input_reader().read_by_line_until_condition_met_or_eof<file_reader::read_conditions::empty_line>([&](const auto& l)
             {
                 rules_for_comparison.insert(helper::vector_to_pair<long>(helper::split_convert_vector<long>(l, '|', [](const auto& in) { return stol(in); })));
             });
 
-        input_reader().read_by_line_until_condition_or_eof<file_reader::read_conditions::empty_line>([&](const auto& l)
+        input_reader().read_by_line_until_condition_met_or_eof<file_reader::read_conditions::empty_line>([&](const auto& l)
             {
                 auto numbers = helper::split_convert_vector<long>(l, ',', [](const auto& in) { return stol(in); });
                 auto backup = numbers;
