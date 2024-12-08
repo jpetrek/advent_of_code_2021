@@ -36,7 +36,7 @@ class day<2, 2024> : public day_base<2,2024>
         size_t count_2 = 0;
         while (!input_reader().is_end_of_file())
         {
-            auto numbers = helper::split_convert_vector<long>(input_reader().get_line(), ' ', [](const auto& in) { return stol(in); });
+            auto numbers = utility::string::split_convert_vector<long>(input_reader().get_line(), ' ', utility::string::stol());
             if (is_valid(numbers)) count_1++;
             if (is_valid_even_with_one_error(numbers)) count_2++;
         }

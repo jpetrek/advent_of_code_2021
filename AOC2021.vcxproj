@@ -237,6 +237,7 @@
     <ClInclude Include="Day9_2021.h" />
     <ClInclude Include="Day9_2022.h" />
     <ClInclude Include="Day9_2023.h" />
+    <ClInclude Include="Day9_2024.h" />
     <ClInclude Include="days.h" />
     <ClInclude Include="helper.h" />
   </ItemGroup>

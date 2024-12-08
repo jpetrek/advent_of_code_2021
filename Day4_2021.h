@@ -1,6 +1,11 @@
 #pragma once
 #include "helper.h"
 
+using namespace utility::arrays;
+using namespace utility::geometry;
+using namespace utility::math;
+using namespace utility::string;
+
 class bingo_card
 {
 public:
@@ -91,7 +96,7 @@ class day<4, 2021> : public day_base<4, 2021>
     {
         std::vector<long> pickedValues;
         std::string firstLine = input_reader().get_line();
-        pickedValues = helper::split_and_convert<long>(firstLine, ',');
+        pickedValues = split_and_convert<long>(firstLine, ',');
         std::vector< bingo_card > cards;
 
         while (!input_reader().is_end_of_file())
@@ -100,7 +105,7 @@ class day<4, 2021> : public day_base<4, 2021>
             bingo_card c(5, 5);
             for (size_t r = 0; r < 5; r++)
             {
-                auto values = helper::split_and_convert<long>(input_reader().get_line() , ' ');
+                auto values = split_and_convert<long>(input_reader().get_line() , ' ');
                 for (size_t i = 0; i < 5; i++)
                 {
                     c.initialize(i, r, values[i]);

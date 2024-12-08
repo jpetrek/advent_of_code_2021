@@ -106,7 +106,7 @@ class day<8, 2022> : public day_base<8,2022>
             std::vector<std::vector<int>> data;
             while (!input_reader().is_end_of_file())
             {
-                data.push_back(helper::convert_string_of_digits_to_vector<int>(input_reader().get_line()));
+                data.push_back(utility::string::convert_string_of_digits_to_vector<int>(input_reader().get_line()));
             }
 
             auto set = calculate(data);

@@ -1,6 +1,8 @@
 #pragma once
 #include "helper.h"
 
+using namespace utility::string;
+
 template<>
 class day<19, 2023> : public day_base<19, 2023>
 {   
@@ -174,7 +176,7 @@ class day<19, 2023> : public day_base<19, 2023>
         std::vector<single_values> data;
         while (!input_reader().is_end_of_file())
         {
-            auto vars = helper::double_split(helper::trim(input_reader().get_line(),1,1), ',', '=');
+            auto vars = double_split(trim(input_reader().get_line(),1,1), ',', '=');
             single_values val;
             for (const auto v : vars)
             {
@@ -193,10 +195,10 @@ class day<19, 2023> : public day_base<19, 2023>
             auto l = input_reader().get_line();
             if (l.empty()) break;
 
-            auto def = helper::split_to_two(l, '{');
+            auto def = split_to_two(l, '{');
 
             node new_node;
-            auto conditions = helper::double_split(helper::trim(def.second, 1, 1), ',', ':');
+            auto conditions = double_split(trim(def.second, 1, 1), ',', ':');
             for (auto c : conditions)
             {
                 if (!c.second.empty())
@@ -205,14 +207,14 @@ class day<19, 2023> : public day_base<19, 2023>
                     cond.target = c.second;
                     if (contains(c.first, '<'))
                     {
-                        auto pp = helper::split(c.first, '<');
+                        auto pp = split(c.first, '<');
                         cond.lower = true;
                         cond.value = std::stoll(pp[1]);
                         new_node.conditions.push_back({ variable::get_name(pp[0][0]), cond });
                     }
                     if (contains(c.first, '>'))
                     {
-                        auto pp = helper::split(c.first, '>');
+                        auto pp = split(c.first, '>');
                         cond.lower = false;
                         cond.value = std::stoll(pp[1]);
                         new_node.conditions.push_back({ variable::get_name(pp[0][0]), cond });

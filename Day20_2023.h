@@ -1,6 +1,10 @@
 #pragma once
 #include "helper.h"
 
+using namespace utility::arrays;
+using namespace utility::geometry;
+using namespace utility::math;
+using namespace utility::string;
 
 struct base
 {
@@ -73,21 +77,21 @@ class day<20, 2023> : public day_base<20, 2023>
         std::vector<conjunction*> conjunctions;
         while (!input_reader().is_end_of_file())
         {
-            auto parts = helper::split(input_reader().get_line(), '-');
+            auto parts = utility::string::split(input_reader().get_line(), '-');
             if (parts[0][0] == '%')
             {
                 auto p = std::make_unique<flip_flop>();
-                p->name = helper::trim(parts[0].substr(1));
+                p->name = utility::string::trim(parts[0].substr(1));
                 machine_parts_ids[p->name] = p.get();
 
                 p->index = system_state.size();
                 system_state.push_back(false);
                 
-                auto outputs = helper::split(helper::trim(parts[1], 1, 0), ',');
+                auto outputs = utility::string::split(utility::string::trim(parts[1], 1, 0), ',');
                 for (const auto o : outputs)
                 {
-                    helper::modify_value_in_map_safe< std::string, std::vector<std::string>>(inputs_helper, helper::trim(o), {}, [&](const auto& i) {auto r = i; r.push_back(p->name); return r; });
-                    helper::modify_value_in_map_safe< std::string, std::vector<std::string>>(outputs_helper, p->name, {}, [&](const auto& i) {auto r = i; r.push_back(helper::trim(o)); return r; });
+                    utility::arrays::modify_value_in_map_safe< std::string, std::vector<std::string>>(inputs_helper, utility::string::trim(o), {}, [&](const auto& i) {auto r = i; r.push_back(p->name); return r; });
+                    utility::arrays::modify_value_in_map_safe< std::string, std::vector<std::string>>(outputs_helper, p->name, {}, [&](const auto& i) {auto r = i; r.push_back(utility::string::trim(o)); return r; });
                 }
                 machine_parts.push_back(std::move(p));
             }
@@ -95,26 +99,26 @@ class day<20, 2023> : public day_base<20, 2023>
             {
                 auto p = std::make_unique<conjunction>();
                 conjunctions.push_back(p.get());
-                p->name = helper::trim(parts[0].substr(1));
+                p->name = trim(parts[0].substr(1));
                 machine_parts_ids[p->name] = p.get();
-                auto outputs = helper::split(helper::trim(parts[1], 1, 0), ',');
+                auto outputs = split(trim(parts[1], 1, 0), ',');
                 for (const auto o : outputs)
                 {
-                    helper::modify_value_in_map_safe< std::string, std::vector<std::string>>(inputs_helper, helper::trim(o), {}, [&](const auto& i) {auto r = i; r.push_back(p->name); return r; });
-                    helper::modify_value_in_map_safe< std::string, std::vector<std::string>>(outputs_helper, p->name, {}, [&](const auto& i) {auto r = i; r.push_back(helper::trim(o)); return r; });
+                    modify_value_in_map_safe< std::string, std::vector<std::string>>(inputs_helper, trim(o), {}, [&](const auto& i) {auto r = i; r.push_back(p->name); return r; });
+                    modify_value_in_map_safe< std::string, std::vector<std::string>>(outputs_helper, p->name, {}, [&](const auto& i) {auto r = i; r.push_back(trim(o)); return r; });
                 }
                 machine_parts.push_back(std::move(p));
             }
             else
             {
                 auto p = std::make_unique<broadcast>();
-                p->name = helper::trim(parts[0]);
+                p->name = trim(parts[0]);
                 machine_parts_ids[p->name] = p.get();
-                auto outputs = helper::split(helper::trim(parts[1], 1, 0), ',');
+                auto outputs = split(trim(parts[1], 1, 0), ',');
                 for (const auto o : outputs)
                 {
-                    helper::modify_value_in_map_safe< std::string, std::vector<std::string>>(inputs_helper, helper::trim(o), {}, [&](const auto& i) {auto r = i; r.push_back(p->name); return r; });
-                    helper::modify_value_in_map_safe< std::string, std::vector<std::string>>(outputs_helper, p->name, {}, [&](const auto& i) {auto r = i; r.push_back(helper::trim(o)); return r; });
+                    modify_value_in_map_safe< std::string, std::vector<std::string>>(inputs_helper, trim(o), {}, [&](const auto& i) {auto r = i; r.push_back(p->name); return r; });
+                    modify_value_in_map_safe< std::string, std::vector<std::string>>(outputs_helper, p->name, {}, [&](const auto& i) {auto r = i; r.push_back(trim(o)); return r; });
                 }
                 machine_parts.push_back(std::move(p));
             }
@@ -187,7 +191,7 @@ class day<20, 2023> : public day_base<20, 2023>
         }
 
         set_star1_result(hi * lo);
-        set_star2_result(helper::lcm(loops));
+        set_star2_result(utility::math::lcm(loops));
     }
 };
 

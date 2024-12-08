@@ -1,6 +1,11 @@
 #pragma once
 #include "helper.h"
 
+using namespace utility::arrays;
+using namespace utility::geometry;
+using namespace utility::math;
+using namespace utility::string;
+
 template<>
 class day<15, 2023> : public day_base<15, 2023>
 {
@@ -12,10 +17,10 @@ class day<15, 2023> : public day_base<15, 2023>
     
     void run_internal() override
     {
-        const std::function<size_t(const std::string&)> hash = [](const std::string& s) { return helper::accumulate_generic<size_t>(s, 0, [](const auto r, const auto& c) { return ((r + c) * 17) % 256; }); };
+        const std::function<size_t(const std::string&)> hash = [](const std::string& s) { return accumulate_generic<size_t>(s, 0, [](const auto r, const auto& c) { return ((r + c) * 17) % 256; }); };
         std::vector<box> boxes(256, box());
 
-        auto commands = helper::split(input_reader().read_file(), ',');
+        auto commands = split(input_reader().read_file(), ',');
 
         size_t s1 = 0;
         for (const auto& command : commands)
@@ -23,7 +28,7 @@ class day<15, 2023> : public day_base<15, 2023>
             s1 += hash(command);
             if (contains(command, '='))
             {
-                auto parts = helper::split(command, '=');
+                auto parts = split(command, '=');
                 auto index = hash(parts[0]);
                 size_t value = stoull(parts[1]);
                 if (boxes[index].name_position.contains(parts[0])) boxes[index].values[boxes[index].name_position[parts[0]]] = value;
@@ -35,7 +40,7 @@ class day<15, 2023> : public day_base<15, 2023>
             }
             else
             {
-                auto parts = helper::split(command, '-');
+                auto parts = split(command, '-');
                 auto index = hash(parts[0]);
                 if (boxes[index].name_position.contains(parts[0]))
                 {

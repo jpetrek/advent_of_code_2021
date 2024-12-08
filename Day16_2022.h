@@ -82,7 +82,7 @@ class day<16, 2022> : public day_base<16, 2022>
         size_t vi = 0;
         while (!input_reader().is_end_of_file())
         {
-            auto parts = helper::split(input_reader().get_line(), ';');
+            auto parts =utility::string::split(input_reader().get_line(), ';');
             valve v;
             auto pos = parts[0].find("Valve ");
             v.id[0] = parts[0][pos + 6];
@@ -90,10 +90,10 @@ class day<16, 2022> : public day_base<16, 2022>
             sscanf_s(parts[0].data() +8, " has flow rate = %ld", &v.rate);
             pos = parts[1].find("valve");
             size_t move = (*(parts[1].data() + pos + 5)) == 's' ? 7 : 6;
-            auto ids = helper::split(parts[1].data() + pos + move, ',');
+            auto ids = utility::string::split(parts[1].data() + pos + move, ',');
             for (const auto& t : ids)
             {
-                v.connections.push_back(helper::trim(t));
+                v.connections.push_back(utility::string::trim(t));
             }
             valves[v.id] = v;
             valves_indexes[v.id] = vi++;

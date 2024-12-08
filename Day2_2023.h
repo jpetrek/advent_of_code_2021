@@ -1,6 +1,10 @@
 #pragma once
 #include "helper.h"
 
+using namespace utility::arrays;
+using namespace utility::geometry;
+using namespace utility::math;
+using namespace utility::string;
 
 struct cube_set
 {
@@ -19,19 +23,19 @@ struct game
 game parse_input_line(const std::string& line)
 {
     game g;
-    auto game_strings = helper::split(line, ':');
+    auto game_strings = split(line, ':');
     
-    auto id_strings = helper::split(game_strings[0], ' ');
+    auto id_strings = split(game_strings[0], ' ');
     g.id = std::stoul(id_strings[1]);
     
-    auto set_strings = helper::split(game_strings[1], ';');
+    auto set_strings = split(game_strings[1], ';');
     for (const auto& set_string : set_strings)
     {
         cube_set set{ 0,0,0 };
-        auto color_strings = helper::split(set_string, ',');
+        auto color_strings = split(set_string, ',');
         for (const auto& color_string : color_strings)
         {
-            auto number_color_string = helper::split(color_string, ' ');
+            auto number_color_string = split(color_string, ' ');
             if (number_color_string[1] == "red")
             {
                 set.red_cubes = std::stoul(number_color_string[0]);

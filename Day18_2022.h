@@ -1,6 +1,11 @@
 #pragma once
 #include "helper.h"
 
+using namespace utility::arrays;
+using namespace utility::geometry;
+using namespace utility::math;
+using namespace utility::string;
+
 typedef point_3d_generic<double> coords;
 
 template<>
@@ -15,7 +20,7 @@ class day<18, 2022> : public day_base<18, 2022>
         {
             for (const auto& o : offsets)
             {
-                helper::modify_value_in_map_safe<coords, size_t>(ret, { c.x + o.x, c.y + o.y, c.z + o.z }, 0, [&](const auto& v) {return v+1; });
+                modify_value_in_map_safe<coords, size_t>(ret, { c.x + o.x, c.y + o.y, c.z + o.z }, 0, [&](const auto& v) {return v+1; });
             }
         }
         return ret;
@@ -36,7 +41,7 @@ class day<18, 2022> : public day_base<18, 2022>
         min_max_counter<double> z_limits;
         while (!input_reader().is_end_of_file())
         {
-            auto [x, y, z] = helper::vector_to_tuple<3, double>(helper::split_and_convert<double>(input_reader().get_line(), ','));
+            auto [x, y, z] = vector_to_tuple<3, double>(split_and_convert<double>(input_reader().get_line(), ','));
             
             cubes.insert({ x,y,z });
             x_limits.check_value(x);

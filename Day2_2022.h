@@ -13,7 +13,7 @@ class day<2, 2022> : public day_base<2,2022>
         size_t s2 = 0;
         while (!input_reader().is_end_of_file())
         {
-            auto n = helper::split_and_convert<size_t>(input_reader().get_line(), ' ', [](const std::string& s) { return s[0] < 'D' ? s[0] - 'A' : s[0] - 'X'; });
+            auto n = utility::string::split_and_convert<size_t>(input_reader().get_line(), ' ', [](const std::string& s) { return s[0] < 'D' ? s[0] - 'A' : s[0] - 'X'; });
             s1 += n[1] + 1 + scores[3 * n[0] + n[1]];
             s2 += moves[3 * n[0] + n[1]] + 3 * n[1];
         }

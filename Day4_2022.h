@@ -10,9 +10,9 @@ class day<4, 2022> : public day_base<4,2022>
         size_t s2 = 0;
         while (!input_reader().is_end_of_file())
         {
-            auto pairs = helper::split(input_reader().get_line(), ',');
-            auto [p1_1, p1_2] = helper::vector_to_tuple<2, size_t>(helper::split_and_convert<size_t>(pairs[0], '-', [](const auto& s) {return std::stoull(s); }));
-            auto [p2_1, p2_2] = helper::vector_to_tuple<2, size_t>(helper::split_and_convert<size_t>(pairs[1], '-', [](const auto& s) {return std::stoull(s); }));
+            auto pairs = utility::string::split(input_reader().get_line(), ',');
+            auto [p1_1, p1_2] = utility::arrays::vector_to_tuple<2, size_t>(utility::string::split_and_convert<size_t>(pairs[0], '-', [](const auto& s) {return std::stoull(s); }));
+            auto [p2_1, p2_2] = utility::arrays::vector_to_tuple<2, size_t>(utility::string::split_and_convert<size_t>(pairs[1], '-', [](const auto& s) {return std::stoull(s); }));
             
             if ((p1_1 >= p2_1) && (p1_2 <= p2_2)) s1++;
             else if ((p2_1 >= p1_1) && (p2_2 <= p1_2)) s1++;

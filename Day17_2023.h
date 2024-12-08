@@ -111,7 +111,7 @@ class day<17, 2023> : public day_base<17, 2023>
 
     void run_internal() override
     {
-        auto m = helper::transform_input_into_array<size_t>(input_reader(), [](const char c) {return c - '0'; });
+        auto m = utility::io::transform_input_into_array<size_t>(input_reader(), [](const char c) {return c - '0'; });
 
         point_2d end_point = { m[0].size() - 1, m.size() - 1 };
 

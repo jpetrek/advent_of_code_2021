@@ -6,7 +6,7 @@ class day<3, 2023> : public day_base<3,2023>
 {
     void run_internal() override
     {
-        auto data = helper::transform_input_into_array<char>(input_reader(), [](char c) { return c; });
+        auto data = utility::io::transform_input_into_array<char>(input_reader(), [](char c) { return c; });
 
         std::map<std::pair<size_t, size_t>, std::vector<size_t>> gears;
 
@@ -23,7 +23,7 @@ class day<3, 2023> : public day_base<3,2023>
                 {
                     number *= 10;
                     number += data[y][x] - '0';
-                    helper::do_for_adjacent(data[0].size(), data.size(), x, y, [&](size_t a, size_t b)
+                    utility::geometry::do_for_adjacent(data[0].size(), data.size(), x, y, [&](size_t a, size_t b)
                         {
                             if ((!isdigit(data[b][a])) && (data[b][a] != '.'))
                             {

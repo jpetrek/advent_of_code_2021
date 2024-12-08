@@ -26,7 +26,7 @@ class day<9, 2022> : public day_base<9,2022>
         std::set<std::pair<int, int>> visited_star2 = { snake_star2[0] };
         while (!input_reader().is_end_of_file())
         {
-            auto in = helper::split(input_reader().get_line(), ' ');
+            auto in = utility::string::split(input_reader().get_line(), ' ');
             for (size_t step = 0; step < std::stoul(in[1]); step++)
             {
                 snake_star1[0].first += directions[in[0]].first;

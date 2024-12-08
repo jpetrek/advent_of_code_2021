@@ -128,8 +128,8 @@ class day<21, 2022> : public day_base<21, 2022>
         tree_item* root = nullptr;
         while (!input_reader().is_end_of_file())
         {
-            auto parts = helper::split(input_reader().get_line(), ':');
-            auto expr = helper::split(parts[1], ' ');
+            auto parts = utility::string::split(input_reader().get_line(), ':');
+            auto expr = utility::string::split(parts[1], ' ');
             data.push_back(std::make_unique<tree_item>());
             if (expr.size() == 1)
             {

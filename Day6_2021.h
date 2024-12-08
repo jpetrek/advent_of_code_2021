@@ -1,12 +1,17 @@
 #pragma once
 #include "helper.h"
 
+using namespace utility::arrays;
+using namespace utility::geometry;
+using namespace utility::math;
+using namespace utility::string;
+
 template<>
 class day<6, 2021> : public day_base<6, 2021>
 {
     void run_internal() override
     {
-        auto ages = helper::split_and_convert<size_t>(input_reader().get_line(), ',');
+        auto ages = split_and_convert<size_t>(input_reader().get_line(), ',');
 
         std::vector<size_t> histogram_of_ages(9, 0);
 

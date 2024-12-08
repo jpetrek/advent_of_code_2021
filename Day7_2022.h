@@ -45,7 +45,7 @@ class day<7, 2022> : public day_base<7,2022>
                 auto line = input_reader().get_line();
                 if (contains(line, '$'))
                 {
-                    auto p = helper::split(line, ' ');
+                    auto p = utility::string::split(line, ' ');
                     if (p[1] == "cd")
                     {
                         if (p[2] == "/")
@@ -64,7 +64,7 @@ class day<7, 2022> : public day_base<7,2022>
                 }
                 else
                 {
-                    auto p = helper::split(line, ' ');
+                    auto p = utility::string::split(line, ' ');
                     if (p[0] == "dir")
                     {
                         current->subs.push_back({ current , p[1],{},{} });

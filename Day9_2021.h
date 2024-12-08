@@ -1,6 +1,11 @@
 #pragma once
 #include "helper.h"
 
+using namespace utility::arrays;
+using namespace utility::geometry;
+using namespace utility::math;
+using namespace utility::string;
+
 template<>
 class day<9, 2021> : public day_base<9, 2021>
 {
@@ -47,10 +52,10 @@ class day<9, 2021> : public day_base<9, 2021>
         {
             for (size_t x = 0; x < heights[y].size(); x++)
             {
-                size_t left = helper::get_value_safe<size_t>(heights, x, y, -1, 0, 9);
-                size_t right = helper::get_value_safe<size_t>(heights, x, y, 1, 0, 9);
-                size_t up = helper::get_value_safe<size_t>(heights, x, y, 0, -1, 9);
-                size_t down = helper::get_value_safe<size_t>(heights, x, y, 0, 1, 9);
+                size_t left = get_value_safe<size_t>(heights, x, y, -1, 0, 9);
+                size_t right = get_value_safe<size_t>(heights, x, y, 1, 0, 9);
+                size_t up = get_value_safe<size_t>(heights, x, y, 0, -1, 9);
+                size_t down = get_value_safe<size_t>(heights, x, y, 0, 1, 9);
 
                 if ((heights[y][x] < left) && (heights[y][x] < right) && (heights[y][x] < up) && (heights[y][x] < down))
                 {

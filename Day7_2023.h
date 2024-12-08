@@ -1,5 +1,11 @@
 #pragma once
 #include "helper.h"
+
+using namespace utility::arrays;
+using namespace utility::geometry;
+using namespace utility::math;
+using namespace utility::string;
+
 template<>
 class day<7, 2023> : public day_base<7,2023>
 {
@@ -22,7 +28,7 @@ class day<7, 2023> : public day_base<7,2023>
             std::map<char, size_t> m;
             for (const auto c : card)
             {
-                helper::modify_value_in_map_safe<char, size_t>(m, c, 0, [](const auto& i) {return i + 1; });
+                modify_value_in_map_safe<char, size_t>(m, c, 0, [](const auto& i) {return i + 1; });
             }
 
             std::vector<size_t> ret(max_occurences + 1, 0);
@@ -57,7 +63,7 @@ class day<7, 2023> : public day_base<7,2023>
                 }
                 else
                 {
-                    helper::modify_value_in_map_safe<char, size_t>(score, c, 0, [](const auto& i) {return i + 1; });
+                    modify_value_in_map_safe<char, size_t>(score, c, 0, [](const auto& i) {return i + 1; });
                 }
             }
 
@@ -133,7 +139,7 @@ class day<7, 2023> : public day_base<7,2023>
 
             while (!input_reader().is_end_of_file())
             {
-                auto l = helper::split(input_reader().get_line(), ' ');
+                auto l = split(input_reader().get_line(), ' ');
                 cards.push_back({ l[0], stoull(l[1]) });
             }
             
@@ -147,7 +153,7 @@ class day<7, 2023> : public day_base<7,2023>
                     }
                     return sa < sb;
                 });
-            set_star1_result(helper::accumulate_if<size_t>(cards, 0, [](auto i, const auto& item) {return item.second * (i + 1); }));
+            set_star1_result(accumulate_if<size_t>(cards, 0, [](auto i, const auto& item) {return item.second * (i + 1); }));
 
             std::sort(cards.begin(), cards.end(), [&](const auto& a, const auto& b)
                 {
@@ -159,6 +165,6 @@ class day<7, 2023> : public day_base<7,2023>
                     }
                     return sa < sb;
                 });
-            set_star2_result(helper::accumulate_if<size_t>(cards, 0, [](auto i, const auto& item) {return item.second * (i + 1); }));
+            set_star2_result(accumulate_if<size_t>(cards, 0, [](auto i, const auto& item) {return item.second * (i + 1); }));
         }
 };

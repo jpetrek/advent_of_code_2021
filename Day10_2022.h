@@ -26,7 +26,7 @@ class day<10, 2022> : public day_base<10,2022>
         std::vector<std::pair<int, int>> code;
         while (!input_reader().is_end_of_file())
         {
-            auto in = helper::split(input_reader().get_line(), ' ');
+            auto in = utility::string::split(input_reader().get_line(), ' ');
             if (in.size() == 1)
             {
                 code.push_back({0,0});

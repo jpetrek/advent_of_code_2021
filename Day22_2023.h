@@ -30,9 +30,9 @@ class day<22, 2023> : public day_base<22, 2023>
 
         while (!input_reader().is_end_of_file())
         {
-            auto l = helper::split(input_reader().get_line(), '~');
-            auto s = helper::split_and_convert<int64_t>(l[0], ',', [](auto s) {return std::stoll(s); });
-            auto e = helper::split_and_convert<int64_t>(l[1], ',', [](auto s) {return std::stoll(s); });
+            auto l = utility::string::split(input_reader().get_line(), '~');
+            auto s = utility::string::split_and_convert<int64_t>(l[0], ',', [](auto s) {return std::stoll(s); });
+            auto e = utility::string::split_and_convert<int64_t>(l[1], ',', [](auto s) {return std::stoll(s); });
             
             auto b = std::make_unique<brick>();
             b->x = { std::min(s[0], e[0]),std::max(s[0], e[0]) };

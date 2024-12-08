@@ -1,12 +1,18 @@
 #pragma once
 #include "helper.h"
 
+using namespace utility::arrays;
+using namespace utility::geometry;
+using namespace utility::math;
+using namespace utility::string;
+
+
 template<>
 class day<7, 2021> : public day_base<7, 2021>
 {
     void run_internal() override
     {
-        auto positions = helper::split_and_convert<size_t>(input_reader().get_line(), ',');
+        auto positions = split_and_convert<size_t>(input_reader().get_line(), ',');
 
         auto maxPos = *std::max_element(std::cbegin(positions), std::cend(positions));
 

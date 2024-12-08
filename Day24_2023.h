@@ -77,9 +77,9 @@ class day<24, 2023> : public day_base<24, 2023>
 
         while (!input_reader().is_end_of_file())
         {
-            auto l = helper::split(input_reader().get_line(), '@');
-            auto ps = helper::split_and_convert<double>(l[0], ',', [](const auto& s) {return std::stold(s); });
-            auto ds = helper::split_and_convert<double>(l[1], ',', [](const auto& s) {return std::stold(s); });
+            auto l = utility::string::split(input_reader().get_line(), '@');
+            auto ps = utility::string::split_and_convert<double>(l[0], ',', [](const auto& s) {return std::stold(s); });
+            auto ds = utility::string::split_and_convert<double>(l[1], ',', [](const auto& s) {return std::stold(s); });
             Hailstone h;
             h.p[0] = ps[0]; h.p[1] = ps[1];  h.p[2] = ps[2];
             h.v[0] = ds[0]; h.v[1] = ds[1];  h.v[2] = ds[2];

@@ -22,7 +22,7 @@ class day<18, 2023> : public day_base<18, 2023>
 
         while (!input_reader().is_end_of_file())
         {
-            auto l = helper::split(input_reader().get_line(), ' ');
+            auto l = utility::string::split(input_reader().get_line(), ' ');
 
             record r1;
             r1.dir = mapping.at(l[0][0]);

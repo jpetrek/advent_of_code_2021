@@ -1,6 +1,11 @@
 #pragma once
 #include "helper.h"
 
+using namespace utility::arrays;
+using namespace utility::geometry;
+using namespace utility::math;
+using namespace utility::string;
+
 template<>
 class day<15, 2021> : public day_base<15, 2021>
 {
@@ -24,7 +29,7 @@ class day<15, 2021> : public day_base<15, 2021>
         std::vector<std::vector<size_t>> maze;
         while (!input_reader().is_end_of_file())
         {
-            maze.push_back(helper::convert_string_of_digits_to_vector<size_t>(input_reader().get_line()));
+            maze.push_back(convert_string_of_digits_to_vector<size_t>(input_reader().get_line()));
         }
 
         std::vector<std::vector<size_t>> maze_huge;
@@ -43,9 +48,9 @@ class day<15, 2021> : public day_base<15, 2021>
         }
 
         auto graph_maze = transform_maze_to_graph(maze);
-        set_star1_result(helper::dijkstra_shortest_path(graph_maze, 0, graph_maze.count() - 1));
+        set_star1_result(utility::math::dijkstra_shortest_path(graph_maze, 0, graph_maze.count() - 1));
 
         auto graph_maze_huge = transform_maze_to_graph(maze_huge);
-        set_star2_result(helper::dijkstra_shortest_path(graph_maze_huge, 0, graph_maze_huge.count() - 1));
+        set_star2_result(utility::math::dijkstra_shortest_path(graph_maze_huge, 0, graph_maze_huge.count() - 1));
     }
 };

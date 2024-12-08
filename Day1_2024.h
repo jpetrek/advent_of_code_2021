@@ -13,7 +13,7 @@ class day<1, 2024> : public day_base<1,2024>
 
         while (!input_reader().is_end_of_file())
         {
-            auto numbers = helper::split_convert_vector<long>(input_reader().get_line(), ' ', [](const auto& in) { return stol(in); });
+            auto numbers = utility::string::split_convert_vector<long>(input_reader().get_line(), ' ', utility::string::stol());
             number_map[numbers[0]] = 0;
             numbers1.push_back(numbers[0]);
             numbers2.push_back(numbers[1]);

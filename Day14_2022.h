@@ -1,6 +1,11 @@
 #pragma once
 #include "helper.h"
 
+using namespace utility::arrays;
+using namespace utility::geometry;
+using namespace utility::math;
+using namespace utility::string;
+
 template<>
 class day<14, 2022> : public day_base<14, 2022>
 {
@@ -42,7 +47,7 @@ class day<14, 2022> : public day_base<14, 2022>
     {
         if (s.first != e.first)
         {
-            auto x_min_max = helper::get_min_max(s.first, e.first);
+            auto x_min_max = utility::math::get_min_max(s.first, e.first);
             for (int x = x_min_max.first; x <= x_min_max.second; x++)
             {
                 space[{ x, s.second}] = part::rock;
@@ -50,7 +55,7 @@ class day<14, 2022> : public day_base<14, 2022>
         }
         else 
         {
-            auto y_min_max = helper::get_min_max(s.second, e.second);
+            auto y_min_max = utility::math::get_min_max(s.second, e.second);
             for (int y = y_min_max.first; y <= y_min_max.second; y++)
             {
                 space[{ s.first, y}] = part::rock;
@@ -133,13 +138,13 @@ class day<14, 2022> : public day_base<14, 2022>
         min_max_counter<int> limits_y;
         while (!input_reader().is_end_of_file())
         {
-            auto part = helper::split(input_reader().get_line(), ' ');
-            auto start = helper::vector_to_pair<int>(helper::split_and_convert<int>(part[0].data(), ','));
+            auto part = split(input_reader().get_line(), ' ');
+            auto start = vector_to_pair<int>(split_and_convert<int>(part[0].data(), ','));
             size_t i = 1;
             while (i < part.size())
             {
                 i++;
-                auto end = helper::vector_to_pair<int>(helper::split_and_convert<int>(part[i].data(), ','));
+                auto end = vector_to_pair<int>(split_and_convert<int>(part[i].data(), ','));
                 limits_y.check_value(start.second);
                 limits_y.check_value(end.second);
                 fill_line_in_space_by_rocks(start, end, space_1);

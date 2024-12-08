@@ -3,6 +3,11 @@
 #include <random>
 #include <cmath>
 
+using namespace utility::arrays;
+using namespace utility::geometry;
+using namespace utility::math;
+using namespace utility::string;
+
 template<>
 class day<24, 2021> : public day_base<24, 2021>
 {
@@ -15,7 +20,7 @@ class day<24, 2021> : public day_base<24, 2021>
 
         while (!input_reader().is_end_of_file())
         {
-            auto s = helper::split(input_reader().get_line(), ' ');
+            auto s = split(input_reader().get_line(), ' ');
             lines.push_back(s);
         }
 

@@ -1,6 +1,11 @@
 #pragma once
 #include "helper.h"
 
+using namespace utility::arrays;
+using namespace utility::geometry;
+using namespace utility::math;
+using namespace utility::string;
+
 template<>
 class day<11, 2022> : public day_base<11,2022>
 {
@@ -57,18 +62,18 @@ class day<11, 2022> : public day_base<11,2022>
         while (!input_reader().is_end_of_file())
         {
             monkey m;
-            m.index = std::stoull(helper::split(input_reader().get_line(), ' ')[1]);
-            m.items = helper::split_and_convert<size_t>(helper::split(input_reader().get_line(), ':')[1], ',');
-            auto oper = helper::split(input_reader().get_line(), ' ');
+            m.index = std::stoull(split(input_reader().get_line(), ' ')[1]);
+            m.items = split_and_convert<size_t>(split(input_reader().get_line(), ':')[1], ',');
+            auto oper = split(input_reader().get_line(), ' ');
             m.op1 = oper[3] == "old" ? operand::old : operand::number;
             m.o = oper[4] == "+" ? operation::plus : operation::mult;
             m.op2 = oper[5] == "old" ? operand::old : operand::number;
             if (m.op1 == operand::number) m.op1_value = std::stol(oper[3]);
             if (m.op2 == operand::number) m.op2_value = std::stol(oper[5]);
-            m.divisible_by = std::stol(helper::split(input_reader().get_line(), ' ')[3]);
+            m.divisible_by = std::stol(split(input_reader().get_line(), ' ')[3]);
             divisors.insert(m.divisible_by);
-            m.where_to_throw_if_true = std::stol(helper::split(input_reader().get_line(), ' ')[5]);
-            m.where_to_throw_if_false = std::stol(helper::split(input_reader().get_line(), ' ')[5]);
+            m.where_to_throw_if_true = std::stol(split(input_reader().get_line(), ' ')[5]);
+            m.where_to_throw_if_false = std::stol(split(input_reader().get_line(), ' ')[5]);
             monkeys.push_back(m);
             input_reader().get_line();
         }

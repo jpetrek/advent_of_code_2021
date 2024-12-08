@@ -1,6 +1,11 @@
 #pragma once
 #include "helper.h"
 
+using namespace utility::arrays;
+using namespace utility::geometry;
+using namespace utility::math;
+using namespace utility::string;
+
 template<>
 class day<8, 2021> : public day_base<8, 2021>
 {
@@ -17,7 +22,7 @@ class day<8, 2021> : public day_base<8, 2021>
     {
         std::map<char, char> ret_map;
         std::string tmp = "";
-        helper::permute("abcdefg", tmp, [&](const std::string& map)->bool
+        permute("abcdefg", tmp, [&](const std::string& map)->bool
             {
                 std::map<char, char> local_mapping = { {map[0],'a'},{map[1],'b'},{map[2],'c'},{map[3],'d'},{map[4],'e'},{map[5],'f'},{map[6],'g'} };
 
@@ -28,7 +33,7 @@ class day<8, 2021> : public day_base<8, 2021>
                         return std::any_of(std::begin(patterns), std::end(patterns),
                             [&](const auto& pattern)->bool
                             {
-                                return helper::strings_are_similar(pattern, mapped_string);
+                                return strings_are_similar(pattern, mapped_string);
                             });
                     }))
                 {
@@ -126,9 +131,9 @@ class day<8, 2021> : public day_base<8, 2021>
 
         while (!input_reader().is_end_of_file())
         {
-            auto twoparts = helper::split(input_reader().get_line(), '|');
-            auto logged_values = helper::split(twoparts[0], ' ');
-            auto input_values = helper::split(twoparts[1], ' ');
+            auto twoparts = split(input_reader().get_line(), '|');
+            auto logged_values = split(twoparts[0], ' ');
+            auto input_values = split(twoparts[1], ' ');
 
 
             auto mapping = find_mapping_logically(logged_values);
@@ -140,7 +145,7 @@ class day<8, 2021> : public day_base<8, 2021>
                 std::string mapped_string = remap_string(in, mapping);
                 for (size_t pi = 0; pi < patterns.size(); pi++)
                 {
-                    if (helper::strings_are_similar(patterns[pi], mapped_string))
+                    if (strings_are_similar(patterns[pi], mapped_string))
                     {
                         value *= 10;
                         value += pi;

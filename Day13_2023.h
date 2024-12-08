@@ -29,14 +29,14 @@ class day<13, 2023> : public day_base<13,2023>
         std::vector<std::vector<std::vector<char>>> patterns;
         while (!input_reader().is_end_of_file())
         {
-            patterns.push_back(helper::transform_input_into_array<char>(input_reader(), [](char c) { return c; }));
+            patterns.push_back(utility::io::transform_input_into_array<char>(input_reader(), [](char c) { return c; }));
         }
 
         size_t  s1 = 0;
         size_t  s2 = 0;
         for (const auto& p : patterns)
         {
-            const auto transposed = helper::transpose(p);
+            const auto transposed = utility::arrays::transpose(p);
             s1 += 100 * find_mirroring_line(p, 1) + find_mirroring_line(transposed, 1);
             s2 += 100 * find_mirroring_line(p, 2) + find_mirroring_line(transposed, 2);
         }

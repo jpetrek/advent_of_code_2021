@@ -6,7 +6,7 @@ class day<6, 2023> : public day_base<6,2023>
 {
         size_t calculate(size_t t, size_t d) const
         {
-            auto roots = helper::solve_quadratic_eq(1, static_cast<double>(t), static_cast<double>(d));
+            auto roots = utility::math::solve_quadratic_eq(1, static_cast<double>(t), static_cast<double>(d));
             return static_cast<size_t> (ceil(roots[1] - 1.0)) - static_cast<size_t> (floor(roots[0] + 1.0)) + 1;
         }
 
@@ -19,8 +19,8 @@ class day<6, 2023> : public day_base<6,2023>
 
         void run_internal() override
         {
-            auto times = helper::split_and_convert<size_t>(helper::split(input_reader().get_line(), ':')[1], ' ', [](const std::string& a) {return stoull(a); });
-            auto distances = helper::split_and_convert<size_t>(helper::split(input_reader().get_line(), ':')[1], ' ', [](const std::string& a) {return stoull(a); });
+            auto times = utility::string::split_and_convert<size_t>(utility::string::split(input_reader().get_line(), ':')[1], ' ', [](const std::string& a) {return stoull(a); });
+            auto distances = utility::string::split_and_convert<size_t>(utility::string::split(input_reader().get_line(), ':')[1], ' ', [](const std::string& a) {return stoull(a); });
             size_t s1 = 1;
             for (size_t i = 0; i < times.size(); i++)
             {

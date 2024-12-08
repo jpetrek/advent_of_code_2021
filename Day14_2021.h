@@ -1,6 +1,12 @@
 #pragma once
 #include "helper.h"
 
+using namespace utility::arrays;
+using namespace utility::geometry;
+using namespace utility::math;
+using namespace utility::string;
+
+
 template<>
 class day<14, 2021> : public day_base<14, 2021>
 {
@@ -9,7 +15,7 @@ class day<14, 2021> : public day_base<14, 2021>
         std::map<char, size_t> amount = { {last, 1} };
         for (auto c : in)
         {
-            helper::modify_value_in_map_safe<char, size_t>(amount, c.first.first, 0, [c](const auto& val) {return val + c.second;});
+            modify_value_in_map_safe<char, size_t>(amount, c.first.first, 0, [c](const auto& val) {return val + c.second;});
         }
 
         min_max_counter<size_t> counter;
@@ -40,7 +46,7 @@ class day<14, 2021> : public day_base<14, 2021>
         std::map<std::pair<char, char>, size_t> mapped_pairs;
         for (size_t i = 0; i < input.size() - 1; i++)
         {
-            helper::modify_value_in_map_safe<std::pair<char,char>, size_t>(mapped_pairs, { input[i], input[i + 1] }, 0, [](const auto& val) { return val+1; });
+            modify_value_in_map_safe<std::pair<char,char>, size_t>(mapped_pairs, { input[i], input[i + 1] }, 0, [](const auto& val) { return val+1; });
         }
 
         for (size_t step = 0; step < 40; step++)
@@ -51,8 +57,8 @@ class day<14, 2021> : public day_base<14, 2021>
                 auto f = inserts.find(m.first);
                 if (f != inserts.end())
                 {
-                    helper::modify_value_in_map_safe<std::pair<char, char>, size_t>(local_mapped_pairs, { m.first.first, f->second }, 0, [m](const auto& val) { return val + m.second; });
-                    helper::modify_value_in_map_safe<std::pair<char, char>, size_t>(local_mapped_pairs, { f->second, m.first.second }, 0, [m](const auto& val) {return val + m.second; });
+                    modify_value_in_map_safe<std::pair<char, char>, size_t>(local_mapped_pairs, { m.first.first, f->second }, 0, [m](const auto& val) { return val + m.second; });
+                    modify_value_in_map_safe<std::pair<char, char>, size_t>(local_mapped_pairs, { f->second, m.first.second }, 0, [m](const auto& val) {return val + m.second; });
                 }
             }
             

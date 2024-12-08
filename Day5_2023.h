@@ -1,6 +1,11 @@
 #pragma once
 #include "helper.h"
 
+using namespace utility::arrays;
+using namespace utility::geometry;
+using namespace utility::math;
+using namespace utility::string;
+
 template<>
 class day<5, 2023> : public day_base<5,2023>
 {
@@ -26,13 +31,13 @@ class day<5, 2023> : public day_base<5,2023>
         std::tuple < std::vector<range>, std::string, std::string> parse_range()
         {
             std::vector<range>result;
-            auto map_line = helper::split(input_reader().get_line(), ' ');
-            auto from_to = helper::split(map_line[0], '-');
+            auto map_line = split(input_reader().get_line(), ' ');
+            auto from_to = split(map_line[0], '-');
             while (true)
             {
                 auto l = input_reader().get_line();
                 if (l.length() == 0) break;
-                auto m = helper::split_convert_vector<size_t>(l, ' ', [](const auto& in) { return stoul(in); });
+                auto m = split_convert_vector<size_t>(l, ' ', [](const auto& in) { return stoul(in); });
                 result.push_back({ m[0], m[1], m[2] });
             }
 
@@ -45,7 +50,7 @@ class day<5, 2023> : public day_base<5,2023>
             std::map<std::string, std::string> mapping_path;
             std::map<std::string, size_t> mapped_ranges;
             
-            auto seeds = helper::split_convert_vector<size_t>(helper::split(input_reader().get_line(), ':')[1], ' ', [](const auto& in) { return stoul(in); });
+            auto seeds = split_convert_vector<size_t>(split(input_reader().get_line(), ':')[1], ' ', [](const auto& in) { return stoul(in); });
             input_reader().get_line();
             while (!input_reader().is_end_of_file())
             {

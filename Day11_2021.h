@@ -1,6 +1,12 @@
 #pragma once
 #include "helper.h"
 
+using namespace utility::arrays;
+using namespace utility::geometry;
+using namespace utility::math;
+using namespace utility::string;
+
+
 template<>
 class day<11, 2021> : public day_base<11, 2021>
 {
@@ -42,7 +48,7 @@ class day<11, 2021> : public day_base<11, 2021>
                         {
                             was_flash = true;
                             already_flashed.insert(index);
-                            helper::do_for_adjacent(field[y].size(), field.size(), x, y, [&](size_t lx, size_t ly)
+                            do_for_adjacent(field[y].size(), field.size(), x, y, [&](size_t lx, size_t ly)
                             {
                                 field[ly][lx]++;
                             });

@@ -1,6 +1,11 @@
 #pragma once
 #include "helper.h"
 
+using namespace utility::arrays;
+using namespace utility::geometry;
+using namespace utility::math;
+using namespace utility::string;
+
 template<>
 class day<8, 2023> : public day_base<8,2023>
 {
@@ -16,17 +21,17 @@ class day<8, 2023> : public day_base<8,2023>
 
             while (!input_reader().is_end_of_file())
             {
-                auto in = helper::extract_from_input_according_to_positions(input_reader().get_line(), { {0,2},{7,9},{12,14} });
+                auto in = extract_from_input_according_to_positions(input_reader().get_line(), { {0,2},{7,9},{12,14} });
                 if (!names_to_ids.contains(in[0])) names_to_ids[in[0]] = id++;
                 if (!names_to_ids.contains(in[1])) names_to_ids[in[1]] = id++;
                 if (!names_to_ids.contains(in[2])) names_to_ids[in[2]] = id++;
                 map[names_to_ids.at(in[0])] = { names_to_ids.at(in[1]), names_to_ids.at(in[2]) };
             }
 
-            auto possible_starts = helper::extract_if<size_t>(names_to_ids, [](const auto& i) { return i.first[2] == 'A'; }, [](const auto& i) {return i.second; });
-            auto possible_ends = helper::extract_if<size_t>(names_to_ids, [](const auto& i) { return i.first[2] == 'Z'; }, [](const auto& i) {return i.second; });
+            auto possible_starts = extract_if<size_t>(names_to_ids, [](const auto& i) { return i.first[2] == 'A'; }, [](const auto& i) {return i.second; });
+            auto possible_ends = extract_if<size_t>(names_to_ids, [](const auto& i) { return i.first[2] == 'Z'; }, [](const auto& i) {return i.second; });
 
-            std::vector<size_t> act = helper::set_to_vector(possible_starts);
+            std::vector<size_t> act = set_to_vector(possible_starts);
             std::vector<size_t> results;
 
             for (auto& a : act)
@@ -51,6 +56,6 @@ class day<8, 2023> : public day_base<8,2023>
             }
 
             set_star1_result(results[0]);
-            set_star2_result(helper::lcm(results));
+            set_star2_result(utility::math::lcm(results));
         }
 }; 

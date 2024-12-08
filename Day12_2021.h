@@ -2,6 +2,12 @@
 #include "helper.h"
 #include <cctype>
 
+using namespace utility::arrays;
+using namespace utility::geometry;
+using namespace utility::math;
+using namespace utility::string;
+
+
 template<>
 class day<12, 2021> : public day_base<12, 2021>
 {
@@ -55,12 +61,12 @@ class day<12, 2021> : public day_base<12, 2021>
 
         while (!input_reader().is_end_of_file())
         {
-            auto conn = helper::split(input_reader().get_line(), '-');
+            auto conn = split(input_reader().get_line(), '-');
             std::vector<size_t> indexes;
 
             for (const auto c : conn)
             {
-                if (helper::is_all_upper(c))
+                if (is_all_upper(c))
                 {
                     if (big_caves_names.find(c) == big_caves_names.end()) big_caves_names[c] = index_cave++;
                     big_caves[big_caves_names[c]] = c;
@@ -74,8 +80,8 @@ class day<12, 2021> : public day_base<12, 2021>
                 }
             }
     
-            helper::insert_to_my_multimap(connections, indexes[0], indexes[1]);
-            helper::insert_to_my_multimap(connections, indexes[1], indexes[0]);
+            insert_to_my_multimap(connections, indexes[0], indexes[1]);
+            insert_to_my_multimap(connections, indexes[1], indexes[0]);
         }
 
         std::vector<size_t> ap = { small_caves_names["start"] };
