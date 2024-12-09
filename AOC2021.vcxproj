@@ -160,6 +160,7 @@
   <ItemGroup>
     <ClInclude Include="Day10_2022.h" />
     <ClInclude Include="Day10_2023.h" />
+    <ClInclude Include="Day10_2024.h" />
     <ClInclude Include="Day11_2022.h" />
     <ClInclude Include="Day11_2023.h" />
     <ClInclude Include="Day12_2022.h" />

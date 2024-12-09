@@ -91,3 +91,4 @@
 #include "Day7_2024.h"
 #include "Day8_2024.h"
 #include "Day9_2024.h"
+#include "Day10_2024.h"
