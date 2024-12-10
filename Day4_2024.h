@@ -5,7 +5,7 @@ template<>
 class day<4, 2024> : public day_base<4,2024>
 {
     typedef std::vector<std::string> string_array;
-    typedef direction_2D_generic<int> d_2D;
+    typedef direction_2d_generic<int> d_2D;
     
     bool find_word(const  string_array& data, const std::string& input, int x, int y, d_2D::diference d) const
     {

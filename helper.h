@@ -68,7 +68,7 @@ namespace utility
         }
 
         template<typename T>
-        struct direction_2D_generic
+        struct direction_2d_generic
         {
             struct diference
             {
@@ -134,32 +134,33 @@ namespace utility
             inline static const std::vector<diference> data = { { 0, -1 }, { 1, -1 }, { 1, 0 }, { 1, 1 }, { 0, 1 }, { -1, 1 }, { -1, 0 } ,{ -1, -1 } };
         };
 
-        typedef direction_2D_generic<long> direction_2d;
+        typedef point_2d_generic<long> point_2d;
+        typedef direction_2d_generic<long> direction_2d;
 
 
         template <typename T>
-        point_2d_generic<T> add(const point_2d_generic<T> orig, const typename direction_2D_generic<T>::name dir)
+        point_2d_generic<T> add(const point_2d_generic<T> orig, const typename direction_2d_generic<T>::name dir)
         {
-            auto d = direction_2D_generic<T>::name_to_diff(dir);
+            auto d = direction_2d_generic<T>::name_to_diff(dir);
             return { orig.x + d.dx, orig.y + d.dy };
         }
 
         template <typename T>
-        point_2d_generic<T> add(const point_2d_generic<T> orig, const typename direction_2D_generic<T>::difference d)
+        point_2d_generic<T> add(const point_2d_generic<T> orig, const typename direction_2d_generic<T>::difference d)
         {
             return { orig.x + d.dx, orig.y + d.dy };
         }
 
 
         template <typename T>
-        point_2d_generic<T> sub(const point_2d_generic<T> orig, const typename direction_2D_generic<T>::name dir)
+        point_2d_generic<T> sub(const point_2d_generic<T> orig, const typename direction_2d_generic<T>::name dir)
         {
-            auto d = direction_2D_generic<T>::name_to_diff(dir);
+            auto d = direction_2d_generic<T>::name_to_diff(dir);
             return { orig.x - d.dx, orig.y - d.dy };
         }
 
         template <typename T>
-        point_2d_generic<T> sub(const point_2d_generic<T> orig, const typename direction_2D_generic<T>::difference d)
+        point_2d_generic<T> sub(const point_2d_generic<T> orig, const typename direction_2d_generic<T>::difference d)
         {
             return { orig.x - d.dx, orig.y - d.dy };
         }
@@ -218,6 +219,12 @@ namespace utility
         bool is_outside_2D_array(const TA& a, const geometry::point_2d_generic<TP>& pos)
         {
             return (pos.x < 0) || (pos.x == a[0].size()) || (pos.y < 0) || (pos.y == a.size());
+        }
+
+        template <typename TP, typename TA>
+        bool is_inside_2D_array(const TA& a, const geometry::point_2d_generic<TP>& pos)
+        {
+            return !is_outside_2D_array(a, pos);
         }
 
         template <typename TP, typename TA>

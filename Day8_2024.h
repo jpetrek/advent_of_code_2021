@@ -5,7 +5,7 @@ template<>
 class day<8, 2024> : public day_base<8,2024>
 {
     typedef point_2d_generic<long> coords;
-    typedef direction_2D_generic<long> dif;
+    typedef direction_2d_generic<long> dif;
 
     void add_antidote_if_in_limits(const coords c, const dif::diference d, const long max_x, const long max_y, std::set<coords>& antidotes) const
     {
