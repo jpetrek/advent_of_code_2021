@@ -460,10 +460,11 @@ namespace utility
         static R accumulate_generic(const T& data, R init, std::function < R(const R, const typename T::value_type&)> acc)
         {
             R ret = init;
-            for (size_t i = 0; i < data.size(); i++)
+            for (auto& i : data)
             {
-                ret = acc(ret, data.at(i));
+                ret = acc(ret, i);
             }
+
             return ret;
         }
 
@@ -483,6 +484,13 @@ namespace utility
 {
     namespace math
     {
+        template <typename T>
+        T pow10(T how)
+        {
+            return static_cast<T>(pow(10, how));
+        }
+
+
         template <typename T>
         static std::function<bool(const T&)> is_zero()
         {
