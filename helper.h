@@ -234,7 +234,7 @@ namespace utility
         }
 
         template <typename TP, typename TA>
-        void foreach_in_2D_array(const TA& a, std::function<void(const geometry::point_2d_generic<TP>&, typename TA::value_type::value_type)> action)
+        void foreach_in_2d_array(const TA& a, std::function<void(const geometry::point_2d_generic<TP>&, typename TA::value_type::value_type)> action)
         {
             for (size_t y = 0; y < a.size(); y++)
             {
@@ -1026,7 +1026,7 @@ namespace utility
             return data;
         }
 
-        static std::vector<std::vector<char>> transfor_input_into_char_array(file_reader& input_reader)
+        static std::vector<std::vector<char>> transform_input_into_char_array(file_reader& input_reader)
         {
             return transform_input_into_array<char>(input_reader, [](const char c) {return c; });
         }

@@ -252,6 +252,9 @@
     <ClInclude Include="Day11_2024.h">
       <Filter>2024</Filter>
     </ClInclude>
+    <ClInclude Include="Day12_2024.h">
+      <Filter>2024</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="2021">
