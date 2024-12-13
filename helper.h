@@ -739,15 +739,21 @@ namespace utility
         } two_unknowns_result;
         
         
-        static two_unknowns_result solve_2unknowns(const double a, const double b, const double e, const double c, const double d, const double f)
+        static std::vector<double> solve_2unknowns(const double a, const double b, const double e, const double c, const double d, const double f)
         {
             // ax + by = e
             // cx + dy = f
             double determinant = a * d - b * c;
-            if (determinant == 0) return { 0,0,false };
+            if (determinant == 0) return {};
             double x = (e * d - b * f) / determinant;
             double y = (a * f - e * c) / determinant;
-            return { x,y, true };
+            return { x,y };
+        }
+
+        template <typename T = uint64_t>
+        bool is_decimal_only(const double v)
+        {
+            return (v - static_cast<T>(v)) == 0;
         }
     };
 };
