@@ -731,6 +731,24 @@ namespace utility
             return { std::min(r1,r2), std::max(r1,r2) };
         }
 
+        typedef struct
+        {
+            double x;
+            double y;
+            bool has_result;
+        } two_unknowns_result;
+        
+        
+        static two_unknowns_result solve_2unknowns(const double a, const double b, const double e, const double c, const double d, const double f)
+        {
+            // ax + by = e
+            // cx + dy = f
+            double determinant = a * d - b * c;
+            if (determinant == 0) return { 0,0,false };
+            double x = (e * d - b * f) / determinant;
+            double y = (a * f - e * c) / determinant;
+            return { x,y, true };
+        }
     };
 };
 
