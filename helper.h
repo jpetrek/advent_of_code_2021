@@ -108,10 +108,13 @@ namespace utility
                 leftup = 7
             };
 
+            inline static const std::map<char, name> translation = { {'^', name::n}, {'U', name::n}, {'>', name::e}, {'E', name::e}, {'<', name::w}, {'W', name::w}, {'v', name::s}, {'S', name::s} };
             inline static const std::vector<name> four_directions = { name::n, name::s, name::e, name::w };
             inline static const std::vector<name> eight_directions = { name::n, name::s, name::e, name::w, name::ne, name::nw, name::se, name::sw };
 
             static diference name_to_diff(const name n) { return data[n]; }
+
+            static name char_to_name(const char c) { return translation.at(c);}
 
             static std::vector<diference> generate_diferences(const std::vector<name>& names)
             {
@@ -131,10 +134,6 @@ namespace utility
         private:
             inline static const std::vector<diference> data = { { 0, -1 }, { 1, -1 }, { 1, 0 }, { 1, 1 }, { 0, 1 }, { -1, 1 }, { -1, 0 } ,{ -1, -1 } };
         };
-
-        typedef point_2d_generic<long> point_2d;
-        typedef direction_2d_generic<long> direction_2d;
-
 
         template <typename T>
         point_2d_generic<T> add(const point_2d_generic<T> orig, const typename direction_2d_generic<T>::name dir)
@@ -199,6 +198,33 @@ namespace utility
 {
     namespace arrays
     {
+        template <typename T>
+        void for_2D_rectangle_space(T min_x, T max_x, T min_y, T max_y, std::function<void(const T, const T)> action) 
+        {
+            for (T y = min_y; y < max_y; y++)
+            {
+                for (T x = min_x; x < max_x; x++)
+                {
+                    action(x, y);
+                }
+            }
+        }
+
+        template <typename T>
+        void for_3D_rectangle_space(T min_x, T max_x, T min_y, T max_y, T min_z, T max_z, std::function<void(const T, const T, const T)> action)
+        {
+            for (T z = min_z; z < max_z; z++)
+            {
+                for (T y = min_y; y < max_y; y++)
+                {
+                    for (T x = min_x; x < max_x; x++)
+                    {
+                        action(x, y, z);
+                    }
+                }
+            }
+        }
+
         template <typename T>
         static auto intersect(const std::set<T>& s1, const std::set<T>& s2)
         {
@@ -961,34 +987,25 @@ namespace utility
             {
                 stream.close();
             }
-            struct read_conditions
+            
+            enum read_condition
             {
-                struct nocondition {};
-                struct empty_line {};
+                no_condition = 0,
+                empty_line = 1
             };
 
-            template<typename T = read_conditions::nocondition>
-            void read_by_line_until_condition_met_or_eof(std::function<void(const std::string&, size_t)> action)
+            template<typename T = size_t>
+            void read_by_line_until_condition_met_or_eof(const read_condition cond, std::function<void(const std::string&, const T)> action)
             {
                 size_t i = 0;
                 while (!is_end_of_file())
                 {
                     std::string line = get_line();
-                    action(line, i++);
+                    if ((cond == empty_line) && ((line.size() == 0))) break;
+                    action(line, static_cast<T>(i));
+                    i++;
                 }
             };
-
-            template<>
-            void read_by_line_until_condition_met_or_eof<read_conditions::empty_line>(std::function<void(const std::string&, size_t)> action)
-            {
-                size_t i = 0;
-                while (!is_end_of_file())
-                {
-                    std::string line = get_line();
-                    if (line == "") break;
-                    action(line, i++);
-                }
-            }
 
             std::string read_file()
             {

@@ -1,6 +1,8 @@
 #pragma once
 #include "helper.h"
 
+typedef point_2d_generic<long> point_2d;
+typedef direction_2d_generic<long> direction_2d;
 typedef std::set<point_2d_generic<size_t>> map_points;
 
 

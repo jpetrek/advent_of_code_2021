@@ -1,5 +1,6 @@
 #pragma once
 #include "helper.h"
+using namespace utility::io;
 
 template<>
 class day<14, 2024> : public day_base<14,2024>
@@ -104,7 +105,7 @@ class day<14, 2024> : public day_base<14,2024>
         long max_x = is_test() ? 11 : 101;
         long max_y = is_test() ? 7 : 103;
 
-        input_reader().read_by_line_until_condition_met_or_eof<utility::io::file_reader::read_conditions::empty_line>([&](const auto& line, size_t)
+        input_reader().read_by_line_until_condition_met_or_eof<size_t>(file_reader::read_condition::empty_line, [&](const auto& line, const auto)
         {
             robot r;
             sscanf_s(line.c_str(), "p=%ld,%ld v=%ld,%ld", &r.start.x, &r.start.y, &r.move.dx, &r.move.dy);

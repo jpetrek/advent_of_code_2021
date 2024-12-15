@@ -1,5 +1,6 @@
 #pragma once
 #include "helper.h"
+using namespace utility::io;
 
 template<>
 class day<6, 2024> : public day_base<6,2024>
@@ -78,7 +79,7 @@ class day<6, 2024> : public day_base<6,2024>
         std::vector<std::string> space;
         point_2d_generic<long> start_position;
 
-        input_reader().read_by_line_until_condition_met_or_eof<utility::io::file_reader::read_conditions::empty_line>([&](const auto& line, size_t)
+        input_reader().read_by_line_until_condition_met_or_eof<size_t>(file_reader::read_condition::empty_line, [&](const auto& line, const auto)
             {
                 if (line.find('^') != std::string::npos) start_position = { static_cast<long>(line.find('^')), static_cast<long>(space.size()) };
                 space.push_back(line);
