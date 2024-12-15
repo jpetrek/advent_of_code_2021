@@ -8,11 +8,9 @@ class day<15, 2024> : public day_base<15,2024>
     typedef point_2d_generic<long> position;
     typedef std::map<position, char> storage;
 
-    const directions where_to_go = { direction_2d::up, direction_2d::right, direction_2d::down, direction_2d::left };
-
     inline bool is_test() const override { return false; }
     
-    std::tuple<storage, long, long, position> make_input_twice_wide(const storage& space, long max_x, long max_y)
+    std::tuple<storage, long, long, position> make_input_twice_wide(const storage& space, const long max_x, const long max_y) const
     {
         storage space_2;
         position start_2;
@@ -41,17 +39,17 @@ class day<15, 2024> : public day_base<15,2024>
         return {space_2, max_x * 2, max_y, start_2};
     }
 
-    void traverse_crates_1(position start, direction_2d::name move, std::set<std::pair<position, char>>& movables, const storage& space)
+    void traverse_crates_1(const position& start, const direction_2d::name move, std::set<std::pair<position, char>>& movables, const storage& space) const
     {
-        movables.insert({ start, space.at(start) });
-        auto new_position = add(start, move);
-        if (space.at(new_position) == 'O')
+        auto new_position = start;
+        while ((space.at(new_position) != '#') && (space.at(new_position) != '.'))
         {
-            traverse_crates_1(new_position, move, movables, space);
+            movables.insert({ new_position, space.at(new_position) });
+            new_position = add(new_position, move);
         }
     }
 
-    void traverse_crates_2(position start, direction_2d::name move, std::set<std::pair<position, char>>& movables, const storage& space)
+    void traverse_crates_2(const position& start, const direction_2d::name move, std::set<std::pair<position, char>>& movables, const storage& space) const
     {
         movables.insert({ start, space.at(start) });
         auto new_position = add(start, move);
@@ -71,7 +69,7 @@ class day<15, 2024> : public day_base<15,2024>
         }
     }
 
-    storage solve(const storage& input, const directions& moves, position start, size_t star)
+    storage solve(const storage& input, const directions& moves, const position& start, const size_t star) const
     {
         auto space = input;
         auto actual = start;
@@ -100,7 +98,7 @@ class day<15, 2024> : public day_base<15,2024>
         return space;
     }
 
-    uint64_t calculate_score(const storage& space, long max_x, long max_y, char id)
+    uint64_t calculate_score(const storage& space, const long max_x, const long max_y, const char id) const
     {
         uint64_t sum = 0;
         for (long y = 0; y < max_y; y++)
@@ -125,29 +123,36 @@ class day<15, 2024> : public day_base<15,2024>
                 for (size_t x = 0; x < line.size(); x++)
                 {
                     space[{static_cast<long>(x), static_cast<long>(y)}] = line[x];
-                    if (line[x] == '@')
-                    {
-                        start_1.x = static_cast<long>(x);
-                        start_1.y = static_cast<long>(y);
-                    }
+                    if (line[x] == '@') start_1 = { static_cast<long>(x) , static_cast<long>(y) };
                 }
-                max_y = static_cast<long>(y) + 1;
                 max_x = static_cast<long>(line.size());
+                max_y = static_cast<long>(y) + 1;
         });
 
         input_reader().read_by_line_until_condition_met_or_eof<utility::io::file_reader::read_conditions::empty_line>([&](const auto& line, size_t y)
             {
                 for (size_t x = 0; x < line.size(); x++)
                 {
-                    if (line[x] == '^') moves.push_back(direction_2d::up);
-                    else if (line[x] == '>') moves.push_back(direction_2d::right);
-                    else if (line[x] == '<') moves.push_back(direction_2d::left);
-                    else if (line[x] == 'v') moves.push_back(direction_2d::down);
+                    switch (line[x])
+                    {
+                        case '^': 
+                            moves.push_back(direction_2d::up);
+                            break;
+                        case '>': 
+                            moves.push_back(direction_2d::right);
+                            break;
+                        case '<': 
+                            moves.push_back(direction_2d::left);
+                            break;
+                        case 'v': 
+                            moves.push_back(direction_2d::down);
+                            break;
+                    }
                 }
             });
 
         auto [space_2, max_x_2, max_y_2, start_2] = make_input_twice_wide(space, max_x, max_y);
-
+        
         set_star1_result(calculate_score(solve(space, moves, start_1, 1), max_x, max_y, 'O'));
         set_star2_result(calculate_score(solve(space_2, moves, start_2, 2), max_x_2, max_y_2, '['));
     }

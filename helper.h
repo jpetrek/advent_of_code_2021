@@ -120,8 +120,6 @@ namespace utility
                 return ret;
             }
 
-
-
             static void do_for_directions(const std::vector<name>& names, std::function<void(const diference dif)> action)
             {
                 for (auto d : generate_diferences(names))
