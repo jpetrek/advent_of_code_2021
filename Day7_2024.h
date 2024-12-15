@@ -28,7 +28,7 @@ class day<7, 2024> : public day_base<7,2024>
     {
         uint64_t sum1 = 0;
         uint64_t sum2 = 0;
-        input_reader().read_by_line_until_condition_met_or_eof<utility::io::file_reader::read_conditions::empty_line>([&](const auto& line)
+        input_reader().read_by_line_until_condition_met_or_eof<utility::io::file_reader::read_conditions::empty_line>([&](const auto& line, size_t)
             {
                 auto n = utility::string::split(line, ':');
                 auto numbers =utility::string::split_convert_vector<uint64_t>(n[1], ' ', utility::string::stoull());

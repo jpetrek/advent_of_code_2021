@@ -52,6 +52,31 @@ class day<14, 2024> : public day_base<14,2024>
         return average_distances_from_centre;
     }
 
+    std::vector<double> calculate_average_neigbor_count(const std::vector<robot>& robots, size_t max_x, size_t max_y, size_t max_number_of_steps)
+    {
+        std::vector<double> average_neigbor_count;
+        for (size_t i = 0; i < max_number_of_steps; i++)
+        {
+            std::set<coords> cr;
+            for (const auto& r : robots)
+            {
+                cr.insert(calculate_position_after_moves(r, static_cast<long>(max_x), static_cast<long>(max_y), i));
+            }
+
+            double n = 0;
+            for (auto r1 : cr)
+            {
+                if (cr.contains({ r1.x + 1, r1.y})) n++;
+                if (cr.contains({ r1.x - 1, r1.y })) n++;
+                if (cr.contains({ r1.x, r1.y + 1 })) n++;
+                if (cr.contains({ r1.x, r1.y - 1 })) n++;
+            }
+
+            average_neigbor_count.push_back(n /= cr.size());
+        }
+        return average_neigbor_count;
+    }
+
     void print_just_for_fun(const std::vector<robot>& robots, size_t max_x, size_t max_y, size_t max_number_of_steps)
     {
         std::map<coords, bool> space;
@@ -79,7 +104,7 @@ class day<14, 2024> : public day_base<14,2024>
         long max_x = is_test() ? 11 : 101;
         long max_y = is_test() ? 7 : 103;
 
-        input_reader().read_by_line_until_condition_met_or_eof<utility::io::file_reader::read_conditions::empty_line>([&](const auto& line)
+        input_reader().read_by_line_until_condition_met_or_eof<utility::io::file_reader::read_conditions::empty_line>([&](const auto& line, size_t)
         {
             robot r;
             sscanf_s(line.c_str(), "p=%ld,%ld v=%ld,%ld", &r.start.x, &r.start.y, &r.move.dx, &r.move.dy);
@@ -94,7 +119,11 @@ class day<14, 2024> : public day_base<14,2024>
             quadrants_and_centre[quadrant_id(nx, max_x, max_y)]++;
         }
 
-        auto ad = calculate_average_distances_from_centre(robots, max_x, max_y, 20000);
+        auto ad = calculate_average_distances_from_centre(robots, max_x, max_y, 50000);
+        
+        //auto ad2 = calculate_average_neigbor_count(robots, max_x, max_y, 20000); // slower
+        //std::cout << std::distance(std::begin(ad), std::min_element(std::begin(ad), std::end(ad))) << std::endl;
+        //std::cout << std::distance(std::begin(ad2), std::max_element(std::begin(ad2), std::end(ad2))) << std::endl;
         //print_just_for_fun(robots, max_x, max_y, std::distance(std::begin(ad), std::min_element(std::begin(ad), std::end(ad))));
 
         set_star1_result(quadrants_and_centre[0]* quadrants_and_centre[1] * quadrants_and_centre[2] * quadrants_and_centre[3]);

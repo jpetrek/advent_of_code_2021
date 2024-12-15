@@ -711,9 +711,10 @@ namespace utility
             return dist[dest];
         }
 
-        static size_t lcm(const std::vector<size_t> in)
+        template <typename T = size_t>
+        static T lcm(const std::vector<T> in)
         {
-            size_t r = in[0];
+            T r = in[0];
             for (size_t i = 1; i < in.size(); i++)
             {
                 r = std::lcm(r, in[i]);
@@ -969,23 +970,25 @@ namespace utility
             };
 
             template<typename T = read_conditions::nocondition>
-            void read_by_line_until_condition_met_or_eof(std::function<void(const std::string&)> action)
+            void read_by_line_until_condition_met_or_eof(std::function<void(const std::string&, size_t)> action)
             {
+                size_t i = 0;
                 while (!is_end_of_file())
                 {
                     std::string line = get_line();
-                    action(line);
+                    action(line, i++);
                 }
             };
 
             template<>
-            void read_by_line_until_condition_met_or_eof<read_conditions::empty_line>(std::function<void(const std::string&)> action)
+            void read_by_line_until_condition_met_or_eof<read_conditions::empty_line>(std::function<void(const std::string&, size_t)> action)
             {
+                size_t i = 0;
                 while (!is_end_of_file())
                 {
                     std::string line = get_line();
                     if (line == "") break;
-                    action(line);
+                    action(line, i++);
                 }
             }
 
