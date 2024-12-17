@@ -9,11 +9,11 @@ class day<18, 2023> : public day_base<18, 2023>
     typedef std::map<std::pair<int64_t, int64_t>, int64_t> vertical_lines_t;
     struct record
     {
-        direction_2d::name dir;
+        direction::name dir;
         size_t steps;
     };
 
-    const std::map<char, direction_2d::name> mapping = { {'U', direction_2d::up }, {'D', direction_2d::down }, {'R', direction_2d::right }, {'L', direction_2d::left } };
+    const std::map<char, direction::name> mapping = { {'U', direction::up }, {'D', direction::down }, {'R', direction::right }, {'L', direction::left } };
 
     std::pair<std::vector<record>, std::vector<record>> parse_input()
     {
@@ -31,10 +31,10 @@ class day<18, 2023> : public day_base<18, 2023>
 
             record r2;
             auto n = std::stoul(l[2].substr(7, 1));
-            if (n == 0) r2.dir = direction_2d::right;
-            else if (n == 1) r2.dir = direction_2d::down;
-            else if (n == 2) r2.dir = direction_2d::left;
-            else if (n == 3) r2.dir = direction_2d::up;
+            if (n == 0) r2.dir = direction::right;
+            else if (n == 1) r2.dir = direction::down;
+            else if (n == 2) r2.dir = direction::left;
+            else if (n == 3) r2.dir = direction::up;
             r2.steps = std::stoul(l[2].substr(2, 5), nullptr, 16);
             records_s2.push_back(r2);
         }
@@ -48,19 +48,19 @@ class day<18, 2023> : public day_base<18, 2023>
         for (const auto r : records)
         {
             length += r.steps;
-            if (r.dir == direction_2d::right)
+            if (r.dir == direction::right)
             {
                 result.push_back({ result[result.size() - 1].first + r.steps, result[result.size() - 1].second });
             }
-            else if (r.dir == direction_2d::left)
+            else if (r.dir == direction::left)
             {
                 result.push_back({ result[result.size() - 1].first - r.steps, result[result.size() - 1].second });
             }
-            else if (r.dir == direction_2d::up)
+            else if (r.dir == direction::up)
             {
                 result.push_back({ result[result.size() - 1].first, result[result.size() - 1].second - r.steps });
             }
-            else if (r.dir == direction_2d::down)
+            else if (r.dir == direction::down)
             {
                 result.push_back({ result[result.size() - 1].first, result[result.size() - 1].second + r.steps });
             }
@@ -90,24 +90,24 @@ class day<18, 2023> : public day_base<18, 2023>
         int64_t y = 0;
         for (const auto r : records)
         {
-            if (r.dir == direction_2d::right)
+            if (r.dir == direction::right)
             {
                 if (!horizontal_lines.contains(y)) horizontal_lines[y] = {};
                 horizontal_lines[y].insert({ x, x + r.steps });
                 x += r.steps;
             }
-            else if (r.dir == direction_2d::left)
+            else if (r.dir == direction::left)
             {
                 if (!horizontal_lines.contains(y)) horizontal_lines[y] = {};
                 horizontal_lines[y].insert({ x - r.steps, x });
                 x -= r.steps;
             }
-            else if (r.dir == direction_2d::up)
+            else if (r.dir == direction::up)
             {
                 vertical_lines[{y - r.steps, x}] = y;
                 y -= r.steps;
             }
-            else if (r.dir == direction_2d::down)
+            else if (r.dir == direction::down)
             {
                 vertical_lines[{y, x}] = y + r.steps;
                 y += r.steps;

@@ -5,19 +5,19 @@ using namespace utility::io;
 template<>
 class day<6, 2024> : public day_base<6,2024>
 {
-    const std::map<direction_2d::name, direction_2d::name> rotation =
+    const std::map<direction::name, direction::name> rotation =
     {
-        { direction_2d::up, direction_2d::right },
-        { direction_2d::right, direction_2d::down },
-        { direction_2d::down, direction_2d::left },
-        { direction_2d::left, direction_2d::up }
+        { direction::up, direction::right },
+        { direction::right, direction::down },
+        { direction::down, direction::left },
+        { direction::left, direction::up }
     };
     
     inline bool is_test() const override { return false; }
 
     std::set<point_2d_generic<long>> calculate_visited(const std::vector<std::string>& space, point_2d_generic<long> position, const char wall_id)
     {
-        direction_2d::name direction = direction_2d::up;
+        direction::name direction = direction::up;
         std::set<point_2d_generic<long>> visited;
 
         bool finish = false;
@@ -40,8 +40,8 @@ class day<6, 2024> : public day_base<6,2024>
 
     bool is_loop(const std::vector<std::string>& space, point_2d_generic<long> position, const point_2d_generic<long> additional_obstacle, const char wall_id)
     {
-        direction_2d::name dir = direction_2d::up;
-        std::set<std::pair<point_2d_generic<long>, direction_2d::name> > visited;
+        direction::name dir = direction::up;
+        std::set<std::pair<point_2d_generic<long>, direction::name> > visited;
         
         bool finish = false;
         while (!finish)

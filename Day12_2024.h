@@ -12,7 +12,7 @@ class day<12, 2024> : public day_base<12, 2024>
     typedef point_2d_generic<long> coords;
     typedef direction_2d_generic<long>::name dir;
 
-    const std::vector<direction_2d::name> directions = { direction_2d::up, direction_2d::right, direction_2d::down, direction_2d::left };
+    const std::vector<direction::name> directions = { direction::up, direction::right, direction::down, direction::left };
 
     inline bool is_test() const override { return false; }
 
@@ -36,14 +36,14 @@ class day<12, 2024> : public day_base<12, 2024>
         }
     }
 
-    size_t number_of_borders(direction_2d::name direction, const std::set<std::pair<coords, dir>>& borders)
+    size_t number_of_borders(direction::name direction, const std::set<std::pair<coords, dir>>& borders)
     {
         std::map<long, std::vector<long>> border_position_map;
         for (auto border : borders)
         {
             if (border.second == direction)
             {
-                if ((direction == direction_2d::name::up) || (direction == direction_2d::name::down))
+                if ((direction == direction::name::up) || (direction == direction::name::down))
                 {
                     modify_map(border_position_map, border.first.y, {}, [&](auto& t) {t.push_back(border.first.x); });
                 }
@@ -90,7 +90,7 @@ class day<12, 2024> : public day_base<12, 2024>
                     identify_garden(space, position, garden, borders, get_value(space, position));
 
                     sum1 += garden.size() * borders.size();
-                    sum2 += (number_of_borders(direction_2d::name::up, borders) + number_of_borders(direction_2d::name::down, borders) + number_of_borders(direction_2d::name::right, borders) + number_of_borders(direction_2d::name::left, borders)) * garden.size();
+                    sum2 += (number_of_borders(direction::name::up, borders) + number_of_borders(direction::name::down, borders) + number_of_borders(direction::name::right, borders) + number_of_borders(direction::name::left, borders)) * garden.size();
 
                     identified.merge(garden);
                 }

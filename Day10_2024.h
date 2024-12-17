@@ -8,9 +8,9 @@ class day<10, 2024> : public day_base<10,2024>
     typedef std::set<point_2d> unique_points;
     typedef std::set<std::vector<point_2d>> unique_routes;
 
-    const std::vector<direction_2d::name> where_to_go =
+    const std::vector<direction::name> where_to_go =
     {
-        direction_2d::up, direction_2d::right, direction_2d::down, direction_2d::left
+        direction::up, direction::right, direction::down, direction::left
     };
     
     void traverse(unique_routes& routes_to_peak, unique_points& peaks, std::vector<point_2d> current_path, const height_map& hmap)
