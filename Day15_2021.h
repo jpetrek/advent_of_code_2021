@@ -9,9 +9,9 @@ using namespace utility::string;
 template<>
 class day<15, 2021> : public day_base<15, 2021>
 {
-    graph_weighted transform_maze_to_graph(const std::vector<std::vector<size_t>>& maze)
+    graph_weighted<uint64_t> transform_maze_to_graph(const std::vector<std::vector<size_t>>& maze)
     {
-        graph_weighted g(maze.size() * maze[0].size());
+        graph_weighted<uint64_t> g(maze.size() * maze[0].size());
         for (size_t y = 0; y < maze.size(); y++)
             for (size_t x = 0; x < maze[0].size(); x++)
             {
@@ -48,9 +48,9 @@ class day<15, 2021> : public day_base<15, 2021>
         }
 
         auto graph_maze = transform_maze_to_graph(maze);
-        set_star1_result(utility::math::dijkstra_shortest_path(graph_maze, 0, graph_maze.count() - 1));
+        set_star1_result(utility::algorithm::dijkstra_shortest_path<uint64_t>(graph_maze, 0, graph_maze.count() - 1).first);
 
         auto graph_maze_huge = transform_maze_to_graph(maze_huge);
-        set_star2_result(utility::math::dijkstra_shortest_path(graph_maze_huge, 0, graph_maze_huge.count() - 1));
+        set_star2_result(utility::algorithm::dijkstra_shortest_path<uint64_t>(graph_maze_huge, 0, graph_maze_huge.count() - 1).first);
     }
 };

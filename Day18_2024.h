@@ -1,19 +1,19 @@
 #pragma once
 #include "helper.h"
 using namespace utility::io;
+using namespace utility::algorithm;
 
 template<>
 class day<18, 2024> : public day_base<18, 2024>
 {
     typedef point_2d_generic<long> coords;
-    typedef direction_2d_generic<long>::diference increments;
     const std::vector<direction::name> where_to_go = { direction::up, direction::right, direction::down, direction::left };
 
     inline bool is_test() const override { return false; }
 
-    graph_weighted contruct_graph(const long max_x, const long max_y, const std::set<coords>& space) const
+    graph_weighted<uint64_t> contruct_graph(const long max_x, const long max_y, const std::set<coords>& space) const
     {
-        graph_weighted gw(max_x * max_y);
+        graph_weighted<uint64_t> gw(max_x * max_y);
         for_2D_rectangle_space<long>(0, max_x, 0, max_y, [&](auto x, auto y)
             {
                 coords location = { x,y };
@@ -32,7 +32,7 @@ class day<18, 2024> : public day_base<18, 2024>
         return gw;
     }
 
-    size_t calculate_path(const long max_x, const long max_y, const std::set<coords>& space) const
+    std::pair< uint64_t, bool> calculate_path(const long max_x, const long max_y, const std::set<coords>& space) const
     {
         auto graph = contruct_graph(max_x, max_y, space);
         return dijkstra_shortest_path(graph, 0, max_y * max_x - 1);
@@ -58,23 +58,13 @@ class day<18, 2024> : public day_base<18, 2024>
             corrupted_bytes.push_back({ coords[0], coords[1] });
         });
 
-        set_star1_result(dijkstra_shortest_path(contruct_graph(max_x, max_y, construct_space(corrupted_bytes, how_many_star_1)), 0, max_y * max_x - 1));
+        set_star1_result(dijkstra_shortest_path<uint64_t>(contruct_graph(max_x, max_y, construct_space(corrupted_bytes, how_many_star_1)), 0, max_y * max_x - 1).first);
 
-        size_t left_index = 0;
-        size_t right_index = corrupted_bytes.size() - 1;
-        
-        while ( (right_index - left_index) > 1 )
+        auto border = binary_search<size_t>(0, corrupted_bytes.size() - 1, [&](const auto middle)
         {
-            size_t half_index = (left_index + right_index) / 2;
-            if (calculate_path(max_x, max_y, construct_space(corrupted_bytes, half_index + 1)) == std::numeric_limits<int64_t>::max())
-            {
-                right_index = half_index;
-            }
-            else
-            {
-                left_index = half_index;
-            }
-        }
-        set_star2_result(std::to_string(corrupted_bytes[right_index].x) + "," + std::to_string(corrupted_bytes[right_index].y));
+            return calculate_path(max_x, max_y, construct_space(corrupted_bytes, middle + 1)).second;
+        });
+
+        set_star2_result(std::to_string(corrupted_bytes[border.second].x) + "," + std::to_string(corrupted_bytes[border.second].y));
     }
 };
