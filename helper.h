@@ -44,6 +44,12 @@ namespace utility
         }
 
         template <typename T>
+        bool operator ==(const point_3d_generic<T>& p1, const point_3d_generic<T>& p2)
+        {
+            return ((p1.x == p2.x) && (p1.y == p2.y) && (p1.z == p2.z));
+        }
+
+        template <typename T>
         struct point_2d_generic
         {
             typedef T basic_type;
@@ -175,6 +181,23 @@ namespace utility
                 }
             }
         }
+
+        template <typename T>
+        long manhatan_distance(const point_2d_generic<T> p1, const point_2d_generic<T> p2)
+        {
+            return abs(p1.x - p2.x) + abs(p1.y - p2.y);
+        }
+
+        template <typename T>
+        double euclides_distance(const point_3d_generic<T> p1, const point_3d_generic<T> p2)
+        {
+            size_t dx = p1.x > p2.x ? p1.x - p2.x : p2.x - p1.x;
+            size_t dy = p1.y > p2.y ? p1.y - p2.y : p2.y - p1.y;
+            size_t dz = p1.z > p2.z ? p1.z - p2.z : p2.z - p1.z;
+            return sqrt(dx * dx + dy * dy + dz * dz);
+        }
+
+
 
         template<typename T = size_t>
         static void do_for_adjacent(T width, T height, T x, T y, const std::vector<std::pair<int, int>> diffs, std::function<void(T, T)> action)
@@ -573,6 +596,12 @@ namespace utility
             return 0;
         }
 
+        template <typename T>
+        bool is_in_range(const T min, const T max, bool include_limits, const T val)
+        {
+            return include_limits ? val >= min && val <= max : val > min && val < max;
+        }
+
         template<typename T, typename TAverage>
         struct min_max_summary_average_counter
         {
@@ -797,7 +826,7 @@ namespace utility
             return [](const auto& i) {return std::stol(i); };
         }
 
-        static std::string trim(const std::string& s)
+        static std::string trim(const std::string& s)//!!!!!
         {
             std::string ret;
             for (auto c : s)
@@ -937,12 +966,18 @@ namespace utility
         }
 
         template <typename T>
+        static T digit_char_to_value(const char c)
+        {
+            return static_cast<T>(c) - static_cast<T>('0');
+        }
+
+        template <typename T>
         static std::vector<T> convert_string_of_digits_to_vector(const std::string& line)
         {
             std::vector<T> ret;
             for (auto c : line)
             {
-                ret.push_back(static_cast<size_t>(c) - static_cast<size_t>('0'));
+                ret.push_back(digit_char_to_value<T>(c));
             }
             return ret;
         }
@@ -966,20 +1001,29 @@ namespace utility
                 stream.close();
             }
             
-            enum read_condition
+            typedef std::function<bool(const std::string&)> read_stop_condition;
+
+            static read_stop_condition no_condition() 
             {
-                no_condition = 0,
-                empty_line = 1
-            };
+                return [](const std::string&) {return false; };
+            }
+
+            static read_stop_condition empty_line_condition()
+            {
+                return [](const std::string& l)
+                    {
+                        return l.size() == 0;
+                    };
+            }
 
             template<typename T = size_t>
-            void read_by_line_until_condition_met_or_eof(const read_condition cond, std::function<void(const std::string&, const T)> action)
+            void read_by_line_until_condition_met_or_eof(const read_stop_condition cond, std::function<void(const std::string&, const T)> action)
             {
                 size_t i = 0;
                 while (!is_end_of_file())
                 {
                     std::string line = get_line();
-                    if ((cond == empty_line) && ((line.size() == 0))) break;
+                    if (cond(line)) break;
                     action(line, static_cast<T>(i));
                     i++;
                 }

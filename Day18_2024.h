@@ -52,7 +52,7 @@ class day<18, 2024> : public day_base<18, 2024>
         long how_many_star_1 = is_test() ? 12 : 1024;
 
         std::vector<coords> corrupted_bytes;
-        input_reader().read_by_line_until_condition_met_or_eof<size_t>(file_reader::read_condition::empty_line, [&](const auto& line, const auto)
+        input_reader().read_by_line_until_condition_met_or_eof<size_t>(file_reader::empty_line_condition(), [&](const auto& line, const auto)
         {
             auto coords = split_and_convert<long>(line, ',');
             corrupted_bytes.push_back({ coords[0], coords[1] });

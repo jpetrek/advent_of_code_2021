@@ -36,7 +36,7 @@ class day<8, 2024> : public day_base<8,2024>
         std::set<coords> antidotes;
         long max_x = 0;
         long max_y = 0;
-        input_reader().read_by_line_until_condition_met_or_eof<size_t>(file_reader::read_condition::empty_line, [&](const auto& line, const auto)
+        input_reader().read_by_line_until_condition_met_or_eof<size_t>(file_reader::empty_line_condition(), [&](const auto& line, const auto)
             {
                 max_x = static_cast<long>(line.size());
                 for (long x = 0; x < line.size(); x++)

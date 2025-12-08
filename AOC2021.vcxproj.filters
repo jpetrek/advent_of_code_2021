@@ -276,6 +276,39 @@
     <ClInclude Include="Day19_2024.h">
       <Filter>2024</Filter>
     </ClInclude>
+    <ClInclude Include="Day20_2024.h">
+      <Filter>2024</Filter>
+    </ClInclude>
+    <ClInclude Include="Day21_2024.h">
+      <Filter>2024</Filter>
+    </ClInclude>
+    <ClInclude Include="Day1_2025.h">
+      <Filter>2025</Filter>
+    </ClInclude>
+    <ClInclude Include="Day2_2025.h">
+      <Filter>2025</Filter>
+    </ClInclude>
+    <ClInclude Include="Day3_2025.h">
+      <Filter>2025</Filter>
+    </ClInclude>
+    <ClInclude Include="Day4_2025.h">
+      <Filter>2025</Filter>
+    </ClInclude>
+    <ClInclude Include="Day5_2025.h">
+      <Filter>2025</Filter>
+    </ClInclude>
+    <ClInclude Include="Day6_2025.h">
+      <Filter>2025</Filter>
+    </ClInclude>
+    <ClInclude Include="Day7_2025.h">
+      <Filter>2025</Filter>
+    </ClInclude>
+    <ClInclude Include="Day8_2025.h">
+      <Filter>2025</Filter>
+    </ClInclude>
+    <ClInclude Include="Day9_2025.h">
+      <Filter>2025</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="2021">
@@ -289,6 +322,9 @@
     </Filter>
     <Filter Include="2024">
       <UniqueIdentifier>{ad3049de-2ce3-45ce-b832-298b5fcddfb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2025">
+      <UniqueIdentifier>{27edeec3-627f-4335-b590-71a799e1d0a0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

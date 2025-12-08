@@ -2,13 +2,18 @@
 //
 
 
-#define PATH_TO_DATA(YEAR,DAY) "c:\\Git\\aoc\\" + std::to_string(YEAR) + "\\i" + std::to_string(DAY) + ".txt"
-#define PATH_TO_TEST_DATA(YEAR,DAY) "c:\\Git\\aoc\\" + std::to_string(YEAR) + "\\i" + std::to_string(DAY) + "_t.txt"
+#define PATH_TO_DATA(YEAR,DAY) "d:\\Development\\Git\\aoc\\" + std::to_string(YEAR) + "\\i" + std::to_string(DAY) + ".txt"
+#define PATH_TO_TEST_DATA(YEAR,DAY) "d:\\Development\\Git\\aoc\\" + std::to_string(YEAR) + "\\i" + std::to_string(DAY) + "_t.txt"
 
 #include "days.h"
 
+
+
+
+
+
 int main()
 {
-   run<2024,19, 19 >(); 
+   run<2025,9, 9>(); 
    return 0;
 }

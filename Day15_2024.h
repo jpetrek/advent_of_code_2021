@@ -102,7 +102,7 @@ class day<15, 2024> : public day_base<15,2024>
         storage space;
         directions moves;
 
-        input_reader().read_by_line_until_condition_met_or_eof<long>(file_reader::read_condition::empty_line, [&](const auto& line, const auto y)
+        input_reader().read_by_line_until_condition_met_or_eof<long>(file_reader::empty_line_condition(), [&](const auto& line, const auto y)
         {
             for (long x = 0; x < static_cast<long>(line.size()); x++)
             {
@@ -113,7 +113,7 @@ class day<15, 2024> : public day_base<15,2024>
             max_y = y + 1;
         });
 
-        input_reader().read_by_line_until_condition_met_or_eof<size_t>(file_reader::read_condition::empty_line, [&](const auto& line, const auto)
+        input_reader().read_by_line_until_condition_met_or_eof<size_t>(file_reader::empty_line_condition(), [&](const auto& line, const auto)
         {
             for (size_t x = 0; x < line.size(); x++)
             {

@@ -14,33 +14,33 @@ class day<19, 2024> : public day_base<19,2024>
         bool finish;
         std::map<char, size_t> followers;
     };
+    typedef std::vector<tree_node> pattern_tree;
 
-    std::vector<tree_node> generate_pattern_tree(std::vector<std::string>& patterns)
+    pattern_tree generate_pattern_tree(std::vector<std::string>& patterns)
     {
-        std::vector<tree_node> tree = { {'#', false, {}} };
+        pattern_tree tree = { {'#', false, {}} };
         for (auto const pattern : patterns)
         {
-            size_t pos = 0;
+            size_t actual_tree_position = 0;
             for (size_t i = 0; i < pattern.size(); i++)
             {
-                if (!tree[pos].followers.contains(pattern[i]))
+                if (!tree[actual_tree_position].followers.contains(pattern[i]))
                 {
                     tree.push_back({ pattern[i], false, {} });
-                    tree[pos].followers[pattern[i]] = tree.size() - 1;
+                    tree[actual_tree_position].followers[pattern[i]] = tree.size() - 1;
                 }
-                pos = tree[pos].followers.at(pattern[i]);
+                actual_tree_position = tree[actual_tree_position].followers.at(pattern[i]);
             }
-            tree[pos].finish = true;
+            tree[actual_tree_position].finish = true;
         }
         return tree;
     }
 
-    size_t try_generate(const std::string& input, size_t index, size_t tree_index, const std::vector<tree_node>& hit_tree, cache& hit_cache)
+    size_t try_generate(const std::string& input, size_t index, size_t tree_index, const pattern_tree& hit_tree, cache& hit_cache)
     {
         std::function<size_t(size_t)> modify_hit_cache_and_return_cached_value = [&](size_t n)->size_t
         { 
-            if (!hit_cache.contains({ index, tree_index })) hit_cache[{index, tree_index}] = 0;
-            hit_cache[{index, tree_index}] += n; 
+            modify_map(hit_cache, { index, tree_index }, 0, [n](auto& v) { v += n; });
             return hit_cache[{index, tree_index}];
         };
 
@@ -66,13 +66,13 @@ class day<19, 2024> : public day_base<19,2024>
         std::vector<std::string> lookups;
         std::vector<std::string> patterns;
 
-        input_reader().read_by_line_until_condition_met_or_eof<size_t>(file_reader::read_condition::empty_line, [&](const auto& l, auto)
+        input_reader().read_by_line_until_condition_met_or_eof<size_t>(file_reader::empty_line_condition(), [&](const auto& l, auto)
         {
             patterns = split(l, ',');
             for (auto& p : patterns) p = trim(p);
         });
         
-        input_reader().read_by_line_until_condition_met_or_eof<size_t>(file_reader::read_condition::empty_line, [&](const auto& l, auto)
+        input_reader().read_by_line_until_condition_met_or_eof<size_t>(file_reader::empty_line_condition(), [&](const auto& l, auto)
         {
             lookups.push_back(l);
         });

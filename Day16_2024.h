@@ -85,7 +85,7 @@ class day<16, 2024> : public day_base<16,2024>
         area_map maze;
         position start, finish;
         
-        input_reader().read_by_line_until_condition_met_or_eof<long>(file_reader::read_condition::empty_line, [&](const auto& line, const long y)
+        input_reader().read_by_line_until_condition_met_or_eof<long>(file_reader::empty_line_condition(), [&](const auto& line, const long y)
         {
             for (long x = 0; x < line.size(); x++)
             {

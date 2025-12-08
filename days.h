@@ -78,7 +78,7 @@
 #include "Day21_2023.h"
 #include "Day22_2023.h"
 #include "Day23_2023.h"
-#include "Day24_2023.h"
+//#include "Day24_2023.h"
 
 //-----------------------
 
@@ -101,3 +101,17 @@
 #include "Day17_2024.h"
 #include "Day18_2024.h"
 #include "Day19_2024.h"
+#include "Day20_2024.h"
+#include "Day21_2024.h"
+
+//-----------------------
+
+#include "Day1_2025.h"
+#include "Day2_2025.h"
+#include "Day3_2025.h"
+#include "Day4_2025.h"
+#include "Day5_2025.h"
+#include "Day6_2025.h"
+#include "Day7_2025.h"
+#include "Day8_2025.h"
+#include "Day9_2025.h"
