@@ -16,6 +16,7 @@
 #include <queue>
 #include <ranges>
 #include <bit>
+#include <execution>
 
 namespace utility
 {
@@ -71,6 +72,34 @@ namespace utility
         bool operator ==(const point_2d_generic<T>& p1, const point_2d_generic<T>& p2)
         {
             return ((p1.x == p2.x) && (p1.y == p2.y));
+        }
+        
+        template <typename T>
+        struct interval_generic
+        {
+            T min;
+            T max;
+        };
+
+        template <typename T>
+        auto merge_intervals(std::vector<interval_generic<T>> v)
+        {
+            std::vector<interval_generic<T>> out;
+            if (v.empty()) return out;
+            sort(v.begin(), v.end(), [](auto& a, auto& b) { return a.min < b.min; });
+            out.push_back(v[0]);
+            for (size_t i = 1; i < v.size(); ++i)
+            {
+                if (v[i].min <= out.back().max + 1)
+                {
+                    out.back().max = std::max(out.back().max, v[i].max);
+                }
+                else
+                {
+                    out.push_back(v[i]);
+                }
+            }
+            return out;
         }
 
         template<typename T>
@@ -183,9 +212,23 @@ namespace utility
         }
 
         template <typename T>
-        long manhatan_distance(const point_2d_generic<T> p1, const point_2d_generic<T> p2)
+        T manhatan_distance(const point_2d_generic<T> p1, const point_2d_generic<T> p2)
         {
-            return abs(p1.x - p2.x) + abs(p1.y - p2.y);
+            return static_cast<T>(abs(p1.x - p2.x) + abs(p1.y - p2.y));
+        }
+
+        template <typename T>
+        T manhatan_distance(const point_3d_generic<T> p1, const point_3d_generic<T> p2)
+        {
+            return static_cast<T>(abs(p1.x - p2.x) + abs(p1.y - p2.y) + abs(p1.z - p2.z));
+        }
+
+        template <typename T>
+        double euclides_distance(const point_2d_generic<T> p1, const point_2d_generic<T> p2)
+        {
+            size_t dx = p1.x > p2.x ? p1.x - p2.x : p2.x - p1.x;
+            size_t dy = p1.y > p2.y ? p1.y - p2.y : p2.y - p1.y;
+            return sqrt(dx * dx + dy * dy);
         }
 
         template <typename T>
@@ -671,7 +714,7 @@ namespace utility
                 value_minimum = minimum;
                 value_maximum = maximum;
             }
-
+            
             T value_minimum;
             T value_maximum;
         };

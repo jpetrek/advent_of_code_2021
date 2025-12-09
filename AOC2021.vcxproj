@@ -143,7 +143,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpp23</LanguageStandard>
       <AdditionalIncludeDirectories>C:\Git\eigen-3.4.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -161,6 +161,7 @@
     <ClInclude Include="Day10_2022.h" />
     <ClInclude Include="Day10_2023.h" />
     <ClInclude Include="Day10_2024.h" />
+    <ClInclude Include="Day10_2025.h" />
     <ClInclude Include="Day11_2022.h" />
     <ClInclude Include="Day11_2023.h" />
     <ClInclude Include="Day11_2024.h" />

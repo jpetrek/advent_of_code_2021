@@ -14,7 +14,7 @@ class day<8, 2025> : public day_base<8,2025>
         double dist;
     };
 
-    std::vector<points_with_distance> calculate_distances_sorted(const std::vector<position>& points)
+    auto calculate_distances_sorted(const std::vector<position>& points)
     {
         std::vector<points_with_distance> result;
         std::vector<points_with_distance> tmp;

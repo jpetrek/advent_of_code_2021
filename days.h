@@ -115,3 +115,4 @@
 #include "Day7_2025.h"
 #include "Day8_2025.h"
 #include "Day9_2025.h"
+#include "Day10_2025.h"
