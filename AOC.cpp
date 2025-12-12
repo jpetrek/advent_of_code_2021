@@ -8,12 +8,8 @@
 #include "days.h"
 
 
-
-
-
-
 int main()
 {
-   run<2025,10, 10>(); 
+   run<2025,1, 12>(); 
    return 0;
 }

@@ -17,9 +17,36 @@
 #include <ranges>
 #include <bit>
 #include <execution>
+#include <unordered_set>
 
 namespace utility
 {
+    namespace bool_storage
+    {
+        static size_t number_of_combinations(size_t number_of_variables)
+        {
+            return number_of_variables == 0 ? 1 : (1ull << number_of_variables);
+        }
+
+        template <typename T>
+        static void set_variable(T& storage, const size_t index)
+        {
+            storage |= 1 << index;
+        }
+
+        template <typename T>
+        static bool get_variable(const T& storage, const size_t index)
+        {
+            return ((storage >> index) & 1) == 1;
+        }
+
+        template <typename T>
+        static T full_mask(size_t number_of_variables)
+        {
+            return number_of_variables == 0 ? 0 : ((static_cast<T>(1) << number_of_variables) - 1);
+        }
+    }
+
     namespace geometry
     {
         template <typename T>
@@ -785,6 +812,92 @@ namespace utility
             std::vector<std::vector<std::pair<size_t, T> >> adjacents;
         };
 
+        template <typename T = int64_t>
+        struct graph_weighted_map
+        {
+            typedef T weight_type;
+            graph_weighted_map()
+            {
+            }
+
+            size_t count() const
+            {
+                return adjacents.size();
+            }
+
+            std::vector<size_t> nodes() const
+            {
+                std::vector<size_t> ret;
+                for (const auto& mi : adjacents)
+                {
+                    ret.push_back(mi.first);
+                }
+                return ret;
+            }
+
+            void add_twodirectional_edge(size_t v1, size_t v2, T w1, T w2)
+            {
+                add_onedirectional_edge(v1, v2, w1);
+                add_onedirectional_edge(v2, v1, w2);
+            }
+
+            void add_onedirectional_edge(size_t v1, size_t v2, T w1)
+            {
+                if (!adjacents.contains(v1)) adjacents[v1] = {};
+                if (!adjacents.contains(v2)) adjacents[v2] = {};
+                auto i = std::find_if(std::begin(adjacents.at(v1)), std::end(adjacents.at(v1)), [v2](const auto& p) {return p.first == v2; });
+                if (i == std::end(adjacents[v1]))
+                {
+                    adjacents[v1].push_back({ v2, w1 });
+                }
+            }
+
+            const std::vector<std::pair<size_t, T>>& get_adjacend(size_t vertex) const
+            {
+                return adjacents.at(vertex);
+            }
+
+        private:
+            std::map<size_t, std::vector<std::pair<size_t, T> >> adjacents;
+        };
+
+        template<typename T = int64_t>
+        std::vector<size_t> topological_sort(const graph_weighted_map<T>& graph)
+        {
+            std::unordered_map<size_t, size_t> indegree;
+            for (const auto n : graph.nodes())
+            {
+                if (indegree.count(n) == 0) indegree[n] = 0;
+                for (auto v : graph.get_adjacend(n))
+                {
+                    if (indegree.count(v.first) == 0) indegree[v.first] = 0;
+                    indegree[v.first]++;
+                }
+            }
+
+            std::queue<size_t> q;
+            std::vector<size_t> topo;
+
+            for (const auto& [node, deg] : indegree)
+            {
+                if (deg == 0) q.push(node);
+            }
+
+            while (!q.empty())
+            {
+                size_t u = q.front(); q.pop();
+                topo.push_back(u);
+                for (auto v : graph.get_adjacend(u))
+                {
+                    if (--indegree[v.first] == 0)
+                    {
+                        q.push(v.first);
+                    }
+                }
+            }
+            return topo;
+        }
+
         template <typename T = size_t>
         static T lcm(const std::vector<T> in)
         {
@@ -867,6 +980,11 @@ namespace utility
         static std::function<long(const std::string&)> stol()
         {
             return [](const auto& i) {return std::stol(i); };
+        }
+
+        static std::function<int16_t(const std::string&)> stol16()
+        {
+            return [](const auto& i) {return static_cast<int16_t>(std::stol(i)); };
         }
 
         static std::string trim(const std::string& s)//!!!!!
